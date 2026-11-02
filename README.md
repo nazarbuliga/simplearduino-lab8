@@ -4,7 +4,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Netlify Status](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://simplearduino-lab8.netlify.app)
-[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=github&logoColor=white)](https://nazariy-bulyha.github.io/simplearduino-lab8/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=github&logoColor=white)](https://nazarbuliga.github.io/simplearduino-lab8/)
 [![WCAG 2.2 AA](https://img.shields.io/badge/Accessibility-WCAG_2.2_AA-success?style=for-the-badge)](https://www.w3.org/WAI/standards-guidelines/wcag/)
 
 > **Лабораторна робота №8** з дисципліни *«Веб-розробка та дизайн»*  
@@ -19,8 +19,8 @@
 | Платформа хостингу | Статус | Публічне посилання | Опис середовища |
 | :--- | :---: | :--- | :--- |
 | **Netlify** | ✅ Active | [simplearduino-lab8.netlify.app](https://simplearduino-lab8.netlify.app) | Production CDN, HTTP/2, SSL, gzip/brotli, `netlify.toml` |
-| **GitHub Pages** | ✅ Active | [nazariy-bulyha.github.io/simplearduino-lab8](https://nazariy-bulyha.github.io/simplearduino-lab8/) | Native GitHub Static Hosting із гілки `main` |
-| **Віддалений репозиторій** | ✅ Public | [github.com/nazariy-bulyha/simplearduino-lab8](https://github.com/nazariy-bulyha/simplearduino-lab8) | Повний вихідний код, історія комітів, гілки |
+| **GitHub Pages** | ✅ Active | [nazarbuliga.github.io/simplearduino-lab8](https://nazarbuliga.github.io/simplearduino-lab8/) | Native GitHub Static Hosting із гілки `main` |
+| **Віддалений репозиторій** | ✅ Public | [github.com/nazarbuliga/simplearduino-lab8](https://github.com/nazarbuliga/simplearduino-lab8) | Повний вихідний код, історія комітів, гілки |
 
 ---
 
@@ -97,7 +97,7 @@ simplearduino-lab8/
 ### 1. Клонування репозиторію
 ```bash
 # Клонування віддаленого репозиторію через HTTPS
-git clone https://github.com/nazariy-bulyha/simplearduino-lab8.git
+git clone https://github.com/nazarbuliga/simplearduino-lab8.git
 
 # Перехід у робочу директорію проєкту
 cd simplearduino-lab8
@@ -162,7 +162,7 @@ git merge feature/seo-meta-optimization
 - **Кафедра:** «Систем автоматизованого проектування» (САПР)  
 - **Навчальний заклад:** Національний університет «Львівська політехніка»  
 - **Електронна пошта:** `nazariy.bulyha@lpnu.ua`  
-- **GitHub профіль:** [@nazariy-bulyha](https://github.com/nazariy-bulyha)
+- **GitHub профіль:** [@nazarbuliga](https://github.com/nazarbuliga)
 
 ---
 
