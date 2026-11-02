@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Просунутий рівень (Advanced) — Проєкти та схеми SimpleArduino</title>
+  <meta name="description" content="Професійні інженерні проєкти найвищої складності: 2-колісний автономний робот з L298N, IoT Smart Home веб-сервер керування реле 220V, промислове ядро реального часу FreeRTOS.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            arduino: { teal: '#008184', orange: '#E47128', navy: '#005C5F', cyan: '#00979D' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            heading: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/custom-styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-rose-500 selection:text-white min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <a class="flex items-center gap-2 group" href="index.html">
+        <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto object-contain transition-transform group-hover:scale-105">
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-slate-300">
+        <a href="index.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Головна</a>
+        <a href="beginner.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Початковий</a>
+        <a href="intermediate.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Середній</a>
+        <a href="advanced.html" class="px-3 py-2 text-rose-400 font-bold bg-slate-800/90 rounded-lg border border-rose-400/20">Просунутий</a>
+        <a href="learning-ladder.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Шлях навчання</a>
+        <a href="about.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Про проєкт &amp; Методологія</a>
+      </nav>
+
+      <div class="hidden md:flex items-center gap-3">
+        <a href="learning-ladder.html" class="px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-xs shadow-md transition">
+          Шлях навчання (10 проєктів) →
+        </a>
+      </div>
+
+      <!-- Мобільна кнопка -->
+      <button id="mobile-menu-btn" type="button" class="md:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню">
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+
+    <!-- Мобільне меню -->
+    <div id="mobile-menu" class="mobile-nav-link hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 animate-fadeIn">
+      <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Головна сторінка</a>
+      <a href="beginner.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Початковий рівень (4 проєкти)</a>
+      <a href="intermediate.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Середній рівень (3 проєкти)</a>
+      <a href="advanced.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-bold text-rose-400 bg-slate-800">Просунутий рівень (3 проєкти)</a>
+      <a href="learning-ladder.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Шлях навчання (10 проєктів)</a>
+      <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Про проєкт &amp; Методологія</a>
+    </div>
+  </header>
+
+  <!-- Breadcrumbs -->
+  <nav class="bg-slate-100 border-b border-slate-200/80 py-2.5 px-4 sm:px-8 text-xs text-slate-500 font-mono">
+    <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto whitespace-nowrap">
+      <a href="index.html" class="hover:text-rose-600 transition">Головна</a>
+      <span>/</span>
+      <span class="text-slate-800 font-semibold">Просунутий рівень (Advanced)</span>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-b from-slate-950 to-slate-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto space-y-4 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">
+        <span>● МАКСИМАЛЬНА СКЛАДНІСТЬ</span>
+        <span>• 3 ПРОФЕСІЙНІ ПРОЄКТИ</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold font-heading tracking-tight">
+        Модуль: Просунутий рівень (Advanced)
+      </h1>
+      <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed text-center">
+        Справжня промислова інженерія: мобільна робототехніка на H-Bridge L298N, веб-сервери домашньої автоматизації IoT з гальванічною опторозв'язкою 220V та ядро витісняючої операційної системи реального часу FreeRTOS.
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Catalog Grid -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 w-full">
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Проєкт 8: Автономний робот -->
+      <article class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 flex flex-col justify-between hover:shadow-xl hover:border-rose-300 transition-all duration-300">
+        <div class="space-y-4">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <span class="px-2.5 py-0.5 rounded-md text-xs font-bold font-mono bg-rose-100 text-rose-800">ПРОЄКТ #08</span>
+            <span class="text-xs text-slate-500 font-mono">60 хв • 4/5</span>
+          </div>
+
+          <div class="h-44 bg-slate-900 rounded-2xl p-3 flex items-center justify-center overflow-hidden border border-slate-800">
+            <img src="assets/images/tinkercad-ultrasonic.png" alt="Автономний робот-ровер" class="max-h-full object-contain hover:scale-105 transition">
+          </div>
+
+          <h2 class="text-xl font-bold text-slate-900 font-heading">
+            Автономний робот-ровер з уникненням перешкод
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Силовий драйвер L298N, 2 DC редукторні мотори, сонар на поворотній серво-вежі та алгоритм пошуку оптимального шляху в 2D просторі.
+          </p>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+            <div><strong class="text-slate-800">База:</strong> Драйвер L298N, 2x TT Motor, сонар HC-SR04, серво SG90, 2x 18650.</div>
+            <div><strong class="text-slate-800">Концепції:</strong> Н-міст, ШІМ швидкості, зворотна ЕРС, автономна навігація.</div>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <a href="project-08-autonomous-robot.html" class="w-full py-3 px-4 bg-rose-500 hover:bg-rose-400 text-white font-bold rounded-xl text-center text-xs shadow-md transition flex items-center justify-center gap-1.5">
+            <span>Відкрити повний проєкт #08</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Проєкт 9: Розумний дім IoT -->
+      <article class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 flex flex-col justify-between hover:shadow-xl hover:border-purple-300 transition-all duration-300">
+        <div class="space-y-4">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <span class="px-2.5 py-0.5 rounded-md text-xs font-bold font-mono bg-purple-100 text-purple-800">ПРОЄКТ #09</span>
+            <span class="text-xs text-slate-500 font-mono">45 хв • 4/5</span>
+          </div>
+
+          <div class="h-44 bg-slate-900 rounded-2xl p-3 flex items-center justify-center overflow-hidden border border-slate-800">
+            <img src="assets/images/tinkercad-button-circuit.png" alt="Розумний дім реле" class="max-h-full object-contain hover:scale-105 transition">
+          </div>
+
+          <h2 class="text-xl font-bold text-slate-900 font-heading">
+            Розумний дім IoT: веб-сервер керування 4x реле 220V
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Вбудований локальний HTTP веб-сервер, гальванічна оптоізоляція PC817, комутація побутових навантажень 220В та мобільна панель керування.
+          </p>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+            <div><strong class="text-slate-800">База:</strong> 4-канальний блок реле SRD-05VDC, оптопара PC817, ESP8266/UNO.</div>
+            <div><strong class="text-slate-800">Концепції:</strong> HTTP REST API, Active LOW тригер, електробезпека 220V.</div>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <a href="project-09-iot-smart-home.html" class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-center text-xs shadow-md transition flex items-center justify-center gap-1.5">
+            <span>Відкрити повний проєкт #09</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Проєкт 10: FreeRTOS -->
+      <article class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 flex flex-col justify-between hover:shadow-xl hover:border-rose-300 transition-all duration-300">
+        <div class="space-y-4">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <span class="px-2.5 py-0.5 rounded-md text-xs font-bold font-mono bg-rose-100 text-rose-800">ПРОЄКТ #10</span>
+            <span class="text-xs text-slate-500 font-mono">60 хв • 5/5</span>
+          </div>
+
+          <div class="h-44 bg-slate-900 rounded-2xl p-3 flex items-center justify-center overflow-hidden border border-slate-800">
+            <img src="assets/images/tinkercad-interrupts-rtos.png" alt="FreeRTOS ядро" class="max-h-full object-contain hover:scale-105 transition">
+          </div>
+
+          <h2 class="text-xl font-bold text-slate-900 font-heading">
+            Багатозадачна система реального часу FreeRTOS
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Промислове ядро Hard Real-Time: витісняючий шедулер завдань 1000 Гц, апаратні переривання ISR, захист шин м'ютексами та контроль стеку.
+          </p>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+            <div><strong class="text-slate-800">База:</strong> Arduino UNO (ATmega328P), кнопка переривання D2 (INT0), 3 LED.</div>
+            <div><strong class="text-slate-800">Бібліотеки:</strong> <code class="font-mono text-sky-700">&lt;Arduino_FreeRTOS.h&gt;</code>, <code class="font-mono text-sky-700">&lt;semphr.h&gt;</code>.</div>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <a href="project-10-freertos-multitask.html" class="w-full py-3 px-4 bg-rose-500 hover:bg-rose-400 text-white font-bold rounded-xl text-center text-xs shadow-md transition flex items-center justify-center gap-1.5">
+            <span>Відкрити повний проєкт #10</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+
+      </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-800 py-8 text-xs text-slate-400 text-center mt-12">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p>SimpleArduino — Відкрита платформа практичного вивчення мікроконтролерів.</p>
+      <p class="font-mono text-slate-600">Всі схеми та кодові бази ліцензовано на умовах MIT / Open Source.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

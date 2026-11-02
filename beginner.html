@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Початковий рівень (Beginner) — 4 практичні схеми | SimpleArduino</title>
+  <meta name="description" content="Базовий навчальний модуль з мікроконтролерів Arduino: плата UNO R3, макетка Breadboard, світлодіодний маяк Blink, тактова кнопка, світлофор та ШІМ-димер.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            arduino: { teal: '#008184', orange: '#E47128', navy: '#005C5F', cyan: '#00979D' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            heading: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/custom-styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sky-400 selection:text-slate-900 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <a class="flex items-center gap-2 group" href="index.html" aria-label="SimpleArduino — на головну">
+        <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto object-contain transition-transform group-hover:scale-105">
+      </a>
+
+      <!-- Десктопна навігація -->
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-slate-300">
+        <a href="index.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Головна</a>
+        <a href="beginner.html" class="px-3 py-2 text-sky-400 font-bold bg-slate-800/90 rounded-lg border border-sky-400/20">Початковий рівень</a>
+        <a href="intermediate.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Середній</a>
+        <a href="advanced.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Просунутий</a>
+        <a href="learning-ladder.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Шлях навчання</a>
+        <a href="about.html" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/80 transition">Про проєкт &amp; Методологія</a>
+      </nav>
+
+      <!-- Швидка дія -->
+      <div class="hidden md:flex items-center gap-3">
+        <a href="learning-ladder.html" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs shadow-md transition">
+          Шлях навчання (10 проєктів) →
+        </a>
+      </div>
+
+      <!-- Мобільна кнопка -->
+      <button id="mobile-menu-btn" type="button" class="md:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню">
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+
+    <!-- Мобільне меню -->
+    <div id="mobile-menu" class="mobile-nav-link hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 animate-fadeIn">
+      <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Головна сторінка</a>
+      <a href="beginner.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-bold text-sky-400 bg-slate-800">Початковий рівень (4 проєкти)</a>
+      <a href="intermediate.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Середній рівень (3 проєкти)</a>
+      <a href="advanced.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Просунутий рівень (3 проєкти)</a>
+      <a href="learning-ladder.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Шлях навчання (10 проєктів)</a>
+      <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Про проєкт &amp; Методологія</a>
+    </div>
+  </header>
+
+  <!-- Breadcrumbs -->
+  <nav class="bg-slate-100 border-b border-slate-200/80 py-2.5 px-4 sm:px-8 text-xs text-slate-500 font-mono">
+    <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto whitespace-nowrap">
+      <a href="index.html" class="hover:text-sky-600 transition">Головна</a>
+      <span>/</span>
+      <span class="text-slate-800 font-semibold">Початковий рівень (Beginner)</span>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-b from-slate-900 to-slate-800 text-white py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto space-y-4 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+        <span>● БАЗОВА СКЛАДНІСТЬ</span>
+        <span>• 4 ПРАКТИЧНІ ПРОЄКТИ</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold font-heading tracking-tight">
+        Модуль: Початковий рівень (Beginner)
+      </h1>
+      <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed text-center">
+        Фундаментальні основи цифрової електроніки без пайки: макетна плата Breadboard, розрахунок струмообмежувальних резисторів за законом Ома, цифровий ввід тактових кнопок з апаратним/програмним антибрязкотом, скінченні автомати станів та плавне ШІМ-регулювання.
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Catalog Grid -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12 w-full">
+    <section id="catalog-section" aria-label="Каталог проєктів" class="w-full space-y-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Проєкт #01: Smart Blink -->
+      <article class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 flex flex-col justify-between hover:shadow-xl hover:border-sky-300 transition-all duration-300 group text-center items-center">
+        <div class="space-y-4">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <span class="px-2.5 py-0.5 rounded-md text-xs font-bold font-mono bg-sky-100 text-sky-800">ПРОЄКТ #01</span>
+            <span class="text-xs text-slate-500 font-mono">15 хв • 1/5</span>
+          </div>
+
+          <div class="h-44 bg-slate-900 rounded-2xl p-3 flex items-center justify-center overflow-hidden border border-slate-800">
+            <img src="assets/images/tinkercad-blink-screenshot.png" alt="Світлодіодний маяк Blink" class="max-h-full object-contain group-hover:scale-105 transition duration-300">
+          </div>
+
+          <h2 class="text-lg font-bold text-slate-900 font-heading leading-snug">
+            Розумний світлодіодний маяк (Smart Blink)
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Перший крок у світ Arduino: закон Ома, розрахунок резистора 220 Ом, полярність світлодіода та генерація цифрових сигналів на піні D13.
+          </p>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+            <div><strong class="text-slate-800">База:</strong> UNO R3, світлодіод 5мм, резистор 220 Ом, Breadboard.</div>
+            <div><strong class="text-slate-800">Код:</strong> <code class="font-mono text-sky-700">pinMode()</code>, <code class="font-mono text-sky-700">digitalWrite()</code>.</div>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <a href="project-01-blink.html" class="w-full py-3 px-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-center text-xs shadow-md transition flex items-center justify-center gap-1.5">
+            <span>Відкрити повний проєкт #01</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Проєкт #02: Tactile Button -->
+      <article class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 flex flex-col justify-between hover:shadow-xl hover:border-sky-300 transition-all duration-300 group text-center items-center">
+        <div class="space-y-4">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <span class="px-2.5 py-0.5 rounded-md text-xs font-bold font-mono bg-sky-100 text-sky-800">ПРОЄКТ #02</span>
+            <span class="text-xs text-slate-500 font-mono">20 хв • 2/5</span>
+          </div>
+
+          <div class="h-44 bg-slate-900 rounded-2xl p-3 flex items-center justify-center overflow-hidden border border-slate-800">
+            <img src="assets/images/tinkercad-button-circuit.png" alt="Тактова кнопка з антибрязкотом" class="max-h-full object-contain group-hover:scale-105 transition duration-300">
+          </div>
+
+          <h2 class="text-lg font-bold text-slate-900 font-heading leading-snug">
+            Тактова кнопка та антибрязкіт контактів
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Фізика висячого піна (Floating Pin), внутрішній резистор INPUT_PULLUP, діагональне з'єднання та неблокуючий Debounce на millis().
+          </p>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+            <div><strong class="text-slate-800">База:</strong> Кнопка 12х12мм, світлодіод, резистор 220 Ом.</div>
+            <div><strong class="text-slate-800">Код:</strong> <code class="font-mono text-sky-700">INPUT_PULLUP</code>, <code class="font-mono text-sky-700">millis()</code>.</div>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <a href="project-02-button.html" class="w-full py-3 px-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-center text-xs shadow-md transition flex items-center justify-center gap-1.5">
+            <span>Відкрити повний проєкт #02</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Проєкт #03: Traffic Light -->
+      <article class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 flex flex-col justify-between hover:shadow-xl hover:border-sky-300 transition-all duration-300 group text-center items-center">
+        <div class="space-y-4">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <span class="px-2.5 py-0.5 rounded-md text-xs font-bold font-mono bg-sky-100 text-sky-800">ПРОЄКТ #03</span>
+            <span class="text-xs text-slate-500 font-mono">25 хв • 2/5</span>
+          </div>
+
+          <div class="h-44 bg-slate-900 rounded-2xl p-3 flex items-center justify-center overflow-hidden border border-slate-800">
+            <img src="assets/images/tinkercad-traffic-light.png" alt="Світлофор з кнопкою виклику" class="max-h-full object-contain group-hover:scale-105 transition duration-300">
+          </div>
+
+          <h2 class="text-lg font-bold text-slate-900 font-heading leading-snug">
+            Розумний пішохідний світлофор (Traffic Light)
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Архітектура скінченного автомата станів (FSM): 4 безпечні фази руху авто та пішоходів, неблокуюча черга виклику без delay().
+          </p>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+            <div><strong class="text-slate-800">База:</strong> 3 світлодіоди (R/Y/G), кнопка, 3x 220 Ом.</div>
+            <div><strong class="text-slate-800">Код:</strong> <code class="font-mono text-sky-700">enum State</code>, <code class="font-mono text-sky-700">switch-case</code>.</div>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <a href="project-03-traffic-light.html" class="w-full py-3 px-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-center text-xs shadow-md transition flex items-center justify-center gap-1.5">
+            <span>Відкрити повний проєкт #03</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Проєкт #04: Potentiometer PWM -->
+      <article class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 flex flex-col justify-between hover:shadow-xl hover:border-sky-300 transition-all duration-300 group text-center items-center">
+        <div class="space-y-4">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <span class="px-2.5 py-0.5 rounded-md text-xs font-bold font-mono bg-sky-100 text-sky-800">ПРОЄКТ #04</span>
+            <span class="text-xs text-slate-500 font-mono">25 хв • 2/5</span>
+          </div>
+
+          <div class="h-44 bg-slate-900 rounded-2xl p-3 flex items-center justify-center overflow-hidden border border-slate-800">
+            <img src="assets/images/tinkercad-potentiometer.png" alt="Потенціометр та ШІМ" class="max-h-full object-contain group-hover:scale-105 transition duration-300">
+          </div>
+
+          <h2 class="text-lg font-bold text-slate-900 font-heading leading-snug">
+            Аналоговий потенціометр та ШІМ-димер
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            10-бітний вхід АЦП (0..1023), математичне перетворення діапазонів та апаратний 8-бітний ШІМ-сигнал (0..255) на таймерному піні D9.
+          </p>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+            <div><strong class="text-slate-800">База:</strong> Потенціометр 10 кОм (B10K), LED, 220 Ом.</div>
+            <div><strong class="text-slate-800">Код:</strong> <code class="font-mono text-sky-700">analogRead()</code>, <code class="font-mono text-sky-700">analogWrite()</code>.</div>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <a href="project-04-potentiometer.html" class="w-full py-3 px-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-center text-xs shadow-md transition flex items-center justify-center gap-1.5">
+            <span>Відкрити повний проєкт #04</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Інженерні орієнтири модуля -->
+    <div class="bg-gradient-to-r from-sky-900 to-slate-900 rounded-3xl p-8 sm:p-10 text-white border border-slate-800 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-2 max-w-2xl">
+        <div class="text-xs font-mono font-bold text-sky-400 uppercase tracking-wider">Наступний рівень складності</div>
+        <h3 class="text-2xl font-extrabold font-heading">
+          Опанували цифрові сигнали та закон Ома?
+        </h3>
+        <p class="text-slate-300 text-sm leading-relaxed">
+          Переходьте до Середнього рівня: акустичні сонари HC-SR04, двопровідна шина I2C з дисплеями LCD 1602 та сервоприводи сонячного стеження SG90.
+        </p>
+      </div>
+      <a href="intermediate.html" class="px-6 py-3.5 rounded-2xl bg-sky-400 hover:bg-sky-300 active:scale-95 text-slate-950 font-bold text-sm shadow-lg shadow-sky-400/25 transition whitespace-nowrap">
+        Перейти до Середнього рівня →
+      </a>
+    </div>
+
+      </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-800 py-8 text-xs text-slate-400 text-center mt-12">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p>SimpleArduino — Відкрита платформа практичного вивчення мікроконтролерів.</p>
+      <p class="font-mono text-slate-600">Всі схеми та кодові бази ліцензовано на умовах MIT / Open Source.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

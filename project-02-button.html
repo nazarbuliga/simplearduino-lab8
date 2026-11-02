@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проєкт #02: Тактова кнопка з антибрязкотом (Pushbutton) — SimpleArduino</title>
+  <meta name="description" content="Повний практичний гайд із підключення тактової кнопки до Arduino: внутрішній підтягувальний резистор INPUT_PULLUP, програмний антибрязкіт, інтерактивний симулятор, схеми Fritzing та Tinkercad.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Проєкт #02: Тактова кнопка з антибрязкотом — SimpleArduino">
+  <meta property="og:description" content="Підключення цифрового входу кнопки без зовнішніх резисторів за допомогою INPUT_PULLUP, усунення брязкоту та керування світлодіодом.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="assets/images/fritzing-button-circuit.svg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              900: '#0f172a',
+              950: '#020617'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            heading: ['Raleway', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom-styles.css">
+  <link rel="icon" href="assets/icons/logo-mark.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sky-400 selection:text-slate-900 min-h-screen flex flex-col">
+
+  <!-- ================= ГОЛОВНИЙ ХЕДЕР ================= -->
+  <header class="sticky top-0 z-40 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white transition-all shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Логотип -->
+      <a class="flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-sky-400 rounded-lg p-1" href="index.html" aria-label="SimpleArduino — на головну">
+        <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto object-contain transition-transform group-hover:scale-105" fetchpriority="high">
+      </a>
+
+      <!-- Центральна навігація -->
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2" aria-label="Головна навігація">
+        <a href="index.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Головна</a>
+        <a href="beginner.html" class="px-3 py-2 text-sm font-bold text-sky-400 bg-slate-800/90 rounded-lg transition-colors border border-sky-400/20">Початковий рівень</a>
+        <a href="learning-ladder.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Шлях навчання</a>
+        <a href="index.html#about" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Про платформу</a>
+        <a href="index.html#faq" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Часті помилки</a>
+      </nav>
+
+      <!-- Швидкі кнопки переходу -->
+      <div class="hidden lg:flex items-center gap-2">
+        <a href="project-01-blink.html" class="px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-white transition">← Проєкт #01</a>
+        <a href="beginner.html" class="px-4 py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl border border-slate-700 transition flex items-center gap-1.5">
+          <span>Всі проєкти</span>
+        </a>
+      </div>
+
+      <!-- Мобільна кнопка меню -->
+      <button id="mobile-menu-btn" type="button" class="md:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню">
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+    </div>
+
+    <!-- Мобільне меню -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 animate-fadeIn">
+      <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Головна</a>
+      <a href="beginner.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-bold text-sky-400 bg-slate-800">Початковий рівень (Каталог)</a>
+      <a href="project-01-blink.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800">← Проєкт #01: Smart Blink</a>
+      <a href="project-02-button.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-bold text-sky-400 bg-slate-800/80">● Проєкт #02: Тактова кнопка</a>
+      <a href="learning-ladder.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Шлях навчання (9 кроків)</a>
+      <a href="index.html#about" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Про нас</a>
+    </div>
+  </header>
+
+  <!-- Спливаюче сповіщення (Toast) -->
+  <div id="toast-notify" class="fixed bottom-6 right-6 z-50 hidden max-w-md bg-slate-900 border border-sky-400/80 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 animate-fadeIn">
+    <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center flex-shrink-0">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    </div>
+    <div id="toast-text" class="text-xs sm:text-sm font-medium text-slate-200">Код скопійовано!</div>
+  </div>
+
+  <main id="main" class="flex-grow focus:outline-none">
+
+    <!-- ================= HERO СЕКЦІЯ ПРОЄКТУ ================= -->
+    <section class="relative bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white py-12 md:py-16 overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-xs text-slate-400 mb-6 font-mono" aria-label="Хлібні крихти">
+          <a href="index.html" class="hover:text-sky-400 transition-colors">Головна</a>
+          <span>/</span>
+          <a href="beginner.html" class="hover:text-sky-400 transition-colors">Початковий рівень</a>
+          <span>/</span>
+          <span class="text-sky-400 font-bold">Проєкт #02: Тактова кнопка</span>
+        </nav>
+
+        <div class="space-y-4 max-w-4xl">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30">ПРОЄКТ #02</span>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">⏱ Час збірки: 15 хв</span>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Складність: 2/5</span>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30">Цифровий вхід (INPUT_PULLUP)</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black font-heading tracking-tight text-white">
+            Тактова кнопка з антибрязкотом <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-300">(Pushbutton Controller)</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+            Перехід від простого виведення світла до справжньої інтерактивності. Дізнайтеся, як мікроконтролер фіксує дію людини, чому вхід без підтяжки перетворюється на «радіоантену» з випадковим шумом, як внутрішній резистор <code class="bg-slate-800 px-2 py-0.5 rounded text-sky-400 font-mono text-sm">INPUT_PULLUP</code> спрощує схему та як за 50 мс приборкати фізичний брязкіт контактів.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= STICKY ПАНЕЛЬ ШВИДКОЇ НАВІГАЦІЇ ================= -->
+    <div class="sticky top-20 z-30 bg-slate-900/90 backdrop-blur-md border-y border-slate-800 py-2.5 px-4 shadow-sm">
+      <div class="max-w-6xl mx-auto flex items-center justify-center gap-2 overflow-x-auto text-xs font-semibold text-slate-300 scrollbar-none">
+        <a href="#schematics" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">📸 Схеми кнопки</a>
+        <a href="#simulator" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">⚡ Web-симулятор</a>
+        <a href="#bom" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">📦 Деталі та інфографіка</a>
+        <a href="#assembly" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">🛠 Покрокова збірка</a>
+        <a href="#wiring-map" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">🗺 Карта пінів</a>
+        <a href="#code" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">💻 Скетч C++</a>
+        <a href="#troubleshooting" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">🚑 Помилки</a>
+        <a href="#quiz" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">🎯 Тест</a>
+      </div>
+    </div>
+
+    <!-- ================= ОСНОВНИЙ КОНТЕНТ ПРОЄКТУ ================= -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+      <!-- ================= ВСТУП ================= -->
+      <section class="bg-gradient-to-r from-emerald-50 via-sky-50/40 to-slate-50 border border-emerald-100 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-600 flex items-center justify-center font-bold text-xl">
+            🔘
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold font-heading text-slate-900">
+            Навіщо кнопці потрібен внутрішній резистор підтяжки?
+          </h2>
+        </div>
+        <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+          Коли ви підключаєте вихідний пристрій (як світлодіод у Проєкті #01), мікроконтролер сам генерує чіткі 5V або 0V. Але коли контакт налаштовано як <strong>вхід (INPUT)</strong>, виникає фізична пастка: якщо кнопка не натиснута, провід буквально висить у повітрі (стан <em>Floating Pin</em>). При вхідному опорі у гігаоми цей контакт діє як антена — ловить статичні електромагнітні наведення з кімнати, а плата хаотично фіксує хибні спрацьовування!
+        </p>
+        <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+          Замість того, щоб паяти на макетку зайвий зовнішній резистор на 10 кОм, ми використаємо вбудовану апаратну можливість чіпа ATmega328P: режим <strong><code class="text-emerald-700 font-mono font-bold bg-white px-2 py-0.5 rounded border border-emerald-200">INPUT_PULLUP</code></strong>. Мікроконтролер сам підключає внутрішній опір ~30 кОм до шини +5V. Контакт надійно «підтягнутий» до логічної одиниці (HIGH), а при натисканні кнопки замикається на землю GND і дає чіткий нуль (LOW).
+        </p>
+      </section>
+
+      <!-- ================= 1. СХЕМИ ПІДКЛЮЧЕННЯ ================= -->
+      <section id="schematics" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-6 scroll-mt-36">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase mb-1">
+              <span>● ЕТАП 1</span>
+              <span>• НАОЧНА СХЕМОТЕХНІКА</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+              Схеми монтажу тактової кнопки та світлодіода
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Офіційний Fritzing-стандарт, віртуальне моделювання в Tinkercad та реальне фото обладнання
+            </p>
+          </div>
+
+          <div class="flex items-center justify-center gap-2">
+            <a href="https://www.tinkercad.com/circuits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-sky-500 hover:text-slate-950 text-white rounded-xl text-xs font-bold transition shadow-sm">
+              <span>Зібрати в Tinkercad</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Таби перемикання схем -->
+        <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+          <button type="button" id="tab-btn-fritzing" class="flex-1 min-w-[140px] py-2 px-3 rounded-xl text-xs font-bold bg-white text-slate-900 shadow-sm border border-slate-200/80 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>📐</span>
+            <span>1. Fritzing Breadboard (Вектор)</span>
+          </button>
+          <button type="button" id="tab-btn-tinkercad" class="flex-1 min-w-[140px] py-2 px-3 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>💻</span>
+            <span>2. Модель Tinkercad</span>
+          </button>
+          <button type="button" id="tab-btn-photo" class="flex-1 min-w-[140px] py-2 px-3 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>📷</span>
+            <span>3. Фото реального заліза</span>
+          </button>
+        </div>
+
+        <!-- Контейнери схем -->
+        <div class="relative rounded-2xl border border-slate-700/80 bg-slate-950 p-2 sm:p-4 shadow-2xl overflow-hidden min-h-[350px] flex items-center justify-center">
+          
+          <!-- Зображення 1: Офіційний Fritzing вектор -->
+          <div id="view-fritzing" class="w-full flex flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+              <span class="text-emerald-400 font-bold">● ВЕКТОРНА СХЕМА FRITZING: ARDUINO UNO + КНОПКА + LED</span>
+              <span class="text-slate-500 hidden sm:inline">Клікніть для збільшення (Lightbox)</span>
+            </div>
+            <div class="w-full bg-white rounded-xl p-4 flex items-center justify-center">
+              <img src="assets/images/fritzing-button-circuit.svg" alt="Офіційна схема підключення тактової кнопки до Arduino у Fritzing" class="w-full h-auto max-h-[520px] object-contain cursor-zoom-in hover:scale-[1.01] transition" onclick="openLightbox(this.src, 'Офіційна схема Fritzing: Тактова кнопка та LED на Arduino')">
+            </div>
+            <p class="text-xs text-slate-400 mt-3 text-center">
+              Стандартна макетна схема: кнопка перемикає цифровий вхід D2 на GND, світлодіод підключено через струмообмежувальний резистор 220 Ом.
+            </p>
+          </div>
+
+          <!-- Зображення 2: Tinkercad модель -->
+          <div id="view-tinkercad" class="w-full hidden flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+              <span class="text-sky-400 font-bold">● СХЕМА В AUTODESK TINKERCAD CIRCUITS</span>
+              <span class="text-slate-500 hidden sm:inline">Віртуальний симулятор</span>
+            </div>
+            <img src="assets/images/tinkercad-button-circuit.png" alt="Схема підключення кнопки в Tinkercad Circuits" class="w-full h-auto max-h-[500px] object-contain rounded-xl shadow-lg border border-slate-800 cursor-zoom-in hover:brightness-105 transition" onclick="openLightbox(this.src, 'Схема тактової кнопки в Autodesk Tinkercad Circuits')">
+            <p class="text-xs text-slate-400 mt-3 text-center">
+              Комутація кнопки через центральну канавку макетної плати (Row divider) для надійного розділення незалежних пар виводів.
+            </p>
+          </div>
+
+          <!-- Зображення 3: Реальне фото -->
+          <div id="view-photo" class="w-full hidden flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+              <span class="text-amber-400 font-bold">● ФІЗИЧНА ЗБІРКА З ТАКТОВОЮ КНОПКОЮ</span>
+              <span class="text-slate-500 hidden sm:inline">Реальне обладнання в дії</span>
+            </div>
+            <img src="assets/images/arduino-button-real-hardware.jpg" alt="Реальна фотографія плати Arduino та підключеної тактової кнопки" class="w-full h-auto max-h-[520px] object-contain rounded-xl shadow-lg border border-slate-800 cursor-zoom-in hover:brightness-105 transition" onclick="openLightbox(this.src, 'Фізичне складання схеми з реальною кнопкою')">
+            <p class="text-xs text-slate-400 mt-3 text-center">
+              Живий стенд: тактова кнопка міцно зафіксована у гніздах макетної плати, дроти-джампери ведуть до піна 2 та шини GND.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 2. ЖИВИЙ ІНТЕРАКТИВНИЙ СИМУЛЯТОР КНОПКИ ================= -->
+      <section id="simulator" class="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 text-white space-y-6 shadow-xl relative overflow-hidden scroll-mt-36">
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-400/20 mb-1">
+              LIVE INTERACTIVE BUTTON SIMULATOR
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
+              Інтерактивний симулятор тактової кнопки
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Натискайте віртуальну кнопку та спостерігайте за логікою сигналів у реальному часі
+            </p>
+          </div>
+
+          <!-- Вибір режиму симулятора -->
+          <div class="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-mono">
+            <button type="button" id="sim-mode-toggle" class="py-1 px-2.5 rounded-lg font-bold bg-emerald-500 text-slate-950 transition cursor-pointer">
+              Режим: Тумблер (Toggle)
+            </button>
+            <button type="button" id="sim-mode-momentary" class="py-1 px-2.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+              Моментний
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          
+          <!-- Зона інтерактивної тактової кнопки -->
+          <div class="md:col-span-6 flex flex-col items-center justify-center p-6 bg-slate-900/80 rounded-2xl border border-slate-800 text-center space-y-4">
+            
+            <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">
+              Фізична тактова кнопка (Клікніть / Утримуйте):
+            </div>
+
+            <!-- 3D модель тактової кнопки -->
+            <button type="button" id="interactive-button" class="relative group w-32 h-32 rounded-3xl bg-gradient-to-b from-slate-700 to-slate-800 border-4 border-slate-600 p-3 shadow-2xl active:scale-95 transition-all duration-75 cursor-pointer focus:outline-none focus:ring-4 focus:ring-emerald-400/40 select-none">
+              <!-- Металевий корпус -->
+              <div class="w-full h-full rounded-2xl bg-slate-800 border-2 border-slate-600 flex items-center justify-center shadow-inner relative overflow-hidden">
+                <!-- Кругла гумова кнопка -->
+                <div id="button-cap" class="w-16 h-16 rounded-full bg-slate-900 border-2 border-slate-700 flex items-center justify-center text-slate-400 group-active:bg-emerald-600 group-active:text-white group-active:shadow-[0_0_20px_#10b981] transition-all">
+                  <span class="text-2xl font-bold">🔘</span>
+                </div>
+              </div>
+              <!-- 4 ніжки кнопки по кутах -->
+              <div class="absolute -top-1 left-3 w-3 h-1.5 bg-slate-400 rounded-xs"></div>
+              <div class="absolute -top-1 right-3 w-3 h-1.5 bg-slate-400 rounded-xs"></div>
+              <div class="absolute -bottom-1 left-3 w-3 h-1.5 bg-slate-400 rounded-xs"></div>
+              <div class="absolute -bottom-1 right-3 w-3 h-1.5 bg-slate-400 rounded-xs"></div>
+            </button>
+
+            <!-- Стан входу кнопки -->
+            <div class="space-y-1">
+              <div class="text-xs font-mono text-slate-400">Стан цифрового входу (Пін D2):</div>
+              <div id="sim-btn-pin-state" class="text-sm sm:text-base font-bold font-mono text-sky-400">
+                HIGH (+5V — Відпущено)
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Зона світлодіода-індикатора -->
+          <div class="md:col-span-6 flex flex-col items-center justify-center p-6 bg-slate-900/80 rounded-2xl border border-slate-800 text-center space-y-4">
+            
+            <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">
+              Керований світлодіод (Пін D12):
+            </div>
+
+            <!-- LED лінза -->
+            <div class="relative w-28 h-28 flex items-center justify-center">
+              <div id="sim-btn-led-glow" class="absolute inset-0 rounded-full bg-emerald-400/0 blur-2xl transition-all duration-150"></div>
+              <div id="sim-btn-led-body" class="relative w-20 h-20 rounded-full bg-slate-800 border-4 border-slate-700 flex items-center justify-center transition-all duration-150 shadow-inner">
+                <div id="sim-btn-led-core" class="w-10 h-10 rounded-full bg-slate-700/60 transition-all duration-150"></div>
+              </div>
+            </div>
+
+            <!-- Стан виходу LED -->
+            <div class="space-y-1">
+              <div class="text-xs font-mono text-slate-400">Стан виходу світлодіода (Пін D12):</div>
+              <div id="sim-btn-led-state" class="text-sm sm:text-base font-bold font-mono text-slate-500">
+                LOW (0V — Світлодіод ВИМКНЕНО)
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="p-3.5 bg-slate-900/60 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-center justify-center gap-2 text-center.5">
+          <span class="text-emerald-400 text-lg leading-none">💡</span>
+          <div>
+            <strong>Як це працює:</strong> У <em>режимі тумблера</em> кожне натискання на кнопку змінює логічну змінну <code class="text-emerald-300 font-mono">ledState = !ledState</code> на протилежну. Програмний антибрязкіт ігнорує будь-які коливання контактів коротші за 50 мілісекунд, забезпечуючи чітке й комфортне вмикання!
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= 3. ДЕТАЛІ ТА НАВЧАЛЬНІ ІНФОГРАФІКИ ================= -->
+      <section id="bom" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-8 scroll-mt-36">
+        
+        <div class="border-b border-slate-100 pb-5">
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase mb-1">
+            <span>● ЕТАП 2</span>
+            <span>• НЕОБХІДНІ ДЕТАЛІ ТА ФІЗИКА</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+            Чекліст комплектуючих та інженерна анатомія
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500">
+            Все, що необхідно мати на столі для успішної збірки Проєкту #02
+          </p>
+        </div>
+
+        <!-- Сітка компонентів -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold text-lg">⚡</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Arduino UNO R3</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • Входи D2, D12, GND</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Зчитує логічний рівень на цифровому піні D2 та керує світлодіодом через вихід D12.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold text-lg">🔘</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Тактова кнопка (6×6 мм)</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • 4 ніжки, нормально відкрита</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Замикає електричний контакт при фізичному натисканні кнопки та відпускає при знятті зусилля.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-lg">💡</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Світлодіод 5 мм (LED)</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • Індикаторний вихід</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Візуалізує стан перемикача: Анод (+) до піна D12 через резистор, Катод (-) до GND.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold text-lg">Ω</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Резистор 220 Ом</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • Для світлодіода (🔴🔴🟤🟡)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Обмежує струм світлодіода. Зверніть увагу: <strong>для кнопки зовнішній резистор не потрібен</strong> завдяки INPUT_PULLUP!
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-slate-200/60 text-slate-700 flex items-center justify-center font-bold text-lg">▦</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Макетна плата (Small)</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • З центральною канавкою</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Центральна канавка шириною 7.62 мм розділяє виводи кнопки, запобігаючи паразитному короткому замиканню.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-600 flex items-center justify-center font-bold text-lg">〰</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">З'єднувальні дроти</h3>
+                <span class="text-xs text-slate-500 font-mono">3 шт. • Жовтий, Зелений, Чорний</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Жовтий дріт — сигнал кнопки D2; Зелений — сигнал світлодіода D12; Чорний — спільна шина заземлення GND.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Дві інфографіки: Внутрішня будова кнопки + Фізика INPUT_PULLUP -->
+        <div class="space-y-6 pt-2">
+          
+          <!-- Інфографіка 1: Розпіновка 4-пінової тактової кнопки -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+              <div>
+                <h4 class="font-bold text-slate-900 text-sm sm:text-base">1. Секрет внутрішньої комутації 4-пінової кнопки</h4>
+                <p class="text-xs text-slate-500">Чому 4 контакти, але тільки 2 виводи?</p>
+              </div>
+              <span class="text-xs font-mono font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-lg self-start sm:self-auto">
+                Підключення по діагоналі
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div class="md:col-span-7">
+                <img src="assets/images/button-internal-wiring.svg" alt="Внутрішня будова тактової кнопки: контакти 1-3 та 2-4 замкнені постійно" class="w-full h-auto rounded-xl border border-slate-200 shadow-sm" loading="lazy">
+              </div>
+              <div class="md:col-span-5 space-y-2.5 text-xs text-slate-600 leading-relaxed">
+                <p>
+                  Поширена помилка початківця — вважати, що 4 ніжки кнопки незалежні. Насправді ніжки <strong>1 і 3</strong> з'єднані між собою металевою перемичкою всередині завжди, так само як <strong>2 і 4</strong>!
+                </p>
+                <div class="p-3 bg-white rounded-xl border border-slate-200 font-medium text-slate-800">
+                  ⚡ <strong>Золоте правило монтажу:</strong> Завжди розташовуйте кнопку через центральну канавку макетки та підключайте джампери <em>по діагоналі</em> (наприклад, контакт 1 і контакт 4). Так ви гарантовано не замкнете схему накоротко!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Інфографіка 2: Фізика підтягувального резистора INPUT_PULLUP -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+              <div>
+                <h4 class="font-bold text-slate-900 text-sm sm:text-base">2. Фізика режиму INPUT_PULLUP: захист від наведень</h4>
+                <p class="text-xs text-slate-500">Чому при відпущеній кнопці значення HIGH, а при натиснутій — LOW?</p>
+              </div>
+              <span class="text-xs font-mono font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg self-start sm:self-auto">
+                Внутрішній опір 30 кОм
+              </span>
+            </div>
+
+            <div class="w-full">
+              <img src="assets/images/pullup-resistor-concept.svg" alt="Фізика підтягувального резистора INPUT_PULLUP: стан спокою HIGH та стан натискання LOW" class="w-full h-auto rounded-xl border border-slate-200 shadow-sm" loading="lazy">
+            </div>
+            
+            <p class="text-xs text-slate-600 leading-relaxed">
+              У режимі <strong>INPUT_PULLUP</strong> струм спокою дорівнює мізерним <i>I</i> = 5 В / 30 000 Ом ≈ 0.16 мА. Це повністю захищає плату від короткого замикання при натисканні на кнопку та усуває необхідність у додаткових резисторах на макетній платі.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 4. ПОКРОКОВИЙ МОНТАЖ ================= -->
+      <section id="assembly" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-8 scroll-mt-36">
+        
+        <div class="border-b border-slate-100 pb-5">
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase mb-1">
+            <span>● ЕТАП 3</span>
+            <span>• ПОКРОКОВЕ СКЛАДАННЯ</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+            Покроковий монтаж схеми без помилок
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500">
+            Дотримуйтесь правильного розташування кнопки через роздільну канавку
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Варіант Tinkercad -->
+          <div class="border border-slate-200 rounded-2xl p-5 space-y-4 bg-slate-50/50">
+            <div class="flex items-center gap-2 font-bold text-slate-900 text-sm border-b border-slate-200 pb-2">
+              <span class="p-1 rounded bg-sky-100 text-sky-700">💻</span>
+              <span>Варіант А: Складання в Autodesk Tinkercad</span>
+            </div>
+            <ol class="space-y-3 text-xs sm:text-sm text-slate-700 list-decimal pl-4 leading-relaxed">
+              <li>
+                <strong>Додайте деталі:</strong> Перетягніть на робоче поле <em>Arduino Uno R3</em>, <em>Breadboard Small</em>, <em>Pushbutton</em> (кнопку), <em>LED</em> та <em>Resistor</em> на 220 Ω.
+              </li>
+              <li>
+                <strong>Встановіть кнопку:</strong> Помістіть тактову кнопку точно посередині макетки, щоб вона перекривала центральну канавку (між рядками e та f).
+              </li>
+              <li>
+                <strong>Підключіть сигнальний дріт D2:</strong> Клікніть на верхній лівий контакт кнопки (Terminal 1a) та протягніть жовтий дріт до піна <strong>D2</strong> на Arduino.
+              </li>
+              <li>
+                <strong>Підключіть заземлення кнопки:</strong> Клікніть на протилежний по діагоналі нижній правий контакт кнопки (Terminal 2b) та протягніть чорний дріт до гнізда <strong>GND</strong> на Arduino.
+              </li>
+              <li>
+                <strong>Встановіть світлодіод:</strong> Анод діода через резистор 220 Ω з'єднайте з піном <strong>D12</strong>, а катод — із шиною <strong>GND</strong>.
+              </li>
+              <li>
+                <strong>Запустіть симуляцію:</strong> Вставте код нижче у вкладку «Code» (режим Text) та натисніть «Start Simulation».
+              </li>
+            </ol>
+          </div>
+
+          <!-- Варіант Фізичний -->
+          <div class="border border-slate-200 rounded-2xl p-5 space-y-4 bg-slate-50/50">
+            <div class="flex items-center gap-2 font-bold text-slate-900 text-sm border-b border-slate-200 pb-2">
+              <span class="p-1 rounded bg-emerald-100 text-emerald-700">🔌</span>
+              <span>Варіант Б: Фізична збірка на столі (реальне залізо)</span>
+            </div>
+            <ol class="space-y-3 text-xs sm:text-sm text-slate-700 list-decimal pl-4 leading-relaxed">
+              <li>
+                <strong>Знеструмте плату:</strong> Витягніть USB-кабель із комп'ютера перед монтажем компонентів.
+              </li>
+              <li>
+                <strong>Вставте кнопку:</strong> Втисніть тактову кнопку в отвори макетної плати так, щоб її ніжки перекинулися через центральну роздільну канавку (ряди 10-12). Переконайтеся, що вона сіла щільно.
+              </li>
+              <li>
+                <strong>Сигнал кнопки:</strong> Вставте жовтий дріт у рядок макетки з ніжкою 1 кнопки, а інший кінець — у гніздо <strong>D2</strong> на Arduino.
+              </li>
+              <li>
+                <strong>Земля кнопки:</strong> Вставте чорний дріт у рядок діагональної ніжки 4 кнопки, а інший кінець — у спільне гніздо <strong>GND</strong> на Arduino.
+              </li>
+              <li>
+                <strong>Світлодіод та резистор:</strong> Довгу ніжку LED (анод) з'єднайте через резистор 220 Ом із піном <strong>D12</strong>, а коротку ніжку (катод) — із <strong>GND</strong>.
+              </li>
+              <li>
+                <strong>Прошивка:</strong> Підключіть USB, виберіть плату та COM-порт в Arduino IDE і завантажте скетч!
+              </li>
+            </ol>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 5. ТАБЛИЦЯ КОМУТАЦІЇ ================= -->
+      <section id="wiring-map" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-5 scroll-mt-36">
+        
+        <div class="border-b border-slate-100 pb-4">
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase mb-1">
+            <span>● ЕТАП 4</span>
+            <span>• WIRING MAP</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+            Таблиця точної комутації пінів
+          </h2>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table class="w-full text-xs sm:text-sm text-center">
+            <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px] tracking-wider">
+              <tr>
+                <th class="p-3.5">Компонент</th>
+                <th class="p-3.5">Контакт на макетці</th>
+                <th class="p-3.5">Пін на Arduino UNO</th>
+                <th class="p-3.5">Колір дроту</th>
+                <th class="p-3.5">Фізичне призначення</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-mono text-slate-600">
+              <tr class="hover:bg-slate-50/60">
+                <td class="p-3.5 font-sans font-bold text-slate-900">Тактова кнопка</td>
+                <td class="p-3.5">Ніжка 1 (Кут A)</td>
+                <td class="p-3.5 text-sky-600 font-bold">Пін D2</td>
+                <td class="p-3.5 font-sans text-amber-500 font-bold">Жовтий</td>
+                <td class="p-3.5 font-sans text-xs">Вхід сигналу з внутрішньою підтяжкою до +5V</td>
+              </tr>
+              <tr class="hover:bg-slate-50/60">
+                <td class="p-3.5 font-sans font-bold text-slate-900">Тактова кнопка</td>
+                <td class="p-3.5">Ніжка 4 (Кут D, діагональ)</td>
+                <td class="p-3.5 text-slate-900 font-bold">Пін GND</td>
+                <td class="p-3.5 font-sans text-slate-900 font-bold">Чорний</td>
+                <td class="p-3.5 font-sans text-xs">Замикання піна D2 на нуль (0V) при натисканні</td>
+              </tr>
+              <tr class="hover:bg-slate-50/60">
+                <td class="p-3.5 font-sans font-bold text-slate-900">Світлодіод 5 мм</td>
+                <td class="p-3.5">Анод (+) через 220 Ом</td>
+                <td class="p-3.5 text-emerald-600 font-bold">Пін D12</td>
+                <td class="p-3.5 font-sans text-emerald-600 font-bold">Зелений</td>
+                <td class="p-3.5 font-sans text-xs">Індикаторний вихід стану тумблера</td>
+              </tr>
+              <tr class="hover:bg-slate-50/60">
+                <td class="p-3.5 font-sans font-bold text-slate-900">Світлодіод 5 мм</td>
+                <td class="p-3.5">Катод (-) пряме з'єднання</td>
+                <td class="p-3.5 text-slate-900 font-bold">Пін GND</td>
+                <td class="p-3.5 font-sans text-slate-900 font-bold">Чорний</td>
+                <td class="p-3.5 font-sans text-xs">Спільна шина заземлення</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- ================= 6. РОБОЧИЙ КОД C++ ТА АНАТОМІЯ ================= -->
+      <section id="code" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-6 scroll-mt-36">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase mb-1">
+              <span>● ЕТАП 5</span>
+              <span>• ПРОГРАМНИЙ КОД</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+              Робочий C++ скетч з антибрязкотом (Debounce Toggle)
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Повний код кнопки-тумблера з фільтрацією механічного брязкоту контактів
+            </p>
+          </div>
+
+          <button type="button" class="btn-copy-code px-4 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 text-xs font-bold text-white transition flex items-center gap-1.5 shadow-sm cursor-pointer self-start sm:self-auto" data-target="code-project-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            <span>Копіювати код</span>
+          </button>
+        </div>
+
+        <pre class="bg-slate-900 text-slate-200 p-5 rounded-2xl text-xs sm:text-sm font-mono overflow-x-auto border border-slate-800 leading-relaxed shadow-inner"><code id="code-project-2">// SimpleArduino — Проєкт #02: Тактова кнопка з антибрязкотом
+// Кнопка: пін D2 до GND (режим INPUT_PULLUP)
+// Світлодіод: пін D12 через резистор 220 Ом до GND
+
+const int BUTTON_PIN = 2; // Пін підключення тактової кнопки
+const int LED_PIN = 12;   // Пін підключення світлодіода
+
+bool ledState = false;              // Поточний стан світлодіода (true = світить, false = згас)
+int buttonState = HIGH;             // Підтверджений стабільний стан кнопки
+int lastButtonState = HIGH;         // Попередній миттєвий стан піна
+unsigned long lastDebounceTime = 0; // Час останнього коливання контакту
+const unsigned long debounceDelay = 50; // Поріг фільтрації брязкоту (50 мілісекунд)
+
+void setup() {
+  // Активація внутрішнього підтягувального резистора 30 кОм до +5V
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  
+  // Налаштування піна світлодіода як вихід
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW); // Початково світлодіод вимкнено
+}
+
+void loop() {
+  int reading = digitalRead(BUTTON_PIN); // Зчитуємо миттєвий сигнал піна
+
+  // Якщо стан сигналу змінився (початок натискання або вібрація) — скидаємо таймер
+  if (reading != lastButtonState) {
+    lastDebounceTime = millis();
+  }
+
+  // Якщо сигнал залишається незмінним довше 50 мс — це справжнє натискання!
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    // Якщо підтверджений стабільний стан дійсно змінився
+    if (reading != buttonState) {
+      buttonState = reading;
+
+      // Спрацьовуємо тільки при натисканні (перехід у стан LOW)
+      if (buttonState == LOW) {
+        ledState = !ledState; // Перемикаємо стан тумблера
+        digitalWrite(LED_PIN, ledState ? HIGH : LOW);
+      }
+    }
+  }
+
+  lastButtonState = reading; // Зберігаємо для порівняння на наступному кроці
+}</code></pre>
+
+        <!-- Анатомія коду на хлопський розум -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4">
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+            <span>🔍</span> Анатомія коду «на хлопський розум»:
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700 leading-relaxed">
+            
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-emerald-700 font-bold">pinMode(BUTTON_PIN, INPUT_PULLUP);</div>
+              <p>
+                Вмикає вхідний пін і автоматично з'єднує його з внутрішнім резистором 30 кОм до +5V. Контакт ніколи не висить у повітрі, тому шуми й наведення більше не страшні.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-emerald-700 font-bold">int reading = digitalRead(BUTTON_PIN);</div>
+              <p>
+                Запитує мікроконтролер: «Яка напруга на піні D2 прямо зараз?». Якщо кнопку відпущено — повертає <code class="font-bold text-sky-700 font-mono">HIGH</code> (5V). Якщо натиснули — повертає <code class="font-bold text-emerald-700 font-mono">LOW</code> (0V).
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-emerald-700 font-bold">Що таке «брязкіт контактів» (Bounce)?</div>
+              <p>
+                Всередині кнопки стоїть крихітна пружна металева пластинка. При ударі вона пружинить і вібрує 5–10 мілісекунд, замикаючись і розмикаючись десятки разів. Контролер фіксує це як 20 окремих натискань за мить!
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-emerald-700 font-bold">millis() - lastDebounceTime > 50</div>
+              <p>
+                Програмний фільтр: ми кажемо Arduino: <em>«Ігноруй будь-яке тремтіння. Якщо сигнал тримається стабільно 50 мс — це точно палець людини, а не вібрація металу»</em>.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= 7. TROUBLESHOOTING ================= -->
+      <section id="troubleshooting" class="bg-amber-50/70 border border-amber-200 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-36">
+        
+        <div class="flex items-center gap-3 text-amber-900 font-bold text-lg sm:text-xl border-b border-amber-200/80 pb-4">
+          <svg class="w-6 h-6 text-amber-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+          <h2>Швидка допомога: розв'язання 4 помилок із кнопкою (Troubleshooting)</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/80 space-y-2 shadow-xs">
+            <div class="flex items-center gap-2 text-rose-600 font-bold text-xs sm:text-sm">
+              <span>❌</span> Світлодіод блимає сам по собі, коли підносиш руку:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <strong>Причина:</strong> Ви випадково написали <code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-xs">pinMode(BUTTON_PIN, INPUT)</code> замість <code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-xs">INPUT_PULLUP</code>. Пін висить у повітрі та зчитує електромагнітне поле руки, як антена.
+            </p>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/80 space-y-2 shadow-xs">
+            <div class="flex items-center gap-2 text-rose-600 font-bold text-xs sm:text-sm">
+              <span>❌</span> Світлодіод горить постійно і кнопка не перемикає:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <strong>Причина:</strong> Дроти кнопки підключені до двох ніжок з одного боку, які вже з'єднані всередині кнопки. Переставте один дріт строго <em>по діагоналі</em> через центральний проріз макетної плати.
+            </p>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/80 space-y-2 shadow-xs">
+            <div class="flex items-center gap-2 text-amber-600 font-bold text-xs sm:text-sm">
+              <span>⚠️</span> При натисканні світлодіод інколи спрацьовує двічі:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <strong>Причина:</strong> Занадто малий час затримки антибрязкоту. Збільште константу <code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-xs">debounceDelay</code> у коді з 50 до 80–100 мілісекунд.
+            </p>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/80 space-y-2 shadow-xs">
+            <div class="flex items-center gap-2 text-rose-600 font-bold text-xs sm:text-sm">
+              <span>🔌</span> Кнопка працює, але світлодіод взагалі не світить:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <strong>Причина:</strong> Перевірте полярність світлодіода. Довга ніжка (+) повинна йти через резистор 220 Ом до піна D12, а коротка (-) — до гнізда GND. Розверніть LED на 180°.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 8. ТЕСТ ДЛЯ САМОПЕРЕВІРКИ ================= -->
+      <section id="quiz" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-5 scroll-mt-36">
+        
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase mb-1">
+            <span>● САМОКОНТРОЛЬ</span>
+            <span>• ІНЖЕНЕРНИЙ ТЕСТ</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+            Перевірте себе: запитання про фізику входів
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1">
+            Яке значення повертає функція <code class="font-mono text-slate-900 font-bold bg-white px-1.5 py-0.5 rounded border border-slate-200">digitalRead(pin)</code> у режимі INPUT_PULLUP, коли кнопка підключена до GND і її НАТИСНУТО?
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="quiz-container">
+          <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm text-slate-700 font-medium transition cursor-pointer" data-correct="false">
+            А) HIGH (+5 Вольт, бо кнопка активна)
+          </button>
+          <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm text-slate-700 font-medium transition cursor-pointer" data-correct="true">
+            Б) LOW (0 Вольт, оскільки контакт замкнув пін на лінію GND)
+          </button>
+          <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm text-slate-700 font-medium transition cursor-pointer" data-correct="false">
+            В) Випадкове число від 0 до 1023
+          </button>
+        </div>
+
+        <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-medium"></div>
+
+      </section>
+
+      <!-- ================= НАВІГАЦІЯ МІЖ ПРОЄКТАМИ ================= -->
+      <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <a href="project-01-blink.html" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition text-center flex items-center justify-center gap-2">
+          <span>←</span>
+          <span>Проєкт #01: Smart Blink</span>
+        </a>
+        <a href="beginner.html" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm transition text-center">
+          Каталог Початкового рівня
+        </a>
+        <a href="project-03-traffic-light.html" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition text-center shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+          <span>Наступний: #03 Розумний світлофор</span>
+          <span>→</span>
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= LIGHTBOX МОДАЛЬНЕ ВІКНО ================= -->
+  <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300 opacity-0 pointer-events-none" role="dialog" aria-modal="true" aria-label="Збільшений перегляд схеми">
+    <div class="relative max-w-6xl w-full bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+      
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/80">
+        <div class="flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="modal-title" class="text-sm font-bold text-white font-mono uppercase tracking-wider">Схема підключення</span>
+        </div>
+        <button type="button" id="modal-close" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition focus:outline-none focus:ring-2 focus:ring-sky-400" aria-label="Закрити вікно">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-auto flex items-center justify-center bg-slate-950/60">
+        <img id="modal-img" src="" alt="Збільшена схема" class="max-w-full h-auto max-h-[75vh] object-contain rounded-xl shadow-xl">
+      </div>
+
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-900/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+        <span>SimpleArduino — Перевірені схеми тактової кнопки для людей</span>
+        <button type="button" onclick="closeLightbox()" class="text-sky-400 hover:underline font-semibold cursor-pointer">Закрити вікно (ESC)</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= ПІДВАЛ ================= -->
+  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 pt-16 pb-12 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div class="space-y-4">
+          <a href="index.html" class="inline-block">
+            <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto">
+          </a>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Відкрита інженерна платформа для практичного вивчення мікроконтролерів Arduino: зрозумілі схеми, реальний код та покроковий шлях від новачка до профі.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Навігація</h3>
+          <ul class="space-y-2.5 text-xs sm:text-sm">
+            <li><a href="index.html" class="hover:text-sky-400 transition-colors">Головна</a></li>
+            <li><a href="beginner.html" class="hover:text-sky-400 transition-colors">Каталог початківця</a></li>
+            <li><a href="learning-ladder.html" class="hover:text-sky-400 transition-colors">Шлях навчання (9 кроків)</a></li>
+            <li><a href="index.html#about" class="hover:text-sky-400 transition-colors">Про нас</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Проєкти рівня</h3>
+          <ul class="space-y-2.5 text-xs sm:text-sm">
+            <li><a href="project-01-blink.html" class="hover:text-sky-400 transition-colors">#01 Світлодіодний маяк Blink</a></li>
+            <li><a href="project-02-button.html" class="text-emerald-400 font-bold">#02 Тактова кнопка з антибрязкотом</a></li>
+            <li><a href="project-03-traffic-light.html" class="hover:text-sky-400 transition-colors">#03 Розумний світлофор</a></li>
+            <li><a href="project-04-potentiometer.html" class="hover:text-sky-400 transition-colors">#04 Нічник на фоторезисторі</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Стандарти платформи</h3>
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-[11px] text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            100% сумісність з UNO & CH340
+          </div>
+          <p class="text-[11px] text-slate-500 mt-2">Всі схеми протестовані на фізичному обладнанні та в Tinkercad Circuits.</p>
+        </div>
+      </div>
+
+      <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <p>&copy; 2026 SimpleArduino. Відкрита українська інженерна платформа.</p>
+        <p>Деплой розгорнуто на платформі Netlify.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // 1. Інтерактивні таби для схем кнопки
+    const tabBtnFritzing = document.getElementById('tab-btn-fritzing');
+    const tabBtnTinkercad = document.getElementById('tab-btn-tinkercad');
+    const tabBtnPhoto = document.getElementById('tab-btn-photo');
+
+    const viewBtnFritzing = document.getElementById('view-fritzing');
+    const viewBtnTinkercad = document.getElementById('view-tinkercad');
+    const viewBtnPhoto = document.getElementById('view-photo');
+
+    const activeTabCls = 'flex-1 min-w-[140px] py-2 px-3 rounded-xl text-xs font-bold bg-white text-slate-900 shadow-sm border border-slate-200/80 transition flex items-center justify-center gap-1.5 cursor-pointer';
+    const inactiveTabCls = 'flex-1 min-w-[140px] py-2 px-3 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer';
+
+    function setBtnTab(active) {
+      if (viewBtnFritzing) viewBtnFritzing.classList.add('hidden');
+      if (viewBtnTinkercad) viewBtnTinkercad.classList.add('hidden');
+      if (viewBtnPhoto) viewBtnPhoto.classList.add('hidden');
+
+      if (tabBtnFritzing) tabBtnFritzing.className = inactiveTabCls;
+      if (tabBtnTinkercad) tabBtnTinkercad.className = inactiveTabCls;
+      if (tabBtnPhoto) tabBtnPhoto.className = inactiveTabCls;
+
+      if (active === 'fritzing') {
+        if (viewBtnFritzing) viewBtnFritzing.classList.remove('hidden');
+        if (tabBtnFritzing) tabBtnFritzing.className = activeTabCls;
+      } else if (active === 'tinkercad') {
+        if (viewBtnTinkercad) viewBtnTinkercad.classList.remove('hidden');
+        if (tabBtnTinkercad) tabBtnTinkercad.className = activeTabCls;
+      } else if (active === 'photo') {
+        if (viewBtnPhoto) viewBtnPhoto.classList.remove('hidden');
+        if (tabBtnPhoto) tabBtnPhoto.className = activeTabCls;
+      }
+    }
+
+    if (tabBtnFritzing) tabBtnFritzing.addEventListener('click', () => setBtnTab('fritzing'));
+    if (tabBtnTinkercad) tabBtnTinkercad.addEventListener('click', () => setBtnTab('tinkercad'));
+    if (tabBtnPhoto) tabBtnPhoto.addEventListener('click', () => setBtnTab('photo'));
+
+    // 2. Lightbox модалка
+    const modalBox = document.getElementById('modal-lightbox');
+    const modalImgEl = document.getElementById('modal-img');
+    const modalTitleEl = document.getElementById('modal-title');
+    const modalCloseBtn = document.getElementById('modal-close');
+
+    window.openLightbox = function(src, title) {
+      if (!modalBox || !modalImgEl) return;
+      modalImgEl.src = src;
+      if (modalTitleEl && title) modalTitleEl.textContent = title;
+      modalBox.classList.remove('hidden');
+      modalBox.classList.remove('pointer-events-none');
+      setTimeout(() => {
+        modalBox.classList.remove('opacity-0');
+      }, 10);
+    };
+
+    window.closeLightbox = function() {
+      if (!modalBox) return;
+      modalBox.classList.add('opacity-0');
+      modalBox.classList.add('pointer-events-none');
+      setTimeout(() => {
+        modalBox.classList.add('hidden');
+      }, 300);
+    };
+
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeLightbox);
+    if (modalBox) {
+      modalBox.addEventListener('click', (e) => {
+        if (e.target === modalBox) closeLightbox();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // 3. Інтерактивний симулятор кнопки та LED
+    let isToggleMode = true; // true = toggle, false = momentary
+    let isButtonPressed = false;
+    let isLedActive = false;
+
+    const btnInteractive = document.getElementById('interactive-button');
+    const btnCap = document.getElementById('button-cap');
+    const pinBtnState = document.getElementById('sim-btn-pin-state');
+    const pinLedState = document.getElementById('sim-btn-led-state');
+    const ledGlowEl = document.getElementById('sim-btn-led-glow');
+    const ledBodyEl = document.getElementById('sim-btn-led-body');
+    const ledCoreEl = document.getElementById('sim-btn-led-core');
+
+    const modeToggleBtn = document.getElementById('sim-mode-toggle');
+    const modeMomentaryBtn = document.getElementById('sim-mode-momentary');
+
+    function updateLedVisual(active) {
+      isLedActive = active;
+      if (!ledGlowEl || !ledBodyEl || !ledCoreEl || !pinLedState) return;
+      if (active) {
+        ledGlowEl.className = 'absolute inset-0 rounded-full bg-emerald-400/80 blur-2xl scale-125 transition-all duration-150';
+        ledBodyEl.className = 'relative w-20 h-20 rounded-full bg-emerald-500 border-4 border-emerald-300 flex items-center justify-center transition-all duration-150 shadow-[0_0_35px_#10b981]';
+        ledCoreEl.className = 'w-10 h-10 rounded-full bg-white shadow-[0_0_15px_#fff] transition-all duration-150';
+        pinLedState.innerHTML = '<span class="text-emerald-400 font-bold">HIGH (+5V — Світлодіод СВІТИТЬ)</span>';
+      } else {
+        ledGlowEl.className = 'absolute inset-0 rounded-full bg-emerald-400/0 blur-2xl transition-all duration-150';
+        ledBodyEl.className = 'relative w-20 h-20 rounded-full bg-slate-800 border-4 border-slate-700 flex items-center justify-center transition-all duration-150 shadow-inner';
+        ledCoreEl.className = 'w-10 h-10 rounded-full bg-slate-700/60 transition-all duration-150';
+        pinLedState.innerHTML = '<span class="text-slate-500 font-medium">LOW (0V — Світлодіод ВИМКНЕНО)</span>';
+      }
+    }
+
+    function pressButtonDown() {
+      isButtonPressed = true;
+      if (btnCap) btnCap.className = 'w-16 h-16 rounded-full bg-emerald-600 border-2 border-emerald-400 flex items-center justify-center text-white shadow-[0_0_25px_#10b981] scale-90 transition-all';
+      if (pinBtnState) pinBtnState.innerHTML = '<span class="text-emerald-400 font-bold">LOW (0V — Натиснуто, замкнено на GND)</span>';
+
+      if (isToggleMode) {
+        updateLedVisual(!isLedActive);
+      } else {
+        updateLedVisual(true);
+      }
+    }
+
+    function releaseButtonUp() {
+      isButtonPressed = false;
+      if (btnCap) btnCap.className = 'w-16 h-16 rounded-full bg-slate-900 border-2 border-slate-700 flex items-center justify-center text-slate-400 transition-all';
+      if (pinBtnState) pinBtnState.innerHTML = '<span class="text-sky-400 font-medium">HIGH (+5V — Відпущено, підтяжка PULLUP)</span>';
+
+      if (!isToggleMode) {
+        updateLedVisual(false);
+      }
+    }
+
+    if (btnInteractive) {
+      if (btnInteractive) btnInteractive.addEventListener('mousedown', pressButtonDown);
+      document.addEventListener('mouseup', () => {
+        if (isButtonPressed) releaseButtonUp();
+      });
+
+      if (btnInteractive) btnInteractive.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        pressButtonDown();
+      });
+      if (btnInteractive) btnInteractive.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        releaseButtonUp();
+      });
+    }
+
+    if (modeToggleBtn && modeMomentaryBtn) {
+      if (modeToggleBtn) modeToggleBtn.addEventListener('click', () => {
+        isToggleMode = true;
+        modeToggleBtn.className = 'py-1 px-2.5 rounded-lg font-bold bg-emerald-500 text-slate-950 transition cursor-pointer';
+        modeMomentaryBtn.className = 'py-1 px-2.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer';
+      });
+
+      modeMomentaryBtn.addEventListener('click', () => {
+        isToggleMode = false;
+        modeMomentaryBtn.className = 'py-1 px-2.5 rounded-lg font-bold bg-emerald-500 text-slate-950 transition cursor-pointer';
+        modeToggleBtn.className = 'py-1 px-2.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer';
+        updateLedVisual(false);
+      });
+    }
+
+    // 4. Копіювання коду
+    const copyBtns = document.querySelectorAll('.btn-copy-code');
+    const toast = document.getElementById('toast-notify');
+    const toastText = document.getElementById('toast-text');
+
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const codeElement = document.getElementById(targetId);
+        if (codeElement) {
+          navigator.clipboard.writeText(codeElement.textContent).then(() => {
+            if (toast && toastText) {
+              toastText.textContent = 'Код скетчу успішно скопійовано!';
+              toast.classList.remove('hidden');
+              setTimeout(() => toast.classList.add('hidden'), 2500);
+            }
+          });
+        }
+      });
+    });
+
+    // 5. Тест для самоконтролю
+    const quizBtns = document.querySelectorAll('.quiz-btn');
+    const quizFeedback = document.getElementById('quiz-feedback');
+
+    quizBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isCorrect = btn.getAttribute('data-correct') === 'true';
+
+        quizBtns.forEach(b => {
+          b.className = 'quiz-btn text-center p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm text-slate-700 font-medium transition cursor-pointer';
+        });
+
+        if (isCorrect) {
+          btn.className = 'quiz-btn text-center p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-xs sm:text-sm text-emerald-900 font-bold transition cursor-pointer';
+          if (quizFeedback) {
+            quizFeedback.className = 'p-4 rounded-2xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs sm:text-sm block space-y-1';
+            quizFeedback.innerHTML = `<strong>✓ Абсолютно правильно!</strong> У режимі INPUT_PULLUP внутрішній резистор тримає пін на рівні HIGH (+5V). Коли ви натискаєте кнопку, контакт замикає вхід на спільний дріт заземлення (GND). Потенціал піна стає рівним 0 Вольт, тому digitalRead() повертає LOW (0)!`;
+          }
+        } else {
+          btn.className = 'quiz-btn text-center p-4 rounded-2xl border-2 border-rose-400 bg-rose-50 text-xs sm:text-sm text-rose-900 font-medium transition cursor-pointer';
+          if (quizFeedback) {
+            quizFeedback.className = 'p-4 rounded-2xl bg-rose-100 text-rose-900 border border-rose-300 text-xs sm:text-sm block space-y-1';
+            quizFeedback.innerHTML = `<strong>✗ Неправильно.</strong> Завдяки схемі з підтяжкою до +5V логіка кнопки є інверсною: при відпущеній кнопці значення HIGH (5V), а при фізичному натисканні вхід замикається на GND і видає LOW (0V). Обов\'язково запам\'ятайте це правило!`;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

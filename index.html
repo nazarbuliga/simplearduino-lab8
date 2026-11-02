@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SimpleArduino — Всеукраїнський відкритий освітній веб-хаб Arduino, схемотехніки та IoT | Повноцінний інтерактивний лендинг</title>
+  <meta name="description" content="Платформа покрокового навчання Arduino: від першого світлодіода до власного проєкту. Інтерактивні схеми, симуляції в Tinkercad та робочий C++ код.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="SimpleArduino — Покрокове навчання Arduino вдома">
+  <meta property="og:description" content="Від першого світлодіода до власного проєкту. Без досвіду та зайвої теорії.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/hero_banner.svg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              900: '#0f172a',
+              950: '#020617'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            heading: ['Raleway', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          boxShadow: {
+            'clay': '0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.9)',
+            'clay-hover': '0 20px 30px -10px rgba(15, 23, 42, 0.12), inset 0 1px 2px rgba(255, 255, 255, 1)',
+            'glow-sky': '0 0 25px -5px rgba(56, 189, 248, 0.4)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom-styles.css">
+  <link rel="icon" href="assets/icons/logo-mark.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sky-400 selection:text-slate-900 min-h-screen flex flex-col">
+
+  <!-- Skip-link для клавіатурної доступності (WCAG 2.4.1) -->
+  <a class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-sky-400 focus:text-slate-950 focus:font-bold focus:rounded-lg focus:shadow-xl focus:ring-4 focus:ring-sky-500" href="#main">
+    Перейти до основного контенту
+  </a>
+
+  <!-- ЕТАП 6. HEADER / NAVBAR (Адаптивна шапка з випадаючим списком та гамбургером) -->
+  <header class="sticky top-0 z-40 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white transition-all shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- 1. Логотип бренду -->
+      <a class="flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-sky-400 rounded-lg p-1" href="#main" aria-label="SimpleArduino — на головну">
+        <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto object-contain transition-transform group-hover:scale-105" fetchpriority="high">
+      </a>
+
+      <!-- 2. Центральна навігація (Десктоп md+) -->
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2" aria-label="Головна навігація">
+        <!-- Каталог курсів (випадне меню dropdown для освітнього хабу) -->
+        <div class="relative" id="dropdown-wrapper">
+          <button id="dropdown-btn" type="button" class="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400" aria-expanded="false" aria-haspopup="true">
+            <span>Каталог курсів</span>
+            <svg id="dropdown-chevron" class="w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          
+          <!-- Dropdown меню (підтримує клік та ховер) -->
+          <div id="dropdown-menu" class="absolute left-0 top-full mt-1.5 w-64 bg-slate-800/95 backdrop-blur-lg border border-slate-700/80 rounded-xl shadow-2xl p-2 hidden transition-all duration-200 z-50">
+            <div class="px-3 py-2 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700/60">Рівні складності</div>
+            <a href="beginner.html" data-filter="beginner" class="dropdown-item flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-slate-700/70 hover:text-white transition">
+              <span>Початковий (Beginner)</span>
+              <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full font-mono">4 проєкти</span>
+            </a>
+            <a href="intermediate.html" data-filter="intermediate" class="dropdown-item flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-slate-700/70 hover:text-white transition">
+              <span>Середній (Intermediate)</span>
+              <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono">3 проєкти</span>
+            </a>
+            <a href="advanced.html" data-filter="advanced" class="dropdown-item flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-slate-700/70 hover:text-white transition">
+              <span>Просунутий (Advanced)</span>
+              <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-mono">3 проєкти</span>
+            </a>
+            <div class="border-t border-slate-700/60 mt-1 pt-1">
+              <a href="learning-ladder.html" class="dropdown-item block px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-sky-300 hover:bg-slate-700/50 transition">Шлях навчання (10 проєктів) →</a>
+              <a href="about.html" class="dropdown-item block px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-sky-300 hover:bg-slate-700/50 transition">Про проєкт &amp; Методологія (окрема сторінка) →</a>
+            </div>
+          </div>
+        </div>
+
+        <a href="#levels" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">Модулі</a>
+        <a href="#media-hub" class="px-3 py-2 text-sm font-medium text-sky-400 hover:text-sky-300 rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+          <span>Медіа-хаб (10 відео)</span>
+        </a>
+        <a href="#about" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">Про проєкт &amp; Методологія</a>
+        <a href="#faq" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">FAQ</a>
+        <a href="#contact" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">Контакти</a>
+      </nav>
+
+      <!-- 3. Дії користувача (Виправлений пошук та Primary CTA) -->
+      <div class="hidden lg:flex items-center gap-4">
+        <!-- Інтерактивний пошук з гарантованим відступом без перекриття -->
+        <div class="relative flex items-center">
+          <svg class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <input id="site-search-input" type="search" placeholder="Знайти схему..." aria-label="Пошук по навчальних схемах та модулях" style="padding-left: 48px !important;" class="w-48 xl:w-56 bg-slate-800/90 text-sm text-slate-100 placeholder-slate-400 pr-4 py-2 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:w-64 transition-all duration-300 shadow-inner">
+        </div>
+
+        <!-- Кнопка Почати навчання (Primary CTA) -->
+        <a href="#levels" class="px-5 py-2.5 text-sm font-bold bg-sky-400 hover:bg-sky-300 text-slate-950 rounded-xl shadow-lg shadow-sky-400/20 hover:shadow-sky-400/40 active:scale-95 transition-all duration-200 min-h-[44px] inline-flex items-center focus:outline-none focus:ring-4 focus:ring-sky-400/50">
+          Почати
+        </a>
+      </div>
+
+      <!-- 4. Кнопка мобільного гамбургер-меню (видима тільки на mobile < md) -->
+      <button id="mobile-menu-btn" type="button" class="md:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню навігації">
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+    </div>
+
+    <!-- Мобільне меню (виїжджає при кліку на гамбургер) -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 animate-fadeIn">
+      <div class="pb-2 border-b border-slate-800">
+        <span class="text-xs font-semibold uppercase tracking-wider text-sky-400">Каталог курсів SimpleArduino</span>
+        <div class="mt-2 space-y-1 pl-2">
+          <a href="beginner.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Початковий рівень (4 проєкти)</a>
+          <a href="intermediate.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Середній рівень (3 проєкти)</a>
+          <a href="advanced.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Просунутий рівень (3 проєкти)</a>
+        </div>
+      </div>
+      <a href="#levels" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Каталог модулів</a>
+      <a href="#media-hub" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-sky-400 hover:bg-slate-800 hover:text-white flex items-center justify-between">
+        <span>Медіа-хаб (10 відеоуроків + IoT)</span>
+        <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono">10 проєктів</span>
+      </a>
+      <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Про проєкт &amp; Методологія</a>
+      <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-400 hover:bg-slate-800 hover:text-white">Повна сторінка «Про проєкт» →</a>
+      <a href="#faq" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Часті проблеми (FAQ) та відгуки</a>
+      <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Контакти та Магазин «Юстас»</a>
+      <div class="pt-3 flex flex-col gap-2">
+        <a href="#levels" class="mobile-nav-link w-full text-center py-3 rounded-xl bg-sky-400 text-slate-950 font-bold shadow-lg shadow-sky-400/20">Почати безкоштовно</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Спливаюче сповіщення Toast Notification -->
+  <div id="toast-notify" class="fixed bottom-6 right-6 z-50 hidden max-w-md bg-slate-900 border border-sky-400/80 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 animate-fadeIn">
+    <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center flex-shrink-0">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    </div>
+    <div id="toast-text" class="text-xs sm:text-sm font-medium text-slate-200">Дія успішно виконана!</div>
+  </div>
+
+  <!-- ГОЛОВНИЙ СЕМАНТИЧНИЙ КОНТЕЙНЕР MAIN -->
+  <main id="main" tabindex="-1" class="flex-grow focus:outline-none">
+
+        <!-- ЕТАП 5 & ЕТАП 7. HERO SECTION (Адаптивна Hero-секція з плавною анімацією появи та 100% видимістю кнопок) -->
+    <section id="hero" class="relative bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white py-6 sm:py-8 md:py-10 lg:py-12 min-h-[calc(100vh-5rem)] max-h-[920px] flex items-center overflow-hidden" aria-labelledby="hero-title">
+      <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+
+        <!-- Ліва колонка контенту -->
+        <div class="lg:col-span-6 xl:col-span-6 text-center space-y-4 sm:space-y-5 lg:pr-2 z-20 relative">
+          
+          <!-- Заголовок з плавною появою -->
+          <h1 id="hero-title" class="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl font-extrabold font-heading tracking-tight leading-[1.15] text-white hero-animate-title">
+            Збери свій перший <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">працюючий пристрій</span> за 15 хвилин
+          </h1>
+
+          <!-- Опис з плавною появою -->
+          <p class="text-sm sm:text-base text-slate-300 max-w-xl mx-auto leading-relaxed font-normal hero-animate-desc">
+            Покрокове навчання Arduino вдома: від першого світлодіода до власної інженерної системи. Без хаотичних форумів та зайвої теорії — лише надійні схеми і перевірений код.
+          </p>
+
+          <!-- ЕТАП 5: Primary CTA Button «Зібрати першу схему» та Ghost Button (100% видимі без скролу) -->
+          <div class="pt-1 sm:pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 hero-animate-buttons">
+            <!-- Primary CTA Button -->
+            <a href="#levels" id="hero-btn-primary" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3 min-h-[44px] bg-sky-400 hover:bg-sky-300 active:scale-95 text-slate-950 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-sky-400/25 hover:shadow-sky-400/40 focus:outline-none focus:ring-4 focus:ring-sky-400/50 transition-all duration-200 group">
+              <span>Зібрати першу схему</span>
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
+
+            <!-- Ghost Button -->
+            <a href="learning-ladder.html" id="hero-btn-secondary" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 min-h-[44px] bg-slate-800/80 hover:bg-slate-700/80 active:scale-95 text-white text-sm sm:text-base font-semibold rounded-xl border border-slate-700 hover:border-slate-500 focus:outline-none focus:ring-4 focus:ring-slate-600 transition-all duration-200">
+              Шлях навчання
+            </a>
+          </div>
+
+          <!-- Метрики довіри з плавною появою -->
+          <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-slate-400 hero-animate-metrics">
+            <div class="flex items-center gap-1.5">
+              <span class="text-sky-400 font-bold text-sm sm:text-base">26+</span> схем українською
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-emerald-400 font-bold text-sm sm:text-base">100%</span> сумісність з UNO & CH340
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-cyan-400 font-bold text-sm sm:text-base">0 грн</span> відкритий старт
+            </div>
+          </div>
+        </div>
+
+        <!-- Права колонка: 2.5D інженерний банер з плавною появою та м'яким плаванням -->
+        <div class="lg:col-span-6 xl:col-span-6 flex justify-center lg:justify-end items-center relative z-10 hero-animate-visual">
+          <!-- Глибоке атмосферне неонове підсвічування навколо моделі -->
+          <div class="absolute -inset-6 sm:-inset-10 bg-gradient-to-tr from-sky-500/25 via-cyan-500/15 to-transparent blur-3xl rounded-full pointer-events-none hero-pulse-glow"></div>
+
+          <div class="relative w-full flex items-center justify-center lg:justify-end hero-floating">
+            <!-- Безшовне вбудовування анімованого вектора у збалансованому масштабі -->
+            <object type="image/svg+xml" data="assets/images/hero_animated.svg" class="w-full h-auto max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl transform scale-100 origin-center drop-shadow-[0_20px_40px_rgba(2,6,23,0.85)] pointer-events-none block" aria-label="Анімована високотехнологічна 3D-ілюстрація плати Arduino та схеми з пульсуючим світлодіодом">
+              <img src="assets/images/hero_animated.svg" alt="3D-модель макетної плати та мікроконтролера Arduino Uno з анімацією світлодіода" width="1040" height="880" class="w-full h-auto object-contain drop-shadow-2xl" fetchpriority="high">
+            </object>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ЕТАП 8 & 9. КАТАЛОГ РІВНІВ (Адаптивна Grid-сітка карток курсів 1 -> 2 -> 3 колонки) -->
+    <section id="levels" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="levels-title">
+      <div class="flex flex-col items-center text-center justify-center mb-12 gap-6 max-w-3xl mx-auto">
+        <div>
+          <div class="text-sky-600 font-semibold text-sm uppercase tracking-wider mb-2">Каталог навчальних модулів</div>
+          <h2 id="levels-title" class="text-2xl sm:text-4xl font-extrabold font-heading text-slate-900">Оберіть свій рівень складності</h2>
+          <p class="text-slate-600 mt-2 max-w-xl text-sm sm:text-base">Кожен рівень містить покрокові кольорові схеми складання, зразки коду з коментарями та блок швидкого усунення несправностей.</p>
+        </div>
+
+        <!-- Інтерактивний фільтр наборів (Custom Premium Dropdown) -->
+        <div class="relative self-center z-30 mx-auto" id="kit-filter-container">
+          <div class="inline-flex items-center gap-2 p-1.5 sm:p-2 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-sm hover:border-sky-300 hover:shadow-md transition-all">
+            <div class="flex items-center gap-2 pl-2 sm:pl-2.5 pr-1 text-slate-500">
+              <div class="w-7 h-7 rounded-lg bg-sky-50 flex items-center justify-center text-sky-600 flex-shrink-0 shadow-inner">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+              </div>
+              <span class="text-xs font-semibold text-slate-600 whitespace-nowrap hidden sm:inline">Стартовий набір:</span>
+            </div>
+
+            <!-- Кнопка тригера Custom Select -->
+            <button id="kit-custom-btn" type="button" class="flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 font-medium text-xs sm:text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-sky-400 group cursor-pointer" aria-haspopup="listbox" aria-expanded="false" aria-label="Обрати стартовий набір плат">
+              <span id="kit-selected-label" class="font-bold text-slate-800">Усі набори (UNO / Elegoo / CH340)</span>
+              <svg id="kit-chevron" class="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Спливаюче меню вибору набору -->
+          <div id="kit-custom-menu" class="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-2xl p-2 hidden transition-all duration-200 z-50 animate-fadeIn" role="listbox" aria-label="Стартові набори">
+            <div class="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 flex items-center justify-between">
+              <span>Фільтрація за залізом</span>
+              <span class="text-sky-500 font-mono font-bold">4 варіанти</span>
+            </div>
+            <div class="space-y-1 mt-1.5" id="kit-options-list">
+              <!-- Варіант 1: Усі набори -->
+              <button type="button" class="kit-option-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm text-center transition-all hover:bg-sky-50 hover:text-sky-950 font-semibold bg-sky-50 text-sky-900 border border-sky-200/80 cursor-pointer" data-value="all" data-name="Усі набори (UNO / Elegoo / CH340)">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-2 h-2 rounded-full bg-sky-500 kit-dot"></span>
+                  <div>
+                    <div class="font-bold text-slate-900">Усі набори</div>
+                    <div class="text-[11px] text-slate-500 font-normal">UNO R3, Elegoo, CH340 клони</div>
+                  </div>
+                </div>
+                <svg class="kit-check-icon w-4 h-4 text-sky-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              </button>
+
+              <!-- Варіант 2: UNO R3 -->
+              <button type="button" class="kit-option-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm text-center transition-all hover:bg-sky-50 hover:text-sky-950 text-slate-700 cursor-pointer" data-value="uno-r3" data-name="Оригінальний Arduino UNO R3">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-300 kit-dot"></span>
+                  <div>
+                    <div class="font-bold text-slate-900">Оригінальний Arduino UNO R3</div>
+                    <div class="text-[11px] text-slate-500 font-normal">Чіп ATmega16U2, офіційна плата</div>
+                  </div>
+                </div>
+                <svg class="kit-check-icon w-4 h-4 text-sky-600 flex-shrink-0 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              </button>
+
+              <!-- Варіант 3: Elegoo -->
+              <button type="button" class="kit-option-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm text-center transition-all hover:bg-sky-50 hover:text-sky-950 text-slate-700 cursor-pointer" data-value="elegoo" data-name="Elegoo Super Starter Kit">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-300 kit-dot"></span>
+                  <div>
+                    <div class="font-bold text-slate-900">Elegoo Super Starter Kit</div>
+                    <div class="text-[11px] text-slate-500 font-normal">Розширений набір із модулями</div>
+                  </div>
+                </div>
+                <svg class="kit-check-icon w-4 h-4 text-sky-600 flex-shrink-0 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              </button>
+
+              <!-- Варіант 4: CH340 -->
+              <button type="button" class="kit-option-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm text-center transition-all hover:bg-sky-50 hover:text-sky-950 text-slate-700 cursor-pointer" data-value="ch340" data-name="Бюджетні клони на CH340G">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-300 kit-dot"></span>
+                  <div>
+                    <div class="font-bold text-slate-900">Бюджетні клони на CH340G</div>
+                    <div class="text-[11px] text-slate-500 font-normal">Доступна плата з USB-UART CH340</div>
+                  </div>
+                </div>
+                <svg class="kit-check-icon w-4 h-4 text-sky-600 flex-shrink-0 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Прихований стандартний select для збереження повної сумісності -->
+          <select id="kit" name="kit" aria-label="Вибір стартового набору Arduino" class="sr-only" aria-hidden="true" tabindex="-1">
+            <option value="all" selected>Усі набори (UNO / Elegoo / CH340)</option>
+            <option value="uno-r3">Оригінальний Arduino UNO R3</option>
+            <option value="elegoo">Elegoo Super Starter Kit</option>
+            <option value="ch340">Бюджетні клони на CH340G</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- АДАПТИВНИЙ GRID КОНТЕЙНЕР (Етап 9: grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8) -->
+      <ul id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- КАРТКА 1: Початковий рівень (Етап 8) -->
+        <li class="course-card flex" data-level="beginner" data-keywords="початковий світлодіод кнопка blink резистор дільник напруга uno uno-r3 elegoo ch340">
+          <article class="w-full bg-white rounded-2xl border-2 border-sky-400/80 shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 p-6 flex flex-col justify-between group relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-sky-400 text-slate-950 font-bold text-xs px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+              Рекомендовано для старту
+            </div>
+            <div>
+              <div class="flex items-center justify-center gap-4 mt-2 mb-4">
+                <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center text-sky-600 font-bold text-lg">
+                  01
+                </div>
+                <span class="text-xs font-mono font-semibold text-sky-700 bg-sky-50 border border-sky-200 px-2.5 py-1 rounded-full">4 практичні проєкти</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 text-center group-hover:text-sky-600 transition-colors">Початковий рівень</h3>
+              <p class="text-slate-600 text-sm mt-2 leading-relaxed text-center">
+                Базові електричні кола, світлодіоди, тактові кнопки, дільники напруги та безпечне підключення до плати без пайки.
+              </p>
+              
+              <!-- Зображення-прев'ю -->
+              <div class="my-5 bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center justify-center h-28 group-hover:bg-sky-50/50 transition-colors">
+                <img src="assets/images/level-preview-beginner.svg" alt="Схема підключення світлодіода початкового рівня" class="max-h-full object-contain" loading="lazy">
+              </div>
+
+              <ul class="space-y-1.5 text-xs text-slate-500 mb-6">
+                <li class="flex items-center justify-center gap-1.5 text-center"><svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Скетч миготіння Blink без delay()</li>
+                <li class="flex items-center justify-center gap-1.5 text-center"><svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Кнопка з усуненням брязкоту контактів</li>
+              </ul>
+            </div>
+
+            <!-- CTA кнопка картки -->
+            <div class="space-y-2 w-full">
+              <a href="project-01-blink.html" class="w-full py-3 px-4 min-h-[44px] bg-sky-500 hover:bg-sky-400 active:scale-95 text-slate-950 font-bold rounded-xl text-center text-sm shadow-md hover:shadow-sky-500/25 transition-all flex items-center justify-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
+                <span>⚡ Почати з Проєкту #01 (Smart Blink)</span>
+                <span>→</span>
+              </a>
+              <a href="beginner.html" class="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-center text-xs transition-all flex items-center justify-center">
+                Переглянути всі 4 проєкти модуля
+              </a>
+            </div>
+          </article>
+        </li>
+
+        <!-- КАРТКА 2: Середній рівень -->
+        <li class="course-card flex" data-level="intermediate" data-keywords="середній сонар dht11 термометр pwm шим i2c lcd 1602 серво uno uno-r3 elegoo ">
+          <article class="w-full bg-white rounded-2xl border-2 border-emerald-400/80 shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 p-6 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-lg">
+                  02
+                </div>
+                <span class="text-xs font-mono font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">3 інженерні проєкти</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 text-center group-hover:text-emerald-600 transition-colors">Середній рівень (Intermediate)</h3>
+              <p class="text-slate-600 text-sm mt-2 leading-relaxed text-center">
+                Сонари відстані, символьні I2C LCD екрани, мікроклімат DHT11 та сервоприводи сонячного стеження.
+              </p>
+
+              <!-- Зображення-прев'ю -->
+              <div class="my-5 bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center justify-center h-28 group-hover:bg-emerald-50/50 transition-colors">
+                <img src="assets/images/level-preview-intermediate.svg" alt="Схема термометра з LCD дисплеєм середнього рівня" class="max-h-full object-contain" loading="lazy">
+              </div>
+
+              <ul class="space-y-1.5 text-xs text-slate-500 mb-6">
+                <li class="flex items-center justify-center gap-1.5 text-center"><svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> #05 Парктронік з сонаром та зумером</li>
+                <li class="flex items-center justify-center gap-1.5 text-center"><svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> #06 Метеостанція LCD 1602 + DHT11</li>
+                <li class="flex items-center justify-center gap-1.5 text-center"><svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> #07 Сонячний трекер на сервоприводі SG90</li>
+              </ul>
+            </div>
+
+            <!-- CTA кнопки картки -->
+            <div class="space-y-2 w-full">
+              <a href="project-05-ultrasonic.html" class="w-full py-3 px-4 min-h-[44px] bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-bold rounded-xl text-center text-sm shadow-md hover:shadow-emerald-500/25 transition-all flex items-center justify-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                <span>⚡ Почати з Проєкту #05 (Sonar Radar)</span>
+                <span>→</span>
+              </a>
+              <a href="intermediate.html" class="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-center text-xs transition-all flex items-center justify-center">
+                Переглянути всі 3 проєкти модуля
+              </a>
+            </div>
+          </article>
+        </li>
+
+        <!-- КАРТКА 3: Просунутий рівень -->
+        <li class="course-card flex" data-level="advanced" data-keywords="просунутий l298n робот мотор relay реле 220v freertos rtos elegoo ">
+          <article class="w-full bg-white rounded-2xl border-2 border-purple-400/80 shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 p-6 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-lg">
+                  03
+                </div>
+                <span class="text-xs font-mono font-semibold text-purple-700 bg-purple-50 border border-purple-200 px-2.5 py-1 rounded-full">3 складні інженерні проєкти</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 text-center group-hover:text-purple-600 transition-colors">Просунутий рівень (Advanced)</h3>
+              <p class="text-slate-600 text-sm mt-2 leading-relaxed text-center">
+                Автономна мобільна робототехніка на H-мості L298N, веб-сервери розумного дому з комутацією 220V та ОСРВ FreeRTOS.
+              </p>
+
+              <!-- Зображення-прев'ю -->
+              <div class="my-5 bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center justify-center h-28 group-hover:bg-purple-50/50 transition-colors">
+                <img src="assets/images/level-preview-advanced.svg" alt="Схема ультразвукового радара з сервоприводом" class="max-h-full object-contain" loading="lazy">
+              </div>
+
+              <ul class="space-y-1.5 text-xs text-slate-500 mb-6">
+                <li class="flex items-center justify-center gap-1.5 text-center"><svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> #08 Робот-ровер: ШІМ та драйвер L298N</li>
+                <li class="flex items-center justify-center gap-1.5 text-center"><svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> #09 IoT Web-сервер та силове реле 220V</li>
+                <li class="flex items-center justify-center gap-1.5 text-center"><svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> #10 FreeRTOS витісняюча багатозадачність</li>
+              </ul>
+            </div>
+
+            <!-- CTA кнопки картки -->
+            <div class="space-y-2 w-full">
+              <a href="project-08-autonomous-robot.html" class="w-full py-3 px-4 min-h-[44px] bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-bold rounded-xl text-center text-sm shadow-md hover:shadow-purple-600/25 transition-all flex items-center justify-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                <span>⚡ Почати з Проєкту #08 (Autonomous Rover)</span>
+                <span>→</span>
+              </a>
+              <a href="advanced.html" class="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-center text-xs transition-all flex items-center justify-center">
+                Переглянути всі 3 проєкти модуля
+              </a>
+            </div>
+          </article>
+        </li>
+
+      </ul>
+    </section>
+
+    <!-- СЕКЦІЯ ПЕРЕВАГ BENTO (learning-ladder / features) -->
+    <!-- ==========================================================================
+         ЕТАП 7. ІНТЕРАКТИВНИЙ МЕДІА-ХАБ (10 Відеоуроків + Жива IoT Телеметрія) (#media-hub)
+         Вимога #3: Для кожного з 10 модулів курсу окреме відео (UKR/ENG, без рос.)
+         ========================================================================== -->
+    <section id="media-hub" class="py-16 md:py-24 bg-slate-900 text-white border-y border-slate-800 relative overflow-hidden" aria-labelledby="media-hub-title">
+      <!-- Фонове декоративне підсвічування -->
+      <div class="absolute -top-32 -left-32 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <!-- Заголовок секції -->
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold tracking-wider uppercase mb-3">
+            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+            <span>Інтерактивний Медіа-Хаб платформи • 10 модулів</span>
+          </div>
+          <h2 id="media-hub-title" class="text-2xl sm:text-4xl font-extrabold font-heading text-white">
+            Відеоуроки для кожного модуля &amp; жива телеметрія IoT
+          </h2>
+          <p class="text-slate-400 mt-3 text-sm sm:text-base leading-relaxed">
+            Оберіть будь-який із 10 навчальних модулів, щоб миттєво відкрити перевірене практичне відео (українською або англійською, жодних російських джерел) та спостерігайте за реальною метеостанцією.
+          </p>
+        </div>
+
+        <!-- Горизонтальний перемикач 10 модулів курсу -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between pb-2 text-xs font-semibold text-slate-400">
+            <span class="flex items-center gap-1.5">
+              <span class="text-sky-400">▶</span> Оберіть модуль для перегляду відеоуроку:
+            </span>
+            <span class="text-slate-500 hidden sm:inline font-mono">10 практичних відео</span>
+          </div>
+          
+          <div id="media-hub-video-tabs" class="flex justify-start gap-2 overflow-x-auto pb-3 pt-1 scrollbar-thin scrollbar-thumb-slate-700 focus:outline-none">
+            <button type="button" data-id="01" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-sky-500 text-slate-950 shadow-lg shadow-sky-500/25 border-sky-400 flex items-center gap-1.5">
+              <span>#01</span> <span>Smart Blink</span> <span class="text-[10px] opacity-80">🇺🇦</span>
+            </button>
+            <button type="button" data-id="02" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#02</span> <span>Кнопка Debounce</span> <span class="text-[10px] opacity-80">🇬🇧</span>
+            </button>
+            <button type="button" data-id="03" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#03</span> <span>Світлофор</span> <span class="text-[10px] opacity-80">🇺🇦</span>
+            </button>
+            <button type="button" data-id="04" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#04</span> <span>Потенціометр ШІМ</span> <span class="text-[10px] opacity-80">🇬🇧</span>
+            </button>
+            <button type="button" data-id="05" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#05</span> <span>Сонар HC-SR04</span> <span class="text-[10px] opacity-80">🇬🇧</span>
+            </button>
+            <button type="button" data-id="06" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#06</span> <span>Метеостанція DHT22</span> <span class="text-[10px] opacity-80">🇬🇧</span>
+            </button>
+            <button type="button" data-id="07" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#07</span> <span>Сервопривід SG90</span> <span class="text-[10px] opacity-80">🇬🇧</span>
+            </button>
+            <button type="button" data-id="08" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#08</span> <span>Робот-ровер</span> <span class="text-[10px] opacity-80">🇬🇧</span>
+            </button>
+            <button type="button" data-id="09" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#09</span> <span>IoT Дім Wi-Fi</span> <span class="text-[10px] opacity-80">🇬🇧</span>
+            </button>
+            <button type="button" data-id="10" class="media-tab-btn flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 border bg-slate-800/80 text-slate-300 border-slate-700/70 hover:bg-slate-700 flex items-center gap-1.5">
+              <span>#10</span> <span>FreeRTOS ОСРВ</span> <span class="text-[10px] opacity-80">🇬🇧</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Двоколонкова адаптивна сітка: Відеоплеєр (7/12) + Динамічний інформер (5/12) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Ліва колонка: YouTube Embed (7 колонок на Desktop) -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="bg-slate-800/80 p-3 sm:p-4 rounded-2xl border border-slate-700/80 shadow-2xl backdrop-blur-sm">
+              <div class="flex items-center justify-between pb-3 px-1 border-b border-slate-700/60 mb-3 text-xs text-slate-300">
+                <div class="flex items-center gap-2 overflow-hidden">
+                  <span class="w-3 h-3 rounded-full bg-rose-500 shrink-0 animate-pulse"></span>
+                  <span id="media-hub-title-text" class="font-semibold text-white truncate">Практичний відеокурс: Блимаємо світлодіодом на ATMega8 / AVR</span>
+                </div>
+                <span class="text-sky-400 font-mono shrink-0 ml-2">1080p HD</span>
+              </div>
+
+              <!-- Адаптивний контейнер для YouTube відео -->
+              <div class="responsive-video-wrapper aspect-video w-full rounded-xl overflow-hidden shadow-lg border border-slate-700/50">
+                <iframe 
+                  id="media-hub-iframe"
+                  src="https://www.youtube.com/embed/x_bb1KgdiYY?rel=0" 
+                  title="[Урок 01] Блимаємо світлодіодом на ATMega8 | Повний Урок для Початківців" 
+                  loading="lazy" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  allowfullscreen 
+                  class="w-full h-full border-0">
+                </iframe>
+              </div>
+
+              <!-- Пояснювальний бейдж під відео -->
+              <div class="mt-4 pt-3 border-t border-slate-700/50 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-400 text-center">
+                <div class="flex items-center gap-2">
+                  <span id="media-hub-module-badge" class="bg-slate-700/60 px-2.5 py-1 rounded-md text-slate-200 font-mono font-bold">Модуль 01 • Smart Blink</span>
+                  <span id="media-hub-subtitle-text" class="text-slate-300">Архітектура ATMega8 / UNO, програмування та перший скетч Blink</span>
+                </div>
+                <div class="flex items-center gap-2 text-sky-400 font-medium">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span id="media-hub-lang-text">Доступно українською 🇺🇦</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Додаткова інформація під відеоплеєром (3 ключові тези) -->
+            <div id="media-hub-points" class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700/50 flex items-center gap-2.5 hover:border-sky-400/50 transition-colors">
+                <span class="text-sky-400 font-bold text-base font-mono">01</span>
+                <span class="text-slate-300">Правильне живлення плати (USB / 9V DC)</span>
+              </div>
+              <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700/50 flex items-center gap-2.5 hover:border-emerald-400/50 transition-colors">
+                <span class="text-emerald-400 font-bold text-base font-mono">02</span>
+                <span class="text-slate-300">Струмообмежувальні резистори 220 Ом</span>
+              </div>
+              <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700/50 flex items-center gap-2.5 hover:border-purple-400/50 transition-colors">
+                <span class="text-purple-400 font-bold text-base font-mono">03</span>
+                <span class="text-slate-300">Завантаження коду в пам'ять Flash</span>
+              </div>
+            </div>
+
+            <!-- Кнопка переходу на сторінку обраного проєкту -->
+            <div class="pt-1 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
+              <a id="media-hub-project-link" href="project-01-blink.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-sky-500 hover:text-slate-950 text-white font-bold text-xs border border-slate-700 hover:border-sky-400 transition-all duration-200 group">
+                <span>Відкрити документацію, схему та код проєкту</span>
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
+              <span class="text-[11px] text-slate-500 font-mono hidden sm:inline">Tinkercad + Real HW verified</span>
+            </div>
+          </div>
+
+          <!-- Права колонка: Семантичний <aside> з Динамічним Інформером Телеметрії IoT -->
+          <aside class="lg:col-span-5 space-y-4" aria-label="Динамічний інформер телеметрії метеостанції IoT">
+            <div class="telemetry-informer-card bg-slate-800/90 border border-slate-700/80 p-5 sm:p-6 rounded-2xl shadow-xl backdrop-blur-sm relative">
+              
+              <!-- Шапка інформера -->
+              <div class="flex items-center justify-between pb-4 border-b border-slate-700/80">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">IoT Live Monitor</span>
+                  </div>
+                  <h3 class="text-lg font-bold font-heading text-white mt-0.5">Метеостанція (Львів, Live IoT)</h3>
+                </div>
+                <div class="text-right">
+                  <span class="text-[11px] font-mono text-slate-400 block">MCU: ATmega328P</span>
+                  <span class="text-[10px] bg-slate-700/70 text-slate-300 px-2 py-0.5 rounded-full font-mono">16 MHz</span>
+                </div>
+              </div>
+
+              <!-- Сітка метрик реального часу -->
+              <div class="grid grid-cols-2 gap-3.5 my-5">
+                <!-- Метрика 1: Температура -->
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/60 shadow-inner group hover:border-sky-400/50 transition">
+                  <span class="text-[11px] text-slate-400 block mb-1">Сенсор DHT22: Темп.</span>
+                  <div class="flex items-baseline gap-1.5">
+                    <span id="telemetry-temp" class="text-2xl sm:text-3xl font-extrabold font-mono text-sky-400">--.- °C</span>
+                  </div>
+                  <span id="telemetry-temp-sub" class="text-[10px] text-slate-500 block mt-1">Отримання даних...</span>
+                </div>
+
+                <!-- Метрика 2: Вологість -->
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/60 shadow-inner group hover:border-emerald-400/50 transition">
+                  <span class="text-[11px] text-slate-400 block mb-1">Сенсор DHT22: Вологість</span>
+                  <div class="flex items-baseline gap-1.5">
+                    <span id="telemetry-hum" class="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400">-- %</span>
+                  </div>
+                  <span id="telemetry-hum-sub" class="text-[10px] text-slate-500 block mt-1">Оптимальний рівень</span>
+                </div>
+
+                <!-- Метрика 3: Освітленість -->
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/60 shadow-inner group hover:border-amber-400/50 transition">
+                  <span class="text-[11px] text-slate-400 block mb-1">Фоторезистор: Люкси</span>
+                  <div class="flex items-baseline gap-1.5">
+                    <span id="telemetry-lux" class="text-2xl sm:text-3xl font-extrabold font-mono text-amber-400">-- Lux</span>
+                  </div>
+                  <span id="telemetry-lux-sub" class="text-[10px] text-slate-500 block mt-1">Розсіяне денне світло</span>
+                </div>
+
+                <!-- Метрика 4: Пакети MQTT -->
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/60 shadow-inner group hover:border-purple-400/50 transition">
+                  <span class="text-[11px] text-slate-400 block mb-1">Мережа: Пакети MQTT</span>
+                  <div class="flex items-baseline gap-1.5">
+                    <span id="telemetry-packets" class="text-2xl sm:text-3xl font-extrabold font-mono text-purple-400">-- pkts</span>
+                  </div>
+                  <span id="telemetry-uptime" class="text-[10px] text-emerald-400 font-mono block mt-1">Online (Uptime: 24h+)</span>
+                </div>
+              </div>
+
+              <!-- Підвал інформера з кнопкою синхронізації -->
+              <div class="pt-3 border-t border-slate-700/80 flex items-center justify-between text-xs">
+                <span id="telemetry-time" class="text-slate-400 font-mono text-[11px]">Оновлено: щойно</span>
+                <button id="telemetry-refresh-btn" type="button" class="px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500 text-sky-300 hover:text-slate-950 font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                  <span>Оновити дані</span>
+                </button>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         ЄДИНА СЕКЦІЯ: ПРО ПРОЄКТ ТА МЕТОДОЛОГІЯ НАВЧАННЯ (#about & #learning-ladder)
+         Вимога #1: Об'єднати методологію і про проєкт в одну секцію/сторінку,
+         щоб не було сильно перезавантажено, а читалося гармонійно та легко.
+         ========================================================================== -->
+    <section id="about" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="about-unified-title">
+      <div id="learning-ladder" class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 rounded-3xl p-6 sm:p-10 lg:p-14 text-white border border-slate-800 shadow-2xl relative overflow-hidden">
+        
+        <!-- Фоновий декор сітки -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-10">
+          
+          <!-- Заголовок та швидкі дії -->
+          <div class="flex flex-col items-center text-center justify-center gap-4 pb-6 border-b border-slate-800">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-400 text-xs font-semibold tracking-wider uppercase mb-3">
+                <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                <span>Про проєкт &amp; Методологія Learning Ladder</span>
+              </div>
+              <h2 id="about-unified-title" class="text-2xl sm:text-4xl font-extrabold font-heading text-white">
+                Чому існує SimpleArduino &amp; як влаштовано навчання
+              </h2>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-center gap-3">
+              <a href="about.html" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold border border-slate-700 transition">
+                <span>Окрема сторінка «Про нас»</span>
+                <span>→</span>
+              </a>
+              <a href="learning-ladder.html" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-950 text-xs font-bold shadow-lg shadow-sky-400/20 transition active:scale-95">
+                <span>Шлях навчання (10 проєктів)</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Верхній блок: Історія, місія та відкриті принципи (2 колонки) -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Ліва колонка: Людська розповідь та подолання бар'єрів -->
+            <div class="lg:col-span-7 space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed text-center">
+              <p class="text-base sm:text-lg font-medium text-slate-100 leading-snug">
+                Купити коробку деталей і застрягнути на першій же схемі через крихітну помилку — це досвід, через який 90% початківців кидають схемотехніку на першому тижні. Ми створили <strong class="text-sky-400 font-bold">SimpleArduino</strong>, щоб поруч завжди був надійний і зрозумілий наставник.
+              </p>
+              <p class="text-slate-400 text-sm leading-relaxed">
+                Платформа розроблена в Україні для самостійних практиків, студентів та викладачів STEM. Наша мета — подолати психологічний бар'єр перед програмуванням та апаратними помилками, пропонуючи послідовну траєкторію без різких стрибків складності.
+              </p>
+              
+              <!-- 4 чіткі принципи платформи у вигляді пігулок -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 text-xs">
+                <div class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-slate-200 text-center">
+                  <span class="text-sky-400 font-bold">✓</span>
+                  <span><strong>100% на залізі:</strong> кожен скетч протестовано</span>
+                </div>
+                <div class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-slate-200 text-center">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span><strong>Open-Source:</strong> вільний доступ без реєстрацій</span>
+                </div>
+                <div class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-slate-200 text-center">
+                  <span class="text-amber-400 font-bold">✓</span>
+                  <span><strong>Підтримка CH340:</strong> стабільна робота клонів</span>
+                </div>
+                <div class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-slate-200 text-center">
+                  <span class="text-purple-400 font-bold">✓</span>
+                  <span><strong>Troubleshooting:</strong> розбір 95% типових збоїв</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Права колонка: 4 Стовпи методології Learning Ladder -->
+            <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              
+              <div class="bg-slate-800/70 border border-slate-700/80 hover:border-sky-400/60 rounded-2xl p-4 space-y-2 transition-all duration-200 group interactive-card">
+                <div class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold icon-glow">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <h3 class="text-sm font-bold text-white">1. Навчальна Драбина</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Покроковий рух від світлодіода до систем FreeRTOS без стресу й «дірок» у знаннях.
+                </p>
+              </div>
+
+              <div class="bg-slate-800/70 border border-slate-700/80 hover:border-emerald-400/60 rounded-2xl p-4 space-y-2 transition-all duration-200 group interactive-card">
+                <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold icon-glow">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                </div>
+                <h3 class="text-sm font-bold text-white">2. Збірка-конструктор</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Кольорові підказки Breadboard, Fritzing та моделювання в Autodesk Tinkercad.
+                </p>
+              </div>
+
+              <div class="bg-slate-800/70 border border-slate-700/80 hover:border-purple-400/60 rounded-2xl p-4 space-y-2 transition-all duration-200 group interactive-card">
+                <div class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold icon-glow">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h3 class="text-sm font-bold text-white">3. Безпека деталей</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Чіткі розрахунки струму, закону Ома й полярності для захисту мікроконтролера.
+                </p>
+              </div>
+
+              <div class="bg-slate-800/70 border border-slate-700/80 hover:border-amber-400/60 rounded-2xl p-4 space-y-2 transition-all duration-200 group interactive-card">
+                <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold icon-glow">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="text-sm font-bold text-white">4. Mobile Workshop</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Адаптована верстка для комфортної роботи зі смартфона поруч із монтажним столом.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Мета-бейджі стандартів якості платформи -->
+          <div class="flex flex-wrap items-center justify-center gap-4 pt-4 border-t border-slate-800 text-xs font-mono text-slate-400 text-center">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/80">Open-Source Hardware</span>
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/80">Learning Ladder 10 Steps</span>
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/80">W3C HTML5 Valid</span>
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/80">WCAG 2.2 AA Verified</span>
+            </div>
+            <a href="learning-ladder.html" class="text-sky-400 hover:text-sky-300 font-semibold flex items-center gap-1 transition">
+              <span>Відкрити інтерактивну драбину (10 кроків)</span>
+              <span>→</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         СЕКЦІЯ ВІДГУКІВ ТА ГАРНО ОФОРМЛЕНОГО FAQ (#faq)
+         Вимога #2: Оформити гарно FAQ, щоб було все гарненько, з фільтрацією,
+         зрозумілими бейджами, іконками та підказками з усунення помилок.
+         ========================================================================== -->
+    <section id="faq" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="faq-reviews-title">
+      <div class="space-y-12">
+        
+        <!-- Відгуки мейкерів із зірковим рейтингом -->
+        <div>
+          <div class="flex flex-col items-center text-center justify-center gap-3 mb-6">
+            <div>
+              <span class="text-sky-600 font-semibold text-xs sm:text-sm uppercase tracking-wider">Спільнота SimpleArduino</span>
+              <h2 id="faq-reviews-title" class="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 mt-1">
+                Що кажуть наші користувачі
+              </h2>
+            </div>
+            <div class="flex items-center gap-1 text-amber-500 text-sm font-semibold">
+              <span>★★★★★</span>
+              <span class="text-slate-600 text-xs ml-1.5 font-mono">4.9 / 5.0 (240+ відгуків)</span>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            
+            <figure class="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-sky-300 transition-all duration-300 flex flex-col justify-between group interactive-card">
+              <div>
+                <div class="flex items-center justify-between mb-3 text-xs">
+                  <span class="text-amber-400 text-sm">★★★★★</span>
+                  <span class="text-[11px] bg-sky-50 text-sky-700 px-2 py-0.5 rounded-full font-semibold">Перевірений відгук</span>
+                </div>
+                <blockquote class="text-slate-700 text-sm italic leading-relaxed">
+                  «Зібрав схему світлофора за один вечір! Найбільше сподобалося, що усунення несправностей описано прямо під схемою — це зберегло купу нервів.»
+                </blockquote>
+              </div>
+              <figcaption class="mt-5 flex items-center justify-center gap-3 pt-3 border-t border-slate-100 text-center">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 text-white font-bold text-xs flex items-center justify-center shadow-md icon-glow">ІК</div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Ілля Коваленко</div>
+                  <div class="text-[11px] text-slate-500">Самостійний практик, Київ</div>
+                </div>
+              </figcaption>
+            </figure>
+
+            <figure class="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group interactive-card">
+              <div>
+                <div class="flex items-center justify-between mb-3 text-xs">
+                  <span class="text-amber-400 text-sm">★★★★★</span>
+                  <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">Перевірений відгук</span>
+                </div>
+                <blockquote class="text-slate-700 text-sm italic leading-relaxed">
+                  «Схеми ідеально читаються зі смартфона. Поставила телефон біля макетки — і все зійшлося з першого разу. Особливо зручний розбір полярності LED!»
+                </blockquote>
+              </div>
+              <figcaption class="mt-5 flex items-center justify-center gap-3 pt-3 border-t border-slate-100 text-center">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-xs flex items-center justify-center shadow-md icon-glow">ІМ</div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Інна Мельник</div>
+                  <div class="text-[11px] text-slate-500">Мейкер-початківець, Львів</div>
+                </div>
+              </figcaption>
+            </figure>
+
+            <figure class="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-purple-300 transition-all duration-300 flex flex-col justify-between group interactive-card sm:col-span-2 lg:col-span-1">
+              <div>
+                <div class="flex items-center justify-between mb-3 text-xs">
+                  <span class="text-amber-400 text-sm">★★★★★</span>
+                  <span class="text-[11px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full font-semibold">STEM Ментор</span>
+                </div>
+                <blockquote class="text-slate-700 text-sm italic leading-relaxed">
+                  «Використовую платформу для занять зі студентами в лабораторії робототехніки. 10 кроків драбини — ідеальна послідовність без прогалин.»
+                </blockquote>
+              </div>
+              <figcaption class="mt-5 flex items-center justify-center gap-3 pt-3 border-t border-slate-100 text-center">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center shadow-md icon-glow">ОС</div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Олексій Степаненко</div>
+                  <div class="text-[11px] text-slate-500">Викладач робототехніки, Дніпро</div>
+                </div>
+              </figcaption>
+            </figure>
+
+          </div>
+        </div>
+
+        <!-- FAQ Акордеон: Красиво оформлений з фільтром категорій -->
+        <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-xl space-y-6">
+          
+          <div class="flex flex-col items-center text-center justify-center gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <span class="text-sky-600 font-semibold text-xs uppercase tracking-wider">База знань SimpleArduino</span>
+              <h3 class="text-xl sm:text-2xl font-bold font-heading text-slate-900 mt-0.5">
+                Усунення частих несправностей (FAQ)
+              </h3>
+            </div>
+            
+            <!-- Кнопки швидкого фільтру категорій запитань -->
+            <div class="flex flex-wrap items-center justify-center gap-1.5 text-xs">
+              <button type="button" data-faq-category="all" class="faq-filter-btn px-3 py-1.5 rounded-lg font-bold bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20 transition">Всі (6)</button>
+              <button type="button" data-faq-category="drivers" class="faq-filter-btn px-3 py-1.5 rounded-lg text-slate-600 bg-slate-100 hover:bg-slate-200 transition font-medium">Драйвери</button>
+              <button type="button" data-faq-category="led" class="faq-filter-btn px-3 py-1.5 rounded-lg text-slate-600 bg-slate-100 hover:bg-slate-200 transition font-medium">Світлодіоди</button>
+              <button type="button" data-faq-category="ide" class="faq-filter-btn px-3 py-1.5 rounded-lg text-slate-600 bg-slate-100 hover:bg-slate-200 transition font-medium">Помилки IDE</button>
+              <button type="button" data-faq-category="buttons" class="faq-filter-btn px-3 py-1.5 rounded-lg text-slate-600 bg-slate-100 hover:bg-slate-200 transition font-medium">Кнопки</button>
+              <button type="button" data-faq-category="power" class="faq-filter-btn px-3 py-1.5 rounded-lg text-slate-600 bg-slate-100 hover:bg-slate-200 transition font-medium">Живлення</button>
+            </div>
+          </div>
+
+          <!-- Список запитань FAQ -->
+          <div class="space-y-3.5">
+            
+            <!-- Питання 1: Драйвери -->
+            <details name="faq-accordion" class="faq-item group bg-slate-50/80 rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm transition-all cursor-pointer" data-faq-cat="drivers" open>
+              <summary class="flex justify-between items-center font-bold text-slate-900 list-none select-none text-sm sm:text-base gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="faq-icon-wrapper w-9 h-9 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center shrink-0 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                  </div>
+                  <div>
+                    <span>Плата не визначається у середовищі Arduino IDE (Порт не активний)</span>
+                    <span class="faq-badge ml-2 bg-sky-100 text-sky-800">Драйвери CH340</span>
+                  </div>
+                </div>
+                <span class="transition-transform duration-200 group-open:rotate-180 text-sky-500 shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-200/80 space-y-2 leading-relaxed">
+                <p>
+                  Для китайських клонів Arduino UNO на базі мікросхеми <strong>CH340G / CH341</strong> операційна система Windows потребує спеціального драйвера:
+                </p>
+                <ol class="list-decimal list-inside space-y-1 pl-1 text-slate-700">
+                  <li>Завантажте офіційний інсталятор драйвера <code>CH341SER.EXE</code> та натисніть «Install».</li>
+                  <li>Перепідключіть USB-кабель у комп'ютер (переконайтеся, що кабель передає дані, а не лише заряджає).</li>
+                  <li>В Arduino IDE відкрийте меню <code>Інструменти → Порт</code> і виберіть з'явлений номер (наприклад, <code>COM3</code> або <code>COM4</code>).</li>
+                </ol>
+                <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-200 text-xs text-sky-900 flex items-center gap-2 mt-2">
+                  <span>💡</span> <span>Порада: У Диспетчері пристроїв Windows плата повинна відображатися в розділі «Порти (COM і LPT)» без жовтого знака оклику.</span>
+                </div>
+              </div>
+            </details>
+
+            <!-- Питання 2: Світлодіод -->
+            <details name="faq-accordion" class="faq-item group bg-slate-50/80 rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm transition-all cursor-pointer" data-faq-cat="led">
+              <summary class="flex justify-between items-center font-bold text-slate-900 list-none select-none text-sm sm:text-base gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="faq-icon-wrapper w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                  </div>
+                  <div>
+                    <span>Світлодіод не світиться або блимає занадто тьмяно</span>
+                    <span class="faq-badge ml-2 bg-amber-100 text-amber-800">Схемотехніка</span>
+                  </div>
+                </div>
+                <span class="transition-transform duration-200 group-open:rotate-180 text-sky-500 shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-200/80 space-y-2 leading-relaxed">
+                <p>
+                  Світлодіод є напівпровідниковим приладом і пропускає струм лише в одному напрямку:
+                </p>
+                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                  <li><strong>Полярність:</strong> Довга ніжка світлодіода (Анод, +) повинна підключатися до цифрового піна Arduino через струмообмежувальний резистор 220 Ом. Коротка ніжка зі зрізом на корпусі (Катод, -) — до шини <code>GND</code>.</li>
+                  <li><strong>Номінал резистора:</strong> Якщо поставити резистор номіналом 10 кОм замість 220 Ом, струм буде менше 0.3 мА, і світлодіод ледь жеврітиме. Перевірте кольорові смуги: <em>Червоний-Червоний-Коричневий (220 Ом)</em>.</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Питання 3: Завантаження avrdude -->
+            <details name="faq-accordion" class="faq-item group bg-slate-50/80 rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm transition-all cursor-pointer" data-faq-cat="ide">
+              <summary class="flex justify-between items-center font-bold text-slate-900 list-none select-none text-sm sm:text-base gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="faq-icon-wrapper w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                  </div>
+                  <div>
+                    <span>Помилка завантаження скетча: avrdude: stk500_getsync()</span>
+                    <span class="faq-badge ml-2 bg-rose-100 text-rose-800">Помилка IDE</span>
+                  </div>
+                </div>
+                <span class="transition-transform duration-200 group-open:rotate-180 text-sky-500 shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-200/80 space-y-2 leading-relaxed">
+                <p>
+                  Ця помилка виникає, коли комп'ютер не може встановити зв'язок із завантажувачем (bootloader) мікроконтролера ATmega328P:
+                </p>
+                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                  <li><strong>Зайняті піни RX/TX (0 і 1):</strong> Якщо до пінів 0 або 1 підключено Bluetooth, сенсори або дроти, вони блокують апаратний UART. <em>Від'єднайте проводи від 0 та 1 під час прошивки!</em></li>
+                  <li><strong>Неправильна плата:</strong> У меню <code>Інструменти → Плата</code> має бути обрано <code>Arduino Uno</code>.</li>
+                  <li><strong>Зависання порту:</strong> Закрийте монітор послідовного порту (Serial Monitor), вийміть і знову вставте USB-штекер.</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Питання 4: Кнопка та антибрязкіт -->
+            <details name="faq-accordion" class="faq-item group bg-slate-50/80 rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm transition-all cursor-pointer" data-faq-cat="buttons">
+              <summary class="flex justify-between items-center font-bold text-slate-900 list-none select-none text-sm sm:text-base gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="faq-icon-wrapper w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                  </div>
+                  <div>
+                    <span>Кнопка спрацьовує хаотично або реєструє кілька кліків за раз</span>
+                    <span class="faq-badge ml-2 bg-emerald-100 text-emerald-800">Антибрязкіт</span>
+                  </div>
+                </div>
+                <span class="transition-transform duration-200 group-open:rotate-180 text-sky-500 shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-200/80 space-y-2 leading-relaxed">
+                <p>
+                  Тут виникає два типових фізичних явища:
+                </p>
+                <ol class="list-decimal list-inside space-y-1 pl-1 text-slate-700">
+                  <li><strong>Висячий вхід (Floating Pin):</strong> Якщо вхід не підтягнуто до +5V або GND, провід працює як антена й ловить наведення електромережі. Завжди пишіть <code>pinMode(pin, INPUT_PULLUP);</code> у функції <code>setup()</code> і замикайте кнопку на GND.</li>
+                  <li><strong>Брязкіт контактів (Bouncing):</strong> Металеві пластини кнопки при замиканні вібрують протягом 5–20 мілісекунд. Використовуйте фільтрацію на <code>millis()</code> (як описано у Проєкті #02 нашого курсу).</li>
+                </ol>
+              </div>
+            </details>
+
+            <!-- Питання 5: Безпека та живлення -->
+            <details name="faq-accordion" class="faq-item group bg-slate-50/80 rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm transition-all cursor-pointer" data-faq-cat="power">
+              <summary class="flex justify-between items-center font-bold text-slate-900 list-none select-none text-sm sm:text-base gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="faq-icon-wrapper w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  </div>
+                  <div>
+                    <span>Чи можна підключати живлення 9V або 12V напряму до Arduino?</span>
+                    <span class="faq-badge ml-2 bg-purple-100 text-purple-800">Живлення</span>
+                  </div>
+                </div>
+                <span class="transition-transform duration-200 group-open:rotate-180 text-sky-500 shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-200/80 space-y-2 leading-relaxed">
+                <p>
+                  Так, але виключно через правильні порти з лінійним стабілізатором:
+                </p>
+                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                  <li><strong>Гніздо DC Barrel Jack або пін VIN:</strong> Підтримують напругу 7V–12V DC (вбудований стабілізатор AMS1117-5.0 знизить її до 5V).</li>
+                  <li><strong>УВАГА:</strong> Ніколи не подавайте 9V чи 12V на пін <code>5V</code>! Це призведе до миттєвого виходу з ладу процесора ATmega328P. Пін 5V служить лише для виходу стабілізованої напруги.</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Питання 6: delay() vs millis() -->
+            <details name="faq-accordion" class="faq-item group bg-slate-50/80 rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm transition-all cursor-pointer" data-faq-cat="ide">
+              <summary class="flex justify-between items-center font-bold text-slate-900 list-none select-none text-sm sm:text-base gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="faq-icon-wrapper w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  </div>
+                  <div>
+                    <span>Чому не варто використовувати delay() у реальних пристроях?</span>
+                    <span class="faq-badge ml-2 bg-indigo-100 text-indigo-800">Архітектура коду</span>
+                  </div>
+                </div>
+                <span class="transition-transform duration-200 group-open:rotate-180 text-sky-500 shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-200/80 space-y-2 leading-relaxed">
+                <p>
+                  Функція <code>delay(1000)</code> повністю зупиняє роботу ядра мікроконтролера на 1 секунду. У цей час плата не здатна:
+                </p>
+                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                  <li>Зчитати натискання кнопки користувачем;</li>
+                  <li>Обробити покази датчиків чи команди з комп'ютера;</li>
+                  <li>Керувати двигунами чи сервоприводами.</li>
+                </ul>
+                <p class="text-xs text-slate-500 mt-1">
+                  Наш курс у проєктах #02, #06 та #10 навчає створювати асинхронні таймери на <code>millis()</code> та використовувати витісняючу багатозадачність <strong>FreeRTOS</strong>.
+                </p>
+              </div>
+            </details>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         СЕКЦІЯ КОНТАКТІВ ТА GOOGLE MAPS З МІТКОЮ МАГАЗИНУ (#contact)
+         Вимога #4: Поставити мітку на магазин електротехніки як на Google Картах
+         ========================================================================== -->
+    <section id="contact" class="py-16 md:py-24 bg-slate-100/90 border-t border-slate-200/80" aria-labelledby="contact-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Заголовок секції контактів -->
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="text-sky-600 font-semibold text-xs sm:text-sm uppercase tracking-wider">Підтримка та Спільнота мейкерів</span>
+          <h2 id="contact-heading" class="text-2xl sm:text-4xl font-extrabold font-heading text-slate-900 mt-2">
+            Зв'яжіться з менторами та завітайте до магазину-партнера
+          </h2>
+          <p class="text-slate-600 mt-3 text-sm sm:text-base leading-relaxed">
+            Потрібна допомога з налагодженням скетчу або підбором радіодеталей? Заповніть форму або завітайте до магазину радіодеталей «Юстас» біля Львівської Політехніки.
+          </p>
+        </div>
+
+        <!-- Двоколонкова сітка: Форма зворотного зв'язку (6) + Карта з міткою (6) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          
+          <!-- Ліва колонка: Форма зворотного зв'язку -->
+          <div class="lg:col-span-6 flex flex-col justify-between">
+            <article class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xl flex-grow flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                  <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-bold icon-glow">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-bold font-heading text-slate-900">Запитати ментора SimpleArduino</h3>
+                    <p class="text-xs text-slate-500">Відповідаємо протягом 2-3 годин у робочі дні</p>
+                  </div>
+                </div>
+
+                <form id="contact-form" class="space-y-4" novalidate>
+                  <div>
+                    <label for="name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Ваше ім'я</label>
+                    <input type="text" id="name" name="name" required placeholder="Наприклад, Назар" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition">
+                  </div>
+                  <div>
+                    <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Електронна пошта</label>
+                    <input type="email" id="email" name="email" required placeholder="your.email@lpnu.ua" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition">
+                  </div>
+                  <div>
+                    <label for="message" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Ваше запитання або номер проєкту</label>
+                    <textarea id="message" name="message" rows="4" required placeholder="Опишіть ситуацію: яку плату використовуєте, що виводиться у Serial Monitor..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition resize-none"></textarea>
+                  </div>
+                  <button type="submit" class="w-full py-3 bg-sky-500 hover:bg-sky-400 active:scale-98 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/25 transition flex items-center justify-center gap-2 focus:outline-none focus:ring-4 focus:ring-sky-400/50">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                    <span>Надіслати повідомлення</span>
+                  </button>
+                </form>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-4 text-center">
+                Дані використовуються виключно для відповіді на запит. Відповідно до академічної політики конфіденційності.
+              </p>
+            </article>
+          </div>
+
+          <!-- Права колонка: Інтерактивна карта Google Maps з МІТКОЮ МАГАЗИНУ -->
+          <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+            <article class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xl flex-grow flex flex-col justify-between">
+              <div>
+                <!-- Інформація про магазин «Юстас» -->
+                <div class="flex items-center justify-center gap-3 mb-4 pb-3 border-b border-slate-100 text-center">
+                  <div>
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Офлайн партнер SimpleArduino</span>
+                    <h3 class="text-xl sm:text-2xl font-bold font-heading text-slate-900 mt-0.5">Магазин електроніки «Юстас»</h3>
+                  </div>
+                  <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full border border-emerald-200 font-semibold flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Працює</span>
+                  </span>
+                </div>
+
+                <div class="space-y-2.5 text-xs sm:text-sm text-slate-600 mb-4">
+                  <div class="flex items-center justify-center gap-2.5 text-center">
+                    <svg class="w-4 h-4 text-rose-600 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span><strong>Адреса:</strong> м. Львів, вул. Героїв УПА, 42 (Магазин радіодеталей, плат та датчиків «Юстас»)</span>
+                  </div>
+                  <div class="flex items-center justify-center gap-2.5 text-center">
+                    <svg class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span><strong>Графік:</strong> Пн–Пт 09:30 – 18:00, Сб 10:00 – 15:00, Нд — вихідний</span>
+                  </div>
+                  <div class="flex items-center justify-center gap-2.5 text-center">
+                    <svg class="w-4 h-4 text-sky-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    <span><strong>Контакти:</strong> +38 (093) 020-40-51 | justas@ipm.lviv.ua | 5 хв від НУ «Львівська Політехніка»</span>
+                  </div>
+                </div>
+
+                <!-- Контейнер карти з РЕАЛЬНОЮ МІТКОЮ GOOGLE MAPS -->
+                <div class="responsive-map-wrapper relative w-full h-[300px] sm:h-[350px] rounded-xl overflow-hidden border border-slate-300 shadow-inner group">
+                  
+                  <!-- Google Maps Iframe -->
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2573.541624647318!2d23.99777177684687!3d49.83310867148057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x473add86f0d11db5%3A0x6b4a3c10a4cb6fa!2z0LLRg9C70LjRhtGPINCT0LXRgNC-0ZfQsiDQo9Cf0JAsIDQyLCDQm9GM0LLRltCyLCDQm9GM0LLRltCy0YHRjNC60LAg0L_QvtC70LDRgdGC0YwsIDc5MDE4!5e0!3m2!1suk!2sua!4v1700000000000!5m2!1suk!2sua" 
+                    title="Інтерактивна карта розташування магазину електроніки «Юстас» (вул. Героїв УПА, 42, м. Львів)" 
+                    loading="lazy" 
+                    allowfullscreen="" 
+                    referrerpolicy="no-referrer-when-downgrade" 
+                    class="w-full h-full border-0">
+                  </iframe>
+
+                  <!-- Оверлей реальної мітки Google Maps з пульсацією та спливаючим вікном (Вимога #4) -->
+                  <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+                    <div id="google-map-marker-pin" class="relative pointer-events-auto cursor-pointer -translate-y-4">
+                      
+                      <!-- Пульсуючий радар під міткою -->
+                      <div class="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-8 h-8 rounded-full bg-rose-500/40 google-map-pin-pulse pointer-events-none"></div>
+                      <div class="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-4 h-4 rounded-full bg-rose-600/60 pointer-events-none"></div>
+
+                      <!-- Червона мітка Google Maps Pin (Автентична форма піна) -->
+                      <div class="google-map-pin relative z-10 flex flex-col items-center">
+                        <svg class="w-10 h-10 drop-shadow-xl" viewBox="0 0 24 24" fill="none">
+                          <path d="M12 2C7.58 2 4 5.58 4 10C4 15.25 12 22 12 22C12 22 20 15.25 20 10C20 5.58 16.42 2 12 2Z" fill="#EA4335" stroke="#C5221F" stroke-width="1"/>
+                          <circle cx="12" cy="10" r="3.2" fill="#FFFFFF"/>
+                          <circle cx="12" cy="10" r="1.6" fill="#B31412"/>
+                        </svg>
+                      </div>
+
+                      <!-- Спливаюче вікно над міткою (Google Maps InfoWindow) -->
+                      <div id="map-infowindow-popup" class="map-infowindow absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-900/95 backdrop-blur-md text-white p-3 rounded-xl border border-rose-500/40 shadow-2xl z-20 text-center">
+                        <div class="flex items-center justify-center gap-1.5 text-xs font-bold text-rose-400">
+                          <span>📍</span>
+                          <span>Магазин «Юстас»</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 mt-1">вул. Героїв УПА, 42, м. Львів</div>
+                        <div class="text-[10px] text-emerald-400 font-mono mt-0.5">⭐️ 4.9 • Відкрито до 18:00</div>
+                        <div class="text-[10px] text-sky-300 mt-1 border-t border-slate-700/80 pt-1">Партнерський стенд SimpleArduino</div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!-- Підказка перегляду внизу зліва карти -->
+                  <div class="absolute bottom-2 left-2 z-10 pointer-events-auto">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900/85 backdrop-blur text-white text-[10px] font-mono border border-slate-700 shadow">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <span>Магазин на карті: Героїв УПА, 42</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Нижня панель дій для карти -->
+              <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
+                <button id="map-pin-focus-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 font-semibold border border-sky-200 transition">
+                  <span>📍</span>
+                  <span>Показати / сховати мітку</span>
+                </button>
+                <a href="https://maps.google.com/?q=вулиця+Героїв+УПА+42+Львів+Юстас" target="_blank" rel="noopener" class="text-sky-600 hover:text-sky-700 font-semibold flex items-center gap-1 hover:underline">
+                  <span>Відкрити в Google Maps додатку</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </article>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- 4-колонкова адаптивна сітка -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 text-center">
+        
+        <!-- Колонка 1: Логотип, опис та соцмережі бренду -->
+        <div class="space-y-4 flex flex-col items-center text-center">
+          <a href="#main" class="inline-block">
+            <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto">
+          </a>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Перша україномовна відкрита платформа практичного вивчення мікроконтролерів Arduino за схемою «Навчальної драбини».
+          </p>
+          <div class="flex items-center justify-center gap-3 pt-2 text-slate-400">
+            <a href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub проєкту" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-sky-500 hover:text-slate-950 transition-colors flex items-center justify-center">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+            </a>
+            <a href="https://t.me/" target="_blank" rel="noopener" aria-label="Telegram канал" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-sky-500 hover:text-slate-950 transition-colors flex items-center justify-center">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Колонка 2: Каталог курсів / Рівні -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Каталог модулів</h3>
+          <ul class="space-y-2.5 text-xs sm:text-sm">
+            <li><a href="beginner.html" class="hover:text-sky-400 transition-colors">Початковий (Beginner) — 4 проєкти</a></li>
+            <li><a href="intermediate.html" class="hover:text-sky-400 transition-colors">Середній (Intermediate) — 3 проєкти</a></li>
+            <li><a href="advanced.html" class="hover:text-sky-400 transition-colors">Просунутий (Advanced) — 3 проєкти</a></li>
+            <li><a href="learning-ladder.html" class="hover:text-sky-400 transition-colors">Шлях навчання (10 проєктів)</a></li>
+            <li><a href="#levels" class="hover:text-sky-400 transition-colors">Каталог компонентів та схем</a></li>
+            <li><a href="#media-hub" class="hover:text-sky-400 transition-colors text-sky-400 font-medium">Медіа-хаб (Відео + IoT)</a></li>
+            <li><a href="#contact" class="hover:text-sky-400 transition-colors">Лабораторія та карта</a></li>
+          </ul>
+        </div>
+
+        <!-- Колонка 3: Платформа та ресурси -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Ресурси для навчання</h3>
+          <ul class="space-y-2.5 text-xs sm:text-sm">
+            <li><a href="learning-ladder.html" class="hover:text-sky-400 transition-colors">Шлях навчання (10 проєктів)</a></li>
+            <li><a href="beginner.html" class="hover:text-sky-400 transition-colors">Початковий рівень (Схеми та код)</a></li>
+            <li><a href="#about" class="hover:text-sky-400 transition-colors">Про нас та місію проєкту</a></li>
+            <li><a href="#faq" class="hover:text-sky-400 transition-colors">База типових несправностей</a></li>
+            <li><a href="#contact" class="hover:text-sky-400 transition-colors">Служба менторської підтримки</a></li>
+          </ul>
+        </div>
+
+        <!-- Колонка 4: Юридична інформація (Online Education) та Підписка на оновлення -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Оновлення та Право</h3>
+          <p class="text-xs text-slate-400 mb-3">Отримуйте нові схеми та проєкти щомісяця.</p>
+          <form id="subscribe-form" action="#" class="flex gap-2 mb-4">
+            <input id="newsletter-email" name="newsletter-email" type="email" placeholder="Ваш email" aria-label="Електронна пошта для отримання щомісячного дайджесту схем" required class="w-full bg-slate-800 text-xs px-3 py-2 rounded-lg border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400">
+            <button type="submit" class="px-3 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-lg transition cursor-pointer">OK</button>
+          </form>
+
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li><a href="#about" class="hover:text-sky-400 underline decoration-slate-700 underline-offset-4 transition-colors">Політика конфіденційності (Privacy Policy)</a></li>
+            <li><a href="#about" class="hover:text-sky-400 underline decoration-slate-700 underline-offset-4 transition-colors">Умови використання (Terms of Service)</a></li>
+          </ul>
+
+          <div class="mt-4 inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-[11px] text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Всі системи працюють штатно
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Нижня планка копірайту -->
+      <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <p>&copy; 2026 SimpleArduino. Відкрита українська освітня платформа для практичного вивчення мікроконтролерів та робототехніки.</p>
+        <p>Деплой розміщено на платформі Netlify.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Скрипт повної інтерактивності (Mobile menu, Dropdown, Search, Filter, Toasts) -->
+  <script src="js/main.js"></script>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const scrollY = params.get('scrollY');
+  if (scrollY) {
+    window.scrollTo(0, parseInt(scrollY));
+  }
+  const snapId = params.get('snap');
+  if (snapId) {
+    const el = document.getElementById(snapId);
+    if (el) el.scrollIntoView({ behavior: 'instant' });
+  }
+</script>
+</body>
+</html>

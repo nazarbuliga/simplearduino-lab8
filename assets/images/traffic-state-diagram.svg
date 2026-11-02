@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 240" width="500" height="240" fill="none">
+  <rect width="500" height="240" rx="12" fill="#1E293B" stroke="#334155" stroke-width="2"/>
+  <text x="20" y="32" fill="#38BDF8" font-family="Inter, sans-serif" font-size="13" font-weight="bold" letter-spacing="1">ФАЗИ РОБОТИ РОЗУМНОГО СВІТЛОФОРА</text>
+
+  <g transform="translate(30, 60)" font-family="Inter, sans-serif">
+    <!-- Фаза 1 -->
+    <rect x="0" y="0" width="95" height="130" rx="10" fill="#0F172A" stroke="#22C55E" stroke-width="2"/>
+    <circle cx="47" cy="30" r="12" fill="#1E293B"/>
+    <circle cx="47" cy="65" r="12" fill="#1E293B"/>
+    <circle cx="47" cy="100" r="12" fill="#22C55E"/>
+    <text x="47" y="150" text-anchor="middle" fill="#86EFAC" font-size="10" font-weight="bold">ФАЗА 1 (Зелений)</text>
+
+    <!-- Стрілка 1 -> 2 -->
+    <text x="105" y="65" fill="#64748B" font-size="16">→</text>
+
+    <!-- Фаза 2 -->
+    <rect x="115" y="0" width="95" height="130" rx="10" fill="#0F172A" stroke="#EAB308" stroke-width="2"/>
+    <circle cx="162" cy="30" r="12" fill="#1E293B"/>
+    <circle cx="162" cy="65" r="12" fill="#EAB308"/>
+    <circle cx="162" cy="100" r="12" fill="#1E293B"/>
+    <text x="162" y="150" text-anchor="middle" fill="#FDE047" font-size="10" font-weight="bold">ФАЗА 2 (Жовтий)</text>
+
+    <!-- Стрілка 2 -> 3 -->
+    <text x="220" y="65" fill="#64748B" font-size="16">→</text>
+
+    <!-- Фаза 3 -->
+    <rect x="230" y="0" width="95" height="130" rx="10" fill="#0F172A" stroke="#EF4444" stroke-width="2"/>
+    <circle cx="277" cy="30" r="12" fill="#EF4444"/>
+    <circle cx="277" cy="65" r="12" fill="#1E293B"/>
+    <circle cx="277" cy="100" r="12" fill="#1E293B"/>
+    <text x="277" y="150" text-anchor="middle" fill="#FCA5A5" font-size="10" font-weight="bold">ФАЗА 3 (Червоний)</text>
+
+    <!-- Стрілка 3 -> 4 -->
+    <text x="335" y="65" fill="#64748B" font-size="16">→</text>
+
+    <!-- Фаза 4 -->
+    <rect x="345" y="0" width="95" height="130" rx="10" fill="#0F172A" stroke="#F59E0B" stroke-width="2"/>
+    <circle cx="392" cy="30" r="12" fill="#EF4444"/>
+    <circle cx="392" cy="65" r="12" fill="#EAB308"/>
+    <circle cx="392" cy="100" r="12" fill="#1E293B"/>
+    <text x="392" y="150" text-anchor="middle" fill="#FCD34D" font-size="10" font-weight="bold">ФАЗА 4 (Готовність)</text>
+  </g>
+</svg>

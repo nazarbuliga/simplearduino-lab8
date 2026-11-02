@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 280" width="720" height="280" fill="none">
+  <!-- Фон картки -->
+  <rect width="720" height="280" rx="16" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+
+  <!-- Заголовок -->
+  <text x="24" y="32" fill="#38BDF8" font-family="Inter, sans-serif" font-size="13" font-weight="bold" letter-spacing="1">ФІЗИКА INPUT_PULLUP: ЧОМУ ПІН НЕ ПОВИНЕН «ВИСІТИ У ПОВІТРІ»</text>
+
+  <!-- ЛІВА КОЛОНКА: Стан спокою (Кнопку НЕ натиснуто) -->
+  <g transform="translate(30, 50)">
+    <rect width="310" height="205" rx="12" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+    <text x="16" y="24" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="12" font-weight="bold">1. Стан спокою (Кнопка розімкнена)</text>
+
+    <!-- +5V шина -->
+    <line x1="40" y1="50" x2="100" y2="50" stroke="#EF4444" stroke-width="3"/>
+    <text x="105" y="54" fill="#EF4444" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">+5V (Внутрішнє)</text>
+
+    <!-- Внутрішній підтягувальний резистор 20-50 кОм -->
+    <line x1="60" y1="50" x2="60" y2="70" stroke="#EF4444" stroke-width="2.5"/>
+    <rect x="52" y="70" width="16" height="34" rx="4" fill="#FDE68A" stroke="#D97706" stroke-width="1.5"/>
+    <text x="76" y="92" fill="#FDE68A" font-family="Inter, sans-serif" font-size="10">R_pullup (30 кОм)</text>
+    <line x1="60" y1="104" x2="60" y2="130" stroke="#38BDF8" stroke-width="2.5"/>
+
+    <!-- Точка підключення до піна D2 -->
+    <circle cx="60" cy="130" r="5" fill="#38BDF8"/>
+    <line x1="60" y1="130" x2="130" y2="130" stroke="#38BDF8" stroke-width="2.5"/>
+    <rect x="135" y="118" width="150" height="24" rx="6" fill="#0284C7"/>
+    <text x="145" y="134" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">Пін D2 = HIGH (1)</text>
+
+    <!-- Розімкнена кнопка до GND -->
+    <line x1="60" y1="130" x2="60" y2="155" stroke="#94A3B8" stroke-width="2.5"/>
+    <!-- Контакти кнопки (відкриті) -->
+    <circle cx="60" cy="155" r="3" fill="#94A3B8"/>
+    <line x1="60" y1="155" x2="75" y2="175" stroke="#CBD5E1" stroke-width="2.5"/>
+    <circle cx="60" cy="180" r="3" fill="#94A3B8"/>
+    <line x1="60" y1="180" x2="60" y2="195" stroke="#94A3B8" stroke-width="2.5"/>
+    <!-- Символ землі -->
+    <line x1="45" y1="195" x2="75" y2="195" stroke="#94A3B8" stroke-width="2"/>
+    <line x1="50" y1="198" x2="70" y2="198" stroke="#94A3B8" stroke-width="2"/>
+    <line x1="55" y1="201" x2="65" y2="201" stroke="#94A3B8" stroke-width="2"/>
+    <text x="82" y="198" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="9">GND (0V)</text>
+  </g>
+
+  <!-- ПРАВА КОЛОНКА: Натиснутий стан (Кнопка замкнена) -->
+  <g transform="translate(370, 50)">
+    <rect width="320" height="205" rx="12" fill="#1E293B" stroke="#22C55E" stroke-width="1.5"/>
+    <text x="16" y="24" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="12" font-weight="bold">2. Натискання (Кнопка замкнена на GND)</text>
+
+    <!-- +5V шина -->
+    <line x1="40" y1="50" x2="100" y2="50" stroke="#EF4444" stroke-width="3"/>
+    <text x="105" y="54" fill="#EF4444" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">+5V</text>
+
+    <!-- Внутрішній підтягувальний резистор обмежує витік струму -->
+    <line x1="60" y1="50" x2="60" y2="70" stroke="#EF4444" stroke-width="2.5"/>
+    <rect x="52" y="70" width="16" height="34" rx="4" fill="#FDE68A" stroke="#D97706" stroke-width="1.5"/>
+    <text x="76" y="92" fill="#FDE68A" font-family="Inter, sans-serif" font-size="10">Струм: 5V/30k = 0.16 мА</text>
+    <line x1="60" y1="104" x2="60" y2="130" stroke="#22C55E" stroke-width="2.5"/>
+
+    <!-- Точка підключення до піна D2 тягнеться до 0V -->
+    <circle cx="60" cy="130" r="5" fill="#22C55E"/>
+    <line x1="60" y1="130" x2="130" y2="130" stroke="#22C55E" stroke-width="2.5"/>
+    <rect x="135" y="118" width="160" height="24" rx="6" fill="#15803D"/>
+    <text x="145" y="134" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">Пін D2 = LOW (0)</text>
+
+    <!-- Замкнена кнопка -->
+    <line x1="60" y1="130" x2="60" y2="195" stroke="#22C55E" stroke-width="3.5"/>
+    <circle cx="60" cy="155" r="4" fill="#22C55E"/>
+    <circle cx="60" cy="180" r="4" fill="#22C55E"/>
+    <text x="74" y="170" fill="#4ADE80" font-family="Inter, sans-serif" font-size="10" font-weight="bold">ЗАМКНЕНО НА GND</text>
+
+    <!-- Символ землі -->
+    <line x1="45" y1="195" x2="75" y2="195" stroke="#94A3B8" stroke-width="2"/>
+    <line x1="50" y1="198" x2="70" y2="198" stroke="#94A3B8" stroke-width="2"/>
+    <line x1="55" y1="201" x2="65" y2="201" stroke="#94A3B8" stroke-width="2"/>
+    <text x="82" y="198" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="9">GND (0V)</text>
+  </g>
+</svg>

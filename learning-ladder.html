@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <title>Шлях навчання: 10 практичних інженерних кроків | SimpleArduino</title>
+  <meta name="description" content="Покрокова траєкторія практичного освоєння мікроконтролерів Arduino: від першого скетчу Blink до ОСРВ реального часу FreeRTOS. 10 повних інтерактивних проєктів.">
+  <meta name="keywords" content="Arduino, шлях навчання, траєкторія, Tinkercad, схемотехніка, електроніка, робототехніка, FreeRTOS, мікроконтролери">
+  <meta name="author" content="SimpleArduino Hub">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Шлях навчання Arduino: 10 практичних кроків | SimpleArduino">
+  <meta property="og:description" content="Структурована інтерактивна траєкторія від базового світлодіода до індустріальних систем на FreeRTOS.">
+  <meta property="og:type" content="article">
+
+  <!-- Tailwind Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              900: '#0f172a',
+              950: '#020617'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            heading: ['Raleway', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom-styles.css">
+  <link rel="icon" href="assets/icons/logo-mark.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sky-400 selection:text-slate-900 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white transition-all shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Логотип -->
+      <a class="flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-sky-400 rounded-lg p-1" href="index.html" aria-label="SimpleArduino — на головну">
+        <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto object-contain transition-transform group-hover:scale-105" fetchpriority="high">
+      </a>
+
+      <!-- Центральна навігація -->
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2" aria-label="Головна навігація">
+        <a href="index.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Головна</a>
+        <a href="beginner.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Початковий</a>
+        <a href="intermediate.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Середній</a>
+        <a href="advanced.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Просунутий</a>
+        <a href="learning-ladder.html" class="px-3 py-2 text-sm font-bold text-sky-400 bg-slate-800/90 rounded-lg transition-colors border border-sky-400/20">Шлях навчання (10 проєктів)</a>
+        <a href="about.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Про проєкт &amp; Методологія</a>
+      </nav>
+
+      <!-- Швидкий перехід -->
+      <div class="hidden lg:flex items-center gap-4">
+        <a href="beginner.html" class="px-5 py-2.5 text-sm font-bold bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl shadow-md transition">
+          Розпочати з Кроку #01 →
+        </a>
+      </div>
+
+      <!-- Мобільне меню кнопка -->
+      <button id="mobile-menu-btn" type="button" class="md:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню навігації">
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+    </div>
+
+    <!-- Мобільне меню -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 animate-fadeIn">
+      <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Головна сторінка</a>
+      <a href="beginner.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Початковий рівень (4 проєкти)</a>
+      <a href="intermediate.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Середній рівень (3 проєкти)</a>
+      <a href="advanced.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Просунутий рівень (3 проєкти)</a>
+      <a href="learning-ladder.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-bold text-sky-400 bg-slate-800">Шлях навчання (10 проєктів)</a>
+      <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800 hover:text-white">Про проєкт &amp; Методологія</a>
+    </div>
+  </header>
+
+  <!-- Спливаюче сповіщення Toast Notification -->
+  <div id="toast-notify" class="fixed bottom-6 right-6 z-50 hidden max-w-md bg-slate-900 border border-sky-400/80 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 animate-fadeIn">
+    <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center flex-shrink-0">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    </div>
+    <div id="toast-text" class="text-xs sm:text-sm font-medium text-slate-200">Прогрес оновлено!</div>
+  </div>
+
+  <main id="main" class="flex-grow focus:outline-none">
+
+    <!-- HERO СЕКЦІЯ ТРАЄКТОРІЇ -->
+    <section class="relative bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white py-16 md:py-20 overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-xs text-slate-400 mb-6 font-mono" aria-label="Хлібні крихти">
+          <a href="index.html" class="hover:text-sky-400 transition-colors">Головна</a>
+          <span>/</span>
+          <span class="text-sky-400">Шлях навчання (Learning Ladder)</span>
+        </nav>
+
+        <div class="max-w-3xl space-y-4">
+          <div class="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-400 text-xs font-semibold tracking-wider uppercase">
+            <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+            Комплексна інженерна траєкторія 2026: 10 повнофункціональних проєктів
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-extrabold font-heading tracking-tight text-white">
+            Шлях навчання: <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-emerald-400 to-purple-400">від нуля до мейкера</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+            Не хаотичні уривки з інтернету, а продумана інженерна драбина. Кожен наступний проєкт органічно спирається на знання попереднього: від закону Ома й монтажної плати до веб-серверів та витісняючої багатозадачності на FreeRTOS.
+          </p>
+
+          <!-- Індикатор збереження прогресу у браузері -->
+          <div class="bg-slate-800/80 backdrop-blur border border-slate-700/80 rounded-2xl p-5 mt-6 max-w-xl shadow-lg">
+            <div class="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
+              <span class="text-slate-200 flex items-center gap-2">
+                <span>🎯</span> Ваш персональний прогрес у браузері:
+              </span>
+              <span id="ladder-progress-text" class="text-sky-400 font-mono font-bold">0 з 10 кроків (0%)</span>
+            </div>
+            <div class="w-full bg-slate-950 rounded-full h-3 p-0.5 border border-slate-700">
+              <div id="ladder-progress-bar" class="bg-gradient-to-r from-sky-400 via-emerald-400 to-purple-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center text-[11px] text-slate-400 mt-2 font-mono">
+              <span>Крок 1: Базовий маяк</span>
+              <span>Крок 5: Сонар</span>
+              <span>Крок 10: FreeRTOS</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 10 ПОСЛІДОВНИХ СХОДИНОК (LEARNING LADDER TIMELINE) -->
+    <section class="py-16 md:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="relative border-l-2 border-slate-200 ml-4 md:ml-32 space-y-12">
+
+        <!-- ================= РІВЕНЬ 1: ПОЧАТКОВИЙ (КРОКИ 1-4) ================= -->
+        <div class="relative pl-8 md:pl-12 pt-2">
+          <span class="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-800 border border-sky-300">
+            Частина I: Основи цифрової схемотехніки (Початковий рівень)
+          </span>
+        </div>
+
+        <!-- КРОК 1 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="1">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-sky-500 text-slate-950 font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            01
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-sky-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Базова прошивка • 15 хв • Початковий</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#01 Розумний світлодіодний маяк (Smart Blink)</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-sky-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-sky-500 focus:ring-sky-400 h-4 w-4" data-step-id="1" aria-label="Позначити проєкт #1 як пройдений">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Знайомство з архітектурою плати Arduino UNO R3 (чипом ATmega328P та стабілізатором живлення). Складання першого електричного кола з червоним світлодіодом та струмообмежувальним резистором 220 Ом за законом Ома. Завантаження першого C++ скетчу.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> Плата UNO R3, світлодіод 5мм, резистор 220 Ом (Червоний-Червоний-Коричневий), breadboard.</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">setup()</code>, <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">loop()</code>, <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">pinMode(13, OUTPUT)</code>, <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">digitalWrite()</code>.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-01-blink.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #01</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- КРОК 2 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="2">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-sky-500 text-slate-950 font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            02
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-sky-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Цифровий ввід • 20 хв • Початковий</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#02 Тактова кнопка та антибрязкіт контактів (Debounce)</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-sky-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-sky-500 focus:ring-sky-400 h-4 w-4" data-step-id="2" aria-label="Позначити проєкт #2 як пройдений">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Чому не можна підключати кнопку без підтяжки (явище Floating Pin). Робота з внутрішнім резистором підтяжки <code class="bg-slate-100 px-1 py-0.5 rounded text-sky-700 font-mono">INPUT_PULLUP</code>, діагональне підключення контактів та неблокуючий алгоритм фільтрації брязкоту на <code class="bg-slate-100 px-1 py-0.5 rounded text-sky-700 font-mono">millis()</code>.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> Тактова кнопка 4-pin 12х12мм, світлодіод, резистор 220 Ом, дроти.</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">pinMode(2, INPUT_PULLUP)</code>, <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">digitalRead(2)</code>, інверсна логіка, контактний брязкіт (Bounce).</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-02-button.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #02</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- КРОК 3 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="3">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-sky-500 text-slate-950 font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            03
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-sky-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Автомати станів • 25 хв • Початковий</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#03 Розумний пішохідний світлофор на автоматі станів</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-sky-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-sky-500 focus:ring-sky-400 h-4 w-4" data-step-id="3" aria-label="Позначити проєкт #3 як пройдений">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Побудова реальної системи світлофорного регулювання з пішохідною кнопкою виклику. Архітектура скінченного автомата станів (FSM): безпечний перехід між фазами GREEN, YELLOW_TO_RED, RED_CROSSING та YELLOW_TO_GREEN без використання блокуючих пауз.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> 3 світлодіоди (Червоний, Жовтий, Зелений), тактова кнопка, 3 резистори 220 Ом.</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">enum State</code>, <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">switch-case</code>, неблокуючі таймери переходу.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-03-traffic-light.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #03</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- КРОК 4 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="4">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-sky-500 text-slate-950 font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            04
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-sky-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Аналогові сигнали та ШІМ • 25 хв • Початковий</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#04 Аналоговий потенціометр та плавне ШІМ-затемнення</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-sky-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-sky-500 focus:ring-sky-400 h-4 w-4" data-step-id="4" aria-label="Позначити проєкт #4 як пройдений">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Робота з 10-розрядним вбудованим АЦП мікроконтролера (вхід A0, значення 0–1023). Математичне перетворення діапазонів через функцію <code class="bg-slate-100 px-1 py-0.5 rounded text-sky-700 font-mono">map()</code> та генерація 8-бітного апаратного ШІМ-сигналу (0–255) для плавного керування яскравістю на піні D9 (~PWM).
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> Потенціометр 10 кОм (B10K), світлодіод, резистор 220 Ом.</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">analogRead(A0)</code>, <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-sky-800 font-mono">analogWrite(9, val)</code>, шпаруватість (Duty Cycle), таймери ШІМ.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-04-potentiometer.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #04</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= РІВЕНЬ 2: СЕРЕДНІЙ (КРОКИ 5-7) ================= -->
+        <div class="relative pl-8 md:pl-12 pt-6">
+          <span class="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
+            Частина II: Сенсори, протоколи зв'язку та актуатори (Середній рівень)
+          </span>
+        </div>
+
+        <!-- КРОК 5 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="5">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-emerald-500 text-slate-950 font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            05
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-emerald-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Акустична локація • 35 хв • Середній</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#05 Ультразвуковий парктронік з сонаром HC-SR04 та зумером</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-emerald-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-emerald-500 focus:ring-emerald-400 h-4 w-4" data-step-id="5" aria-label="Крок #5: Ультразвуковий сонар HC-SR04 та вимірювання дистанції">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Принцип вимірювання часу польоту ультразвуку (Time of Flight). Генерація пускового імпульсу 10 мкс на Trig, вимірювання тривалості сигналу на Echo через <code class="bg-slate-100 px-1 py-0.5 rounded text-emerald-700 font-mono">pulseIn()</code>, розрахунок дистанції через швидкість звуку 343 м/с та тризонна світло-звукова сигналізація.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> Сонар HC-SR04, активний п'єзозумер, 3 світлодіоди (Зелений, Жовтий, Червоний).</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-emerald-800 font-mono">pulseIn()</code>, формула \(S = (t \cdot 0.0343) / 2\), фільтрація сплесків, частота біпу.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-05-ultrasonic.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #05</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- КРОК 6 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="6">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-emerald-500 text-slate-950 font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            06
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-emerald-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Шина I2C та телеметрія • 35 хв • Середній</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#06 Метеостанція на символьному дисплеї LCD 1602 I2C та DHT11</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-emerald-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-emerald-500 focus:ring-emerald-400 h-4 w-4" data-step-id="6" aria-label="Крок #6: Метеостанція DHT22 та I2C LCD 1602">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Як працює синхронна 2-провідна шина I2C (лінії SDA/SCL на виводах A4/A5). Підключення символьного РК-дисплея 16х2 через розширювач PCF8574 на адресі 0x27, опитування цифрового термо-гігрометра DHT11 та вивід кастомних символів градуса °C.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> LCD 1602 I2C (синій екран), сенсор DHT11, підтягувальний резистор 4.7 кОм.</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> Бібліотеки <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-emerald-800 font-mono">&lt;Wire.h&gt;</code>, <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-emerald-800 font-mono">&lt;LiquidCrystal_I2C.h&gt;</code>, створення гліфів <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-emerald-800 font-mono">createChar()</code>.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-06-weather-station.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #06</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- КРОК 7 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="7">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-emerald-500 text-slate-950 font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            07
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-emerald-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Сервомеханіка та регулювання • 40 хв • Середній</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#07 Сонячний трекер на сервоприводі SG90 та двох фоторезисторах</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-emerald-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-emerald-500 focus:ring-emerald-400 h-4 w-4" data-step-id="7" aria-label="Крок #7: Сервопривід SG90 та аналоговий трекер">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Створення системи автоматичного стеження за сонцем (Solar Tracker). Порівняння сигналів двох фоторезисторів через світлорозподільну перегородку, імпульсне керування кутом 0–180° мікросервоприводу SG90 імпульсами 50 Гц та налаштування зони мертвості (Deadband) для запобігання вібраціям редуктора.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> Серво TowerPro SG90, 2 фоторезистори GL5528, 2 резистори 10 кОм.</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> Бібліотека <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-emerald-800 font-mono">&lt;Servo.h&gt;</code>, кутовий контроль, гістерезис (Deadband), оптична перегородка.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-07-servo-tracker.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #07</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= РІВЕНЬ 3: ПРОСУНУТИЙ (КРОКИ 8-10) ================= -->
+        <div class="relative pl-8 md:pl-12 pt-6">
+          <span class="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-300">
+            Частина III: Інженерні системи, робототехніка та FreeRTOS (Просунутий рівень)
+          </span>
+        </div>
+
+        <!-- КРОК 8 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="8">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-purple-600 text-white font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            08
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-purple-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-purple-600 uppercase tracking-wider">Мобільна робототехніка • 60 хв • Просунутий</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#08 Автономний двоколісний робот-ровер з драйвером L298N та сонаром</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-purple-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-purple-500 focus:ring-purple-400 h-4 w-4" data-step-id="8" aria-label="Крок #8: Автономний робот-ровер на драйвері L298N">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Побудова самохідного колісного робота на платформі 2WD. Керування тяговими DC-двигунами через подвійний H-міст L298N з ШІМ-регулюванням швидкості на пінах ENA/ENB. Алгоритм огляду секторів за допомогою сонара на сервоприводі та інтелектуальний маневр ухилення від перешкод.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> Шасі 2WD, 2 мотори 3-6V, силовий модуль L298N, акумуляторний блок 7.4V, сонар HC-SR04, серво SG90.</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> H-міст, індуктивні викиди (зворотна ЕРС), роздільне живлення логіки та моторів, диференціальний розворот.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-08-autonomous-robot.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #08</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- КРОК 9 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="9">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-purple-600 text-white font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            09
+          </div>
+          
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-purple-400/60 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-purple-600 uppercase tracking-wider">IoT та силова комутація 220V • 60 хв • Просунутий</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#09 Інтернет речей (IoT): Web-сервер керування 4-канальним реле 220V</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-purple-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-purple-500 focus:ring-purple-400 h-4 w-4" data-step-id="9" aria-label="Крок #9: Веб-сервер IoT Розумний Дім на реле">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Створення веб-сервера розумного будинку: парсинг вхідних HTTP GET/POST запитів, генерація динамічного HTML інтерфейсу для мобільних пристроїв. Безпечна комутація побутової техніки 220В змінного струму через блок електромагнітних реле з повною оптоізоляцією (EL817).
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> Ethernet-модуль W5100 / ESP8266, 4-канальний модуль реле 5V/10A 250VAC з оптопарами.</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> Стек TCP/IP, сокети, HTTP протокол, нормально розімкнені (NO) контакти, гальванічна розв'язка.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-09-iot-smart-home.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow transition">
+                <span>Перейти до окремої сторінки Проєкту #09</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- КРОК 10 -->
+        <div class="relative pl-8 md:pl-12 group step-item" data-step="10">
+          <div class="absolute -left-5 top-1.5 w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-extrabold font-mono flex items-center justify-center text-sm shadow-md group-hover:scale-110 transition-transform">
+            10
+          </div>
+          
+          <div class="bg-white rounded-2xl border-2 border-purple-400/80 shadow-sm p-6 sm:p-8 space-y-4 hover:shadow-xl hover:border-purple-500 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">ОСРВ реального часу • 65 хв • Просунутий (Capstone)</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">#10 Промисловий контролер жорсткого реального часу на FreeRTOS</h2>
+              </div>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-purple-50 px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                <input type="checkbox" class="step-checkbox rounded text-indigo-500 focus:ring-indigo-400 h-4 w-4" data-step-id="10" aria-label="Крок #10: Багатозадачність реального часу FreeRTOS">
+                <span class="text-xs font-semibold text-slate-700 select-none">Пройдено</span>
+              </label>
+            </div>
+
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Вершина курсу: перехід від застарілої моделі <code class="bg-slate-100 px-1 py-0.5 rounded text-purple-700 font-mono">loop()</code> до професійної операційної системи реального часу FreeRTOS. Створення незалежних потоків із різними пріоритетами, блокування спільних ресурсів за допомогою м'ютексів (Mutex), обробка зовнішніх апаратних переривань (ISR) та моніторинг стека.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div><strong class="text-slate-800">Апаратна база:</strong> Arduino UNO / Mega, 2 світлодіоди завдань, апаратна кнопка на піні переривання INT0 (D2).</div>
+              <div><strong class="text-slate-800">Ключові концепції:</strong> <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-indigo-800 font-mono">xTaskCreate()</code>, <code class="bg-slate-200/80 px-1.5 py-0.5 rounded text-indigo-800 font-mono">xSemaphoreCreateMutex()</code>, витісняючий диспетчер, безпека спільних шин.</div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="project-10-freertos-multitask.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md transition">
+                <span>Перейти до фінального Проєкту #10 (FreeRTOS)</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- СЕКЦІЯ ЗАВЕРШЕННЯ КУРСУ -->
+    <section class="py-16 bg-gradient-to-b from-slate-50 to-slate-100 border-t border-slate-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-sky-500/10 text-sky-600 flex items-center justify-center text-3xl shadow-inner">
+          🎓
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-heading">
+          Ви пройшли всі 10 інженерних кроків?
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+          Тепер ви володієте повним стеком компетенцій сучасного Embedded-розробника: від законів електродинаміки й фізики напівпровідників до багатозадачних операційних систем реального часу.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <a href="index.html" class="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow transition">
+            Повернутися на Головну
+          </a>
+          <a href="advanced.html" class="px-6 py-3 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm border border-slate-200 shadow-sm transition">
+            Каталог просунутого рівня →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div class="space-y-4">
+          <a href="index.html" class="inline-block">
+            <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto">
+          </a>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Перша україномовна відкрита платформа практичного вивчення мікроконтролерів Arduino за схемою «Навчальної драбини».
+          </p>
+        </div>
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Навігація платформою</h2>
+          <ul class="space-y-2.5 text-xs sm:text-sm">
+            <li><a href="index.html" class="hover:text-sky-400 transition-colors">Головна сторінка</a></li>
+            <li><a href="beginner.html" class="hover:text-sky-400 transition-colors">Початковий рівень (4 проєкти)</a></li>
+            <li><a href="intermediate.html" class="hover:text-sky-400 transition-colors">Середній рівень (3 проєкти)</a></li>
+            <li><a href="advanced.html" class="hover:text-sky-400 transition-colors">Просунутий рівень (3 проєкти)</a></li>
+            <li><a href="learning-ladder.html" class="text-sky-400 font-semibold">Шлях навчання (10 проєктів)</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Проєкти курсу</h2>
+          <ul class="space-y-2.5 text-xs sm:text-sm">
+            <li><a href="project-01-blink.html" class="hover:text-sky-400 transition-colors">#01 Розумний маяк Blink</a></li>
+            <li><a href="project-02-button.html" class="hover:text-sky-400 transition-colors">#02 Кнопка з антибрязкотом</a></li>
+            <li><a href="project-05-ultrasonic.html" class="hover:text-sky-400 transition-colors">#05 Парктронік з сонаром</a></li>
+            <li><a href="project-08-autonomous-robot.html" class="hover:text-sky-400 transition-colors">#08 Двоколісний робот-ровер</a></li>
+            <li><a href="project-10-freertos-multitask.html" class="hover:text-sky-400 transition-colors">#10 ОСРВ FreeRTOS</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Статус платформи</h2>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-[11px] text-emerald-400 mb-3">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Всі 10 проєктів перевірено
+          </div>
+          <p class="text-xs text-slate-400">Схеми протестовано у Autodesk Tinkercad та реальному апаратному середовищі.</p>
+        </div>
+      </div>
+      <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <p>&copy; 2026 SimpleArduino. Відкрита українська освітня платформа для практичного вивчення мікроконтролерів та робототехніки.</p>
+        <p>Деплой розміщено на платформі Netlify.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Інтерактивне збереження прогресу Навчальної Драбини у localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+      const checkboxes = document.querySelectorAll('.step-checkbox');
+      const progressText = document.getElementById('ladder-progress-text');
+      const progressBar = document.getElementById('ladder-progress-bar');
+      const totalSteps = checkboxes.length;
+
+      function updateProgress() {
+        let completed = 0;
+        checkboxes.forEach(cb => {
+          const stepId = cb.getAttribute('data-step-id');
+          if (cb.checked) {
+            completed++;
+            localStorage.setItem('simplearduino_step_' + stepId, 'true');
+          } else {
+            localStorage.removeItem('simplearduino_step_' + stepId);
+          }
+        });
+
+        const percent = Math.round((completed / totalSteps) * 100);
+        if (progressText) {
+          progressText.textContent = `${completed} з ${totalSteps} кроків (${percent}%)`;
+        }
+        if (progressBar) {
+          progressBar.style.width = percent + '%';
+        }
+      }
+
+      // Відновлення прогресу
+      checkboxes.forEach(cb => {
+        const stepId = cb.getAttribute('data-step-id');
+        if (localStorage.getItem('simplearduino_step_' + stepId) === 'true') {
+          cb.checked = true;
+        }
+        cb.addEventListener('change', () => {
+          updateProgress();
+          const stepNum = cb.getAttribute('data-step-id');
+          const toast = document.getElementById('toast-notify');
+          const toastText = document.getElementById('toast-text');
+          if (toast && toastText) {
+            toastText.textContent = cb.checked ? `Крок ${stepNum} позначено як пройдений! Прогрес збережено.` : `Крок ${stepNum} знято з відмічених.`;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+          }
+        });
+      });
+
+      updateProgress();
+    });
+  </script>
+</body>
+</html>

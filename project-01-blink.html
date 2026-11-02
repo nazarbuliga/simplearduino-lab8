@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проєкт #01: Світлодіодний маяк (Smart Blink) — Схеми Tinkercad та гайд SimpleArduino</title>
+  <meta name="description" content="Повний покроковий практичний гайд із підключення світлодіода до Arduino: справжні схеми Tinkercad та Fritzing, розпіновка, живий симулятор, перевірений C++ скетч та усунення несправностей.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Проєкт #01: Світлодіодний маяк (Smart Blink) — SimpleArduino">
+  <meta property="og:description" content="Справжні схеми Tinkercad, Fritzing та фото реального заліза, зрозумілий код і розбір для початківців.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="assets/images/tinkercad-real-circuit.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              900: '#0f172a',
+              950: '#020617'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            heading: ['Raleway', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom-styles.css">
+  <link rel="icon" href="assets/icons/logo-mark.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sky-400 selection:text-slate-900 min-h-screen flex flex-col">
+
+  <!-- ================= ГОЛОВНИЙ ХЕДЕР ================= -->
+  <header class="sticky top-0 z-40 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white transition-all shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Логотип -->
+      <a class="flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-sky-400 rounded-lg p-1" href="index.html" aria-label="SimpleArduino — на головну">
+        <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto object-contain transition-transform group-hover:scale-105" fetchpriority="high">
+      </a>
+
+      <!-- Центральна навігація -->
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2" aria-label="Головна навігація">
+        <a href="index.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Головна</a>
+        <a href="beginner.html" class="px-3 py-2 text-sm font-bold text-sky-400 bg-slate-800/90 rounded-lg transition-colors border border-sky-400/20">Початковий рівень</a>
+        <a href="learning-ladder.html" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Шлях навчання</a>
+        <a href="index.html#about" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Про платформу</a>
+        <a href="index.html#faq" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors">Часті помилки</a>
+      </nav>
+
+      <!-- Кнопка повернення до каталогу -->
+      <div class="hidden lg:flex items-center gap-3">
+        <a href="beginner.html" class="px-4 py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl border border-slate-700 transition flex items-center gap-1.5">
+          <span>←</span>
+          <span>Всі проєкти рівня</span>
+        </a>
+      </div>
+
+      <!-- Мобільне меню кнопка -->
+      <button id="mobile-menu-btn" type="button" class="md:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню">
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+    </div>
+
+    <!-- Мобільне меню -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 animate-fadeIn">
+      <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Головна</a>
+      <a href="beginner.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-bold text-sky-400 bg-slate-800">Початковий рівень (Каталог)</a>
+      <a href="learning-ladder.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Шлях навчання (9 кроків)</a>
+      <a href="index.html#about" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Про нас</a>
+      <a href="index.html#faq" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Часті помилки</a>
+    </div>
+  </header>
+
+  <!-- Спливаюче сповіщення (Toast) -->
+  <div id="toast-notify" class="fixed bottom-6 right-6 z-50 hidden max-w-md bg-slate-900 border border-sky-400/80 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 animate-fadeIn">
+    <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center flex-shrink-0">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    </div>
+    <div id="toast-text" class="text-xs sm:text-sm font-medium text-slate-200">Код скопійовано!</div>
+  </div>
+
+  <main id="main" class="flex-grow focus:outline-none">
+
+    <!-- ================= HERO СЕКЦІЯ ПРОЄКТУ ================= -->
+    <section class="relative bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white py-12 md:py-16 overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-xs text-slate-400 mb-6 font-mono" aria-label="Хлібні крихти">
+          <a href="index.html" class="hover:text-sky-400 transition-colors">Головна</a>
+          <span>/</span>
+          <a href="beginner.html" class="hover:text-sky-400 transition-colors">Початковий рівень</a>
+          <span>/</span>
+          <span class="text-sky-400 font-bold">Проєкт #01: Smart Blink</span>
+        </nav>
+
+        <div class="space-y-4 max-w-4xl">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30">ПРОЄКТ #01</span>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">⏱ Час збірки: 5–10 хв</span>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Складність: 1/5 (Початкова)</span>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Цифровий вихід (OUTPUT)</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black font-heading tracking-tight text-white">
+            Мерехтливий маяк <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">(Smart Blink)</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+            Фундаментальний перший крок у фізичних обчисленнях. Ви навчитеся керувати напругою 5 Вольт через цифровий вихід Arduino, правильно підключати напівпровідниковий світлодіод через резистор 220 Ом на макетній платі без паяльника та напишете свій перший контрольний скетч C++.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= STICKY ПАНЕЛЬ ШВИДКОЇ НАВІГАЦІЇ ================= -->
+    <div class="sticky top-20 z-30 bg-slate-900/90 backdrop-blur-md border-y border-slate-800 py-2.5 px-4 shadow-sm">
+      <div class="max-w-6xl mx-auto flex items-center justify-center gap-2 overflow-x-auto text-xs font-semibold text-slate-300 scrollbar-none">
+        <a href="#schematics" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">📸 Схеми підключення</a>
+        <a href="#simulator" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">⚡ Web-симулятор</a>
+        <a href="#bom" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">📦 Чекліст деталей</a>
+        <a href="#assembly" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">🛠 Покрокова збірка</a>
+        <a href="#wiring-map" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">🗺 Карта пінів</a>
+        <a href="#code" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">💻 Скетч C++</a>
+        <a href="#troubleshooting" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">🚑 Помилки</a>
+        <a href="#quiz" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition whitespace-nowrap">🎯 Тест</a>
+      </div>
+    </div>
+
+    <!-- ================= ОСНОВНИЙ КОНТЕНТ ПРОЄКТУ ================= -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+      <!-- ================= ВСТУП ================= -->
+      <section class="bg-gradient-to-r from-sky-50 via-indigo-50/40 to-slate-50 border border-sky-100 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-sky-500/20 text-sky-600 flex items-center justify-center font-bold text-xl">
+            💡
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold font-heading text-slate-900">
+            Чому Blink — це апаратний «Hello, World!»?
+          </h2>
+        </div>
+        <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+          Кожен програміст починає з коду, який друкує рядок <em>«Hello, World!»</em> на екрані монітора. В апаратній розробці та робототехніці абсолютним еквівалентом є <strong>Blink</strong>. Тут рядки коду вперше вириваються за межі віртуального середовища та змушують фізичний напівпровідниковий кристал випромінювати реальне світло на вашому робочому столі. Це базовий тест: він підтверджує, що плата жива, тактовий генератор працює, мікроконтролер правильно прошитий, а електричне коло замкнене.
+        </p>
+      </section>
+
+      <!-- ================= 1. СХЕМИ ПІДКЛЮЧЕННЯ (TINKERCAD / FRITZING / ФОТО) ================= -->
+      <section id="schematics" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-6 scroll-mt-36">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-600 uppercase mb-1">
+              <span>● ЕТАП 1</span>
+              <span>• ГРАФІЧНІ СХЕМИ</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+              Схеми підключення: 3 наочні формати
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Обирайте зручний для вас вигляд: реальний інтерфейс Tinkercad, інженерна Fritzing-схема або фотографія живого заліза
+            </p>
+          </div>
+
+          <div class="flex items-center justify-center gap-2">
+            <a href="https://www.tinkercad.com/circuits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-sky-500 hover:text-slate-950 text-white rounded-xl text-xs font-bold transition shadow-sm">
+              <span>Створити в Tinkercad</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            </a>
+          </div>
+        </div>
+
+                <!-- Таби перемикання схем (4 формати) -->
+        <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+          <button type="button" id="tab-btn-coord" class="flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-bold bg-white text-slate-900 shadow-sm border border-slate-200/80 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>💻</span>
+            <span>1. Tinkercad (Координатна)</span>
+          </button>
+          <button type="button" id="tab-btn-tinkercad" class="flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>🌐</span>
+            <span>2. Tinkercad (Веб-інтерфейс)</span>
+          </button>
+          <button type="button" id="tab-btn-fritzing" class="flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>📐</span>
+            <span>3. Fritzing-схема</span>
+          </button>
+          <button type="button" id="tab-btn-photo" class="flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>📷</span>
+            <span>4. Фото на столі</span>
+          </button>
+        </div>
+
+        <!-- Контейнери зображень -->
+        <div class="relative rounded-2xl border border-slate-700/80 bg-slate-950 p-2 sm:p-4 shadow-2xl overflow-hidden min-h-[350px] flex items-center justify-center">
+          
+          <!-- Зображення 1: Координатна схема Tinkercad (Українські підписи, точні ряди 15, 16, 20) -->
+          <div id="view-coord" class="w-full flex flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+              <span class="text-sky-400 font-bold">● КООРДИНАТНА TINKERCAD-СХЕМА (РЯДИ 15, 16, 20)</span>
+              <span class="text-slate-500 hidden sm:inline">Точна відповідність інструкції монтажу • Full HD</span>
+            </div>
+            <img src="assets/images/tinkercad-blink-screenshot.png" alt="Координатна схема підключення світлодіода до Arduino в Tinkercad з позначенням рядів 15, 16, 20" class="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-lg border border-slate-800 cursor-zoom-in hover:brightness-105 transition" onclick="openLightbox(this.src, 'Координатна схема монтажу в Tinkercad (Ряди 15-E, 16-E, 20-E)')">
+            <p class="text-xs text-slate-400 mt-3 text-center">
+              Повна відповідність крокам збірки: Анод у рядку 15-E, Катод у 16-E, резистор 220 Ω між 15-C та 20-C, сигнал D13 у рядку 20-A.
+            </p>
+          </div>
+
+          <!-- Зображення 2: Справжній скріншот веб-інтерфейсу Tinkercad Circuits -->
+          <div id="view-tinkercad" class="w-full hidden flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+              <span class="text-sky-400 font-bold">● ОРИГІНАЛЬНИЙ ВЕБ-СИМУЛЯТОР AUTODESK TINKERCAD</span>
+              <span class="text-slate-500 hidden sm:inline">Реальний вигляд симулятора в браузері</span>
+            </div>
+            <img src="assets/images/tinkercad-real-circuit.png" alt="Оригінальний інтерфейс Autodesk Tinkercad Circuits" class="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-lg border border-slate-800 cursor-zoom-in hover:brightness-105 transition" onclick="openLightbox(this.src, 'Оригінальний веб-інтерфейс Autodesk Tinkercad Circuits')">
+            <p class="text-xs text-slate-400 mt-3 text-center">
+              Реальний інтерфейс Autodesk Tinkercad Circuits із панеллю симуляції та вибором компонентів.
+            </p>
+          </div>
+
+          <!-- Зображення 3: Офіційна Fritzing векторна схема -->
+          <div id="view-fritzing" class="w-full hidden flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+              <span class="text-emerald-400 font-bold">● ВЕКТОРНА FRITZING BREADBOARD СХЕМА</span>
+              <span class="text-slate-500 hidden sm:inline">Масштабована інженерна векторна схема</span>
+            </div>
+            <div class="w-full bg-white rounded-xl p-4 flex items-center justify-center">
+              <img src="assets/images/fritzing-arduino-blink.svg" alt="Офіційна схема Fritzing підключення світлодіода до Arduino" class="w-full h-auto max-h-[500px] object-contain cursor-zoom-in hover:scale-[1.01] transition" onclick="openLightbox(this.src, 'Офіційна інженерна схема Fritzing Breadboard')">
+            </div>
+            <p class="text-xs text-slate-400 mt-3 text-center">
+              Загальноприйнятий світовий інженерний стандарт візуалізації макетних схем Fritzing. Чітко видно трасування проводів до D13 та GND.
+            </p>
+          </div>
+
+          <!-- Зображення 4: Реальне фото фізичного заліза -->
+          <div id="view-photo" class="w-full hidden flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+              <span class="text-amber-400 font-bold">● ФОТО ФІЗИЧНОЇ ЗБІРКИ НА СТОЛІ</span>
+              <span class="text-slate-500 hidden sm:inline">Живе залізо в роботі</span>
+            </div>
+            <img src="assets/images/arduino-real-hardware.jpg" alt="Фотографія реальної плати Arduino та підключеного світлодіода на макетці" class="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-lg border border-slate-800 cursor-zoom-in hover:brightness-105 transition" onclick="openLightbox(this.src, 'Фотографія фізичної збірки на реальному залізі')">
+            <p class="text-xs text-slate-400 mt-3 text-center">
+              Реальне фізичне виконання: кабель USB забезпечує живлення 5В, провід від піна 13 веде до анода діода через 220 Ом, катод замкнений на GND.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= 2. ЖИВИЙ ІНТЕРАКТИВНИЙ ВЕБ-СИМУЛЯТОР ================= -->
+      <section id="simulator" class="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 text-white space-y-6 shadow-xl relative overflow-hidden scroll-mt-36">
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-mono bg-sky-500/10 text-sky-400 border border-sky-400/20 mb-1">
+              LIVE WEB SIMULATOR
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
+              Інтерактивний симулятор роботи схеми
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Перевірте логіку Blink прямо зараз у браузері без фізичного заліза
+            </p>
+          </div>
+          <div>
+            <span id="sim-status-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700">
+              СИМУЛЯЦІЮ ЗУПИНЕНО
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          
+          <!-- Візуальний світлодіод -->
+          <div class="md:col-span-5 flex flex-col items-center justify-center p-6 bg-slate-900/80 rounded-2xl border border-slate-800 text-center space-y-4">
+            
+            <div class="relative w-32 h-32 flex items-center justify-center">
+              <!-- Ореол світіння -->
+              <div id="sim-led-glow" class="absolute inset-0 rounded-full bg-sky-400/0 blur-2xl transition-all duration-150"></div>
+              <!-- Корпус LED -->
+              <div id="sim-led-body" class="relative w-24 h-24 rounded-full bg-slate-800 border-4 border-slate-700 flex items-center justify-center transition-all duration-150 shadow-inner">
+                <div id="sim-led-core" class="w-12 h-12 rounded-full bg-slate-700/60 transition-all duration-150"></div>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <div class="text-xs font-mono text-slate-400">Вихідний сигнал піна D13:</div>
+              <div id="sim-pin-state" class="text-sm sm:text-base font-bold font-mono text-slate-500">
+                LOW (0V — Вимкнено)
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Органи керування -->
+          <div class="md:col-span-7 space-y-5">
+            
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs sm:text-sm">
+                <label for="sim-delay-slider" class="font-bold text-slate-300">
+                  Тривалість затримки <code class="text-sky-400 font-mono">delay()</code>:
+                </label>
+                <span id="sim-delay-val" class="font-mono text-sky-400 font-bold bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
+                  1000 мс (1.0 сек)
+                </span>
+              </div>
+              <input id="sim-delay-slider" type="range" min="150" max="2500" step="50" value="1000" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-400">
+              <div class="flex justify-between text-[10px] font-mono text-slate-500">
+                <span>150 мс (Часте блимання)</span>
+                <span>1000 мс (Стандарт)</span>
+                <span>2500 мс (Повільне)</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="button" id="btn-toggle-sim" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition flex items-center gap-2 shadow-lg shadow-emerald-500/20 cursor-pointer">
+                <span id="sim-btn-icon">▶</span>
+                <span id="sim-btn-text">Запустити симуляцію</span>
+              </button>
+              <button type="button" id="btn-reset-sim" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition border border-slate-700">
+                Скинути (1000 мс)
+              </button>
+            </div>
+
+            <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800/80 text-xs text-slate-400 flex items-center justify-center gap-2 text-center">
+              <span class="text-sky-400 text-base leading-none">💡</span>
+              <span>
+                <strong>Зверніть увагу:</strong> Зміна повзунка затримки наживо оновлює параметр <code class="text-sky-300 font-mono">delay(...)</code> у вікні коду внизу сторінки! Так ви бачите прямий зв'язок між рядком програми та фізичним часом.
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 3. ЧЕКЛІСТ ДЕТАЛЕЙ (BOM) ТА ІНФОГРАФІКИ ================= -->
+      <section id="bom" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-8 scroll-mt-36">
+        
+        <div class="border-b border-slate-100 pb-5">
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-600 uppercase mb-1">
+            <span>● ЕТАП 2</span>
+            <span>• АПАРАТНЕ ЗАБЕЗПЕЧЕННЯ</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+            Що лежить перед вами: чекліст компонентів
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500">
+            Перевірте наявність усіх 5 компонентів перед початком складання
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-sky-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold text-lg">⚡</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Arduino UNO R3</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • Плата мікроконтролера</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Керує напругою на контакті D13. Живиться від стандартного USB-кабелю або зовнішнього джерела 7–12В.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-sky-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-slate-200/60 text-slate-700 flex items-center justify-center font-bold text-lg">▦</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Макетна плата (Small)</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • 400 отворів</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Платформа для з'єднання компонентів без пайки. Отвори у кожному стовпчику (a-b-c-d-e) з'єднані металевою пластиною.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-sky-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-600 flex items-center justify-center font-bold text-lg">💡</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Світлодіод 5 мм (LED)</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • Будь-який колір</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Випромінює світло лише в одному напрямку струму: від довгої ніжки (Анод +) до короткої (Катод -).
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-sky-300 transition-colors space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold text-lg">Ω</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Резистор 220 Ом</h3>
+                <span class="text-xs text-slate-500 font-mono">1 шт. • Смуги 🔴🔴🟤🟡</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Струмообмежувальний опір. Захищає діод від перегорання та обмежує силу струму до безпечних 14–15 мА.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-sky-300 transition-colors space-y-2 sm:col-span-2 lg:col-span-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-lg">〰</div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">З'єднувальні дроти (Джампери «папа-папа»)</h3>
+                <span class="text-xs text-slate-500 font-mono">2 шт. • Зелений та Чорний</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Зелений дріт веде сигнал 5В від контакту <strong>D13</strong> до анода діода. Чорний дріт замикає катод діода на <strong>GND</strong> (землю).
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Дві інженерні інфографіки (LED + Резистор) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3">
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-slate-900 text-sm">Полярність світлодіода (LED Pinout)</h4>
+                <span class="text-xs font-mono text-sky-700 bg-sky-100 px-2 py-0.5 rounded">Анод (+) / Катод (-)</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Довша ніжка — завжди <strong>Анод (+)</strong>. Коротка ніжка зі зрізаним плоским краєм колби — <strong>Катод (-)</strong>.
+              </p>
+            </div>
+            <img src="assets/images/led-pinout-guide.svg" alt="Схема полярності світлодіода: довша ніжка анод, коротка катод" class="w-full h-auto rounded-xl border border-slate-200 shadow-sm" loading="lazy">
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3">
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-slate-900 text-sm">Маркування резистора 220 Ом (Color Code)</h4>
+                <span class="text-xs font-mono text-amber-700 bg-amber-100 px-2 py-0.5 rounded">22 × 10 = 220 Ω</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Кольорові смужки читаються зліва направо: <strong>Червона (2)</strong>, <strong>Червона (2)</strong>, <strong>Коричнева (×10)</strong>, <strong>Золота (±5%)</strong>.
+              </p>
+            </div>
+            <img src="assets/images/resistor-guide.svg" alt="Колірне маркування резистора 220 Ом" class="w-full h-auto rounded-xl border border-slate-200 shadow-sm" loading="lazy">
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 4. ПОКРОКОВИЙ МОНТАЖ СХЕМИ ================= -->
+      <section id="assembly" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-8 scroll-mt-36">
+        
+        <div class="border-b border-slate-100 pb-5">
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-600 uppercase mb-1">
+            <span>● ЕТАП 3</span>
+            <span>• ПОКРОКОВА ІНСТРУКЦІЯ</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+            Покроковий монтаж: як зібрати схему без помилок
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500">
+            Дотримуйтесь точних координат отворів макетної плати
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Формат А: У віртуальному Tinkercad -->
+          <div class="border border-slate-200 rounded-2xl p-5 space-y-4 bg-slate-50/50">
+            <div class="flex items-center gap-2 font-bold text-slate-900 text-sm border-b border-slate-200 pb-2">
+              <span class="p-1 rounded bg-sky-100 text-sky-700">💻</span>
+              <span>Варіант А: Складання в Autodesk Tinkercad</span>
+            </div>
+            <ol class="space-y-3 text-xs sm:text-sm text-slate-700 list-decimal pl-4 leading-relaxed">
+              <li>
+                <strong>Створіть проєкт:</strong> Перейдіть на <a href="https://www.tinkercad.com/circuits" target="_blank" class="text-sky-600 underline font-semibold">tinkercad.com/circuits</a> та натисніть кнопку «Create circuit».
+              </li>
+              <li>
+                <strong>Розмістіть плату:</strong> З панелі компонентів перетягніть <strong>Arduino Uno R3</strong> та макетну плату <strong>Breadboard Small</strong>.
+              </li>
+              <li>
+                <strong>Встановіть LED:</strong> Помістіть світлодіод так, щоб ніжка <strong>Anode</strong> стала в отвір <strong>15-E</strong>, а <strong>Cathode</strong> — в <strong>16-E</strong>.
+              </li>
+              <li>
+                <strong>Додайте резистор:</strong> Встановіть резистор між отворами <strong>15-C</strong> та <strong>20-C</strong>. В інспекторі задайте опір <strong>220 Ω (Ом)</strong>.
+              </li>
+              <li>
+                <strong>Проведіть дроти:</strong>
+                <ul class="list-disc pl-4 mt-1 space-y-1 text-xs">
+                  <li>З піна <strong>13</strong> Arduino до отвору <strong>20-A</strong> (колір: зелений).</li>
+                  <li>З піна <strong>GND</strong> Arduino до отвору <strong>16-A</strong> (колір: чорний).</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Завантажте код:</strong> Натисніть «Code» → режим «Text» → вставте скетч та натисніть зелену кнопку «Start Simulation»!
+              </li>
+            </ol>
+          </div>
+
+          <!-- Формат Б: На реальному залізі -->
+          <div class="border border-slate-200 rounded-2xl p-5 space-y-4 bg-slate-50/50">
+            <div class="flex items-center gap-2 font-bold text-slate-900 text-sm border-b border-slate-200 pb-2">
+              <span class="p-1 rounded bg-emerald-100 text-emerald-700">🔌</span>
+              <span>Варіант Б: Фізичний монтаж на столі (реальне залізо)</span>
+            </div>
+            <ol class="space-y-3 text-xs sm:text-sm text-slate-700 list-decimal pl-4 leading-relaxed">
+              <li>
+                <strong>Знеструмте плату:</strong> Від'єднайте USB-кабель від Arduino перед збіркою на макетці, щоб уникнути випадкового замикання.
+              </li>
+              <li>
+                <strong>Встановіть світлодіод:</strong> Вставте довгу ніжку (анод) у рядок 15 макетки, коротку ніжку (катод) — у рядок 16.
+              </li>
+              <li>
+                <strong>Підключіть резистор 220 Ом:</strong> Один вивід вставте в рядок 15 (той самий ряд, де довга ніжка діода), інший вивід — у рядок 20.
+              </li>
+              <li>
+                <strong>Зелений дріт (сигнал D13):</strong> З'єднайте рядок 20 макетної плати з гніздом <strong>13</strong> на платі Arduino.
+              </li>
+              <li>
+                <strong>Чорний дріт (земля GND):</strong> З'єднайте рядок 16 макетної плати (де коротка ніжка діода) з гніздом <strong>GND</strong> на Arduino.
+              </li>
+              <li>
+                <strong>Прошивка:</strong> Вставте USB-кабель у комп'ютер, відкрийте Arduino IDE, виберіть плату та COM-порт, після чого натисніть кнопку «Upload» (Стрілка праворуч).
+              </li>
+            </ol>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 5. ТАБЛИЦЯ КОМУТАЦІЇ ПІНІВ ================= -->
+      <section id="wiring-map" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-5 scroll-mt-36">
+        
+        <div class="border-b border-slate-100 pb-4">
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-600 uppercase mb-1">
+            <span>● ЕТАП 4</span>
+            <span>• WIRING MAP</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+            Таблиця точної комутації контактів
+          </h2>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+          <table class="w-full text-xs sm:text-sm text-center">
+            <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px] tracking-wider">
+              <tr>
+                <th class="p-3.5">Компонент</th>
+                <th class="p-3.5">Контакт на макетці</th>
+                <th class="p-3.5">Пін Arduino UNO</th>
+                <th class="p-3.5">Колір дроту</th>
+                <th class="p-3.5">Фізичне призначення</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-mono text-slate-600">
+              <tr class="hover:bg-slate-50/60">
+                <td class="p-3.5 font-sans font-bold text-slate-900">Світлодіод (Анод +)</td>
+                <td class="p-3.5">Рядок 15, Контакт E</td>
+                <td class="p-3.5 text-sky-600 font-bold">З'єднаний з R1</td>
+                <td class="p-3.5 font-sans text-xs text-slate-400">—</td>
+                <td class="p-3.5 font-sans text-xs">Вхід струму від джерела живлення</td>
+              </tr>
+              <tr class="hover:bg-slate-50/60">
+                <td class="p-3.5 font-sans font-bold text-slate-900">Резистор 220 Ом (R1)</td>
+                <td class="p-3.5">Рядки 15-C та 20-C</td>
+                <td class="p-3.5 text-sky-600 font-bold">Пін D13 (через дріт)</td>
+                <td class="p-3.5 font-sans text-emerald-600 font-bold">Зелений</td>
+                <td class="p-3.5 font-sans text-xs">Обмеження сили струму до безпечних 14 мА</td>
+              </tr>
+              <tr class="hover:bg-slate-50/60">
+                <td class="p-3.5 font-sans font-bold text-slate-900">Світлодіод (Катод -)</td>
+                <td class="p-3.5">Рядок 16, Контакт E</td>
+                <td class="p-3.5 text-slate-900 font-bold">Пін GND (Земля)</td>
+                <td class="p-3.5 font-sans text-slate-900 font-bold">Чорний</td>
+                <td class="p-3.5 font-sans text-xs">Замикання електричного кола на потенціал 0 Вольт</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- ================= 6. РОБОЧИЙ КОД C++ ТА АНАТОМІЯ ================= -->
+      <section id="code" class="bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8 space-y-6 scroll-mt-36">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-600 uppercase mb-1">
+              <span>● ЕТАП 5</span>
+              <span>• ПРОГРАМНИЙ СКЕТЧ</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+              Робочий C++ код для Arduino IDE
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Повний скетч із докладними коментарями кожної команди
+            </p>
+          </div>
+
+          <button type="button" class="btn-copy-code px-4 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 text-xs font-bold text-white transition flex items-center gap-1.5 shadow-sm cursor-pointer self-start sm:self-auto" data-target="code-project-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            <span>Копіювати код</span>
+          </button>
+        </div>
+
+        <pre class="bg-slate-900 text-slate-200 p-5 rounded-2xl text-xs sm:text-sm font-mono overflow-x-auto border border-slate-800 leading-relaxed shadow-inner"><code id="code-project-1">// SimpleArduino — Проєкт #01: Smart Blink (Мерехтливий маяк)
+// Підключення: Світлодіод анодом через резистор 220 Ом до D13, катодом до GND
+
+const int LED_PIN = 13; // Призначаємо пін 13 зрозумілим іменем
+
+void setup() {
+  // Налаштовуємо цифровий контакт як ВИХІД (OUTPUT)
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_PIN, HIGH); // Подаємо живлення +5V — світлодіод світить
+  delay(1000);                 // Чекаємо 1000 мілісекунд (1.0 секунду)
+
+  digitalWrite(LED_PIN, LOW);  // Знімаємо напругу 0V — світлодіод згасає
+  delay(1000);                 // Пауза 1.0 секунду перед новим циклом
+}</code></pre>
+
+        <!-- Анатомія коду на хлопський розум -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4">
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+            <span>🔍</span> Анатомія коду «на хлопський розум»:
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700 leading-relaxed">
+            
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-sky-700 font-bold">const int LED_PIN = 13;</div>
+              <p>
+                Наклеюємо зрозумілий стікер на пін 13. Якщо пізніше ми переставимо провід у пін 7, нам достатньо змінити число лише тут, а не по всьому скетчу.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-sky-700 font-bold">void setup() { ... }</div>
+              <p>
+                «Ранковий чекліст». Ця функція запускається рівно 1 раз під час увімкнення живлення плати. Тут ми проводимо початкові конфігурації.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-sky-700 font-bold">pinMode(LED_PIN, OUTPUT);</div>
+              <p>
+                Кажемо контролеру: пін 13 — це вихід (як кран, з якого витікає струм), а не датчик-вхід, який щось вимірює.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-sky-700 font-bold">void loop() { ... }</div>
+              <p>
+                «Нескінченна карусель». Після завершення setup() мікроконтролер безперервно крутить цей блок рядок за рядком, доки є живлення.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-sky-700 font-bold">digitalWrite(LED_PIN, HIGH);</div>
+              <p>
+                Відкриваємо вентиль на повну: мікроконтролер подає рівно 5 Вольт на ніжку діода. Світлодіод миттєво запалюється.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="font-mono text-sky-700 font-bold">delay(1000);</div>
+              <p>
+                Заморожуємо виконання на 1000 мілісекунд (1 сек). Без цієї паузи процесор перемикав би стан 16 мільйонів разів на секунду, і око бачило б суцільне світло!
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= 7. TROUBLESHOOTING ================= -->
+      <section id="troubleshooting" class="bg-amber-50/70 border border-amber-200 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-36">
+        
+        <div class="flex items-center gap-3 text-amber-900 font-bold text-lg sm:text-xl border-b border-amber-200/80 pb-4">
+          <svg class="w-6 h-6 text-amber-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+          <h2>Швидка допомога: розв'язання 4 типових помилок (Troubleshooting)</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/80 space-y-2 shadow-xs">
+            <div class="flex items-center gap-2 text-rose-600 font-bold text-sm">
+              <span>❌</span> Світлодіод не світить взагалі:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <strong>Що робити:</strong> У 90% випадків переплутана полярність. Витягніть діод і поверніть його на 180°. Перевірте, чи чорний дріт увімкнений саме в гніздо <em>GND</em>, а не AREF чи VIN.
+            </p>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/80 space-y-2 shadow-xs">
+            <div class="flex items-center gap-2 text-amber-600 font-bold text-sm">
+              <span>⚠️</span> Світлодіод світить постійно і не блимає:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <strong>Що робити:</strong> Перевірте, чи ви не пропустили другий виклик <code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-xs">delay(1000);</code> після <code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-xs">LOW</code>. Якщо його немає — діод вимикається на мікросекунду і спалахує знову.
+            </p>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/80 space-y-2 shadow-xs">
+            <div class="flex items-center gap-2 text-amber-600 font-bold text-sm">
+              <span>💡</span> Світлодіод світить дуже тьмяно:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <strong>Що робити:</strong> Перевірте смужки резистора. Якщо ви випадково підключили резистор 10 кОм (Коричневий-Чорний-Помаранчевий) замість 220 Ом (Червоний-Червоний-Коричневий), опір зависокий і струму недостатньо.
+            </p>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/80 space-y-2 shadow-xs">
+            <div class="flex items-center gap-2 text-rose-600 font-bold text-sm">
+              <span>🔌</span> Помилка завантаження «COM port error»:
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <strong>Що робити:</strong> В Arduino IDE зайдіть у меню <em>Інструменти → Порт</em> та виберіть порт із позначкою вашої плати. Якщо портів немає — змініть роз'єм USB або встановіть драйвер мікросхеми CH340.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 8. ТЕСТ ДЛЯ САМОПЕРЕВІРКИ ================= -->
+      <section id="quiz" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-5 scroll-mt-36">
+        
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-600 uppercase mb-1">
+            <span>● САМОКОНТРОЛЬ</span>
+            <span>• ІНЖЕНЕРНИЙ ТЕСТ</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
+            Перевірте себе перед переходом до наступного проєкту
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1">
+            Чому світлодіод обов'язково підключають до піна Arduino через струмообмежувальний резистор 220 Ом, а не напряму?
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="quiz-container">
+          <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm text-slate-700 font-medium transition cursor-pointer" data-correct="false">
+            А) Світлодіод просто світитиме вдвічі яскравіше без жодної шкоди
+          </button>
+          <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm text-slate-700 font-medium transition cursor-pointer" data-correct="true">
+            Б) Струм перевищить 40 мА, кристал перегріється і згорить із димком
+          </button>
+          <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm text-slate-700 font-medium transition cursor-pointer" data-correct="false">
+            В) Плата Arduino автоматично зменшить напругу програмно
+          </button>
+        </div>
+
+        <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-medium"></div>
+
+      </section>
+
+      <!-- ================= НАВІГАЦІЯ МІЖ ПРОЄКТАМИ ================= -->
+      <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <a href="beginner.html" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition text-center flex items-center justify-center gap-2">
+          <span>←</span>
+          <span>Всі проєкти Початкового рівня</span>
+        </a>
+        <a href="project-02-button.html" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs sm:text-sm transition text-center shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2">
+          <span>Наступний проєкт: #02 Тактова кнопка</span>
+          <span>→</span>
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= LIGHTBOX МОДАЛЬНЕ ВІКНО ================= -->
+  <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300 opacity-0 pointer-events-none" role="dialog" aria-modal="true" aria-label="Збільшений перегляд схеми">
+    <div class="relative max-w-6xl w-full bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+      
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/80">
+        <div class="flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="modal-title" class="text-sm font-bold text-white font-mono uppercase tracking-wider">Схема підключення</span>
+        </div>
+        <button type="button" id="modal-close" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition focus:outline-none focus:ring-2 focus:ring-sky-400" aria-label="Закрити вікно">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-auto flex items-center justify-center bg-slate-950/60">
+        <img id="modal-img" src="" alt="Збільшена схема" class="max-w-full h-auto max-h-[75vh] object-contain rounded-xl shadow-xl">
+      </div>
+
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-900/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+        <span>SimpleArduino — Перевірені інженерні схеми для людей</span>
+        <button type="button" onclick="closeLightbox()" class="text-sky-400 hover:underline font-semibold cursor-pointer">Закрити вікно (ESC)</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= ПІДВАЛ ================= -->
+  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 pt-16 pb-12 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div class="space-y-4">
+          <a href="index.html" class="inline-block">
+            <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto">
+          </a>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Відкрита інженерна платформа для практичного вивчення мікроконтролерів Arduino: зрозумілі схеми, реальний код та покроковий шлях від новачка до профі.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Навігація</h3>
+          <ul class="space-y-2.5 text-xs sm:text-sm">
+            <li><a href="index.html" class="hover:text-sky-400 transition-colors">Головна</a></li>
+            <li><a href="beginner.html" class="hover:text-sky-400 transition-colors">Каталог початківця</a></li>
+            <li><a href="learning-ladder.html" class="hover:text-sky-400 transition-colors">Шлях навчання (9 кроків)</a></li>
+            <li><a href="index.html#about" class="hover:text-sky-400 transition-colors">Про нас</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Проєкти рівня</h3>
+          <ul class="space-y-2.5 text-xs sm:text-sm">
+            <li><a href="project-01-blink.html" class="text-sky-400 font-bold">#01 Світлодіодний маяк Blink</a></li>
+            <li><a href="project-02-button.html" class="hover:text-sky-400 transition-colors">#02 Тактова кнопка</a></li>
+            <li><a href="project-03-traffic-light.html" class="hover:text-sky-400 transition-colors">#03 Розумний світлофор</a></li>
+            <li><a href="project-04-potentiometer.html" class="hover:text-sky-400 transition-colors">#04 Нічник на фоторезисторі</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Стандарти платформи</h3>
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-[11px] text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            100% сумісність з UNO & CH340
+          </div>
+          <p class="text-[11px] text-slate-500 mt-2">Всі схеми протестовані на фізичному обладнанні та в Tinkercad Circuits.</p>
+        </div>
+      </div>
+
+      <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <p>&copy; 2026 SimpleArduino. Відкрита українська інженерна платформа.</p>
+        <p>Деплой розгорнуто на платформі Netlify.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+        // 1. Інтерактивні таби для схем (4 формати)
+    const tabCoord = document.getElementById('tab-btn-coord');
+    const tabTinkercad = document.getElementById('tab-btn-tinkercad');
+    const tabFritzing = document.getElementById('tab-btn-fritzing');
+    const tabPhoto = document.getElementById('tab-btn-photo');
+
+    const viewCoord = document.getElementById('view-coord');
+    const viewTinkercad = document.getElementById('view-tinkercad');
+    const viewFritzing = document.getElementById('view-fritzing');
+    const viewPhoto = document.getElementById('view-photo');
+
+    const activeTabClass = 'flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-bold bg-white text-slate-900 shadow-sm border border-slate-200/80 transition flex items-center justify-center gap-1.5 cursor-pointer';
+    const inactiveTabClass = 'flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer';
+
+    function setTab(active) {
+      if (viewCoord) viewCoord.classList.add('hidden');
+      if (viewTinkercad) viewTinkercad.classList.add('hidden');
+      if (viewFritzing) viewFritzing.classList.add('hidden');
+      if (viewPhoto) viewPhoto.classList.add('hidden');
+
+      if (tabCoord) tabCoord.className = inactiveTabClass;
+      if (tabTinkercad) tabTinkercad.className = inactiveTabClass;
+      if (tabFritzing) tabFritzing.className = inactiveTabClass;
+      if (tabPhoto) tabPhoto.className = inactiveTabClass;
+
+      if (active === 'coord') {
+        if (viewCoord) viewCoord.classList.remove('hidden');
+        if (tabCoord) tabCoord.className = activeTabClass;
+      } else if (active === 'tinkercad') {
+        if (viewTinkercad) viewTinkercad.classList.remove('hidden');
+        if (tabTinkercad) tabTinkercad.className = activeTabClass;
+      } else if (active === 'fritzing') {
+        if (viewFritzing) viewFritzing.classList.remove('hidden');
+        if (tabFritzing) tabFritzing.className = activeTabClass;
+      } else if (active === 'photo') {
+        if (viewPhoto) viewPhoto.classList.remove('hidden');
+        if (tabPhoto) tabPhoto.className = activeTabClass;
+      }
+    }
+
+    if (tabCoord) tabCoord.addEventListener('click', () => setTab('coord'));
+    if (tabTinkercad) tabTinkercad.addEventListener('click', () => setTab('tinkercad'));
+    if (tabFritzing) tabFritzing.addEventListener('click', () => setTab('fritzing'));
+    if (tabPhoto) tabPhoto.addEventListener('click', () => setTab('photo'));
+
+    // 2. Lightbox модалка
+    const modalLightbox = document.getElementById('modal-lightbox');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalClose = document.getElementById('modal-close');
+
+    window.openLightbox = function(src, title) {
+      if (!modalLightbox || !modalImg) return;
+      modalImg.src = src;
+      if (modalTitle && title) modalTitle.textContent = title;
+      modalLightbox.classList.remove('hidden');
+      modalLightbox.classList.remove('pointer-events-none');
+      setTimeout(() => {
+        modalLightbox.classList.remove('opacity-0');
+      }, 10);
+    };
+
+    window.closeLightbox = function() {
+      if (!modalLightbox) return;
+      modalLightbox.classList.add('opacity-0');
+      modalLightbox.classList.add('pointer-events-none');
+      setTimeout(() => {
+        modalLightbox.classList.add('hidden');
+      }, 300);
+    };
+
+    if (modalClose) modalClose.addEventListener('click', closeLightbox);
+    if (modalLightbox) {
+      modalLightbox.addEventListener('click', (e) => {
+        if (e.target === modalLightbox) closeLightbox();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // 3. Інтерактивний симулятор Smart Blink
+    let simTimer = null;
+    let isRunning = false;
+    let isLedOn = false;
+    let simDelay = 1000;
+
+    const btnToggleSim = document.getElementById('btn-toggle-sim');
+    const btnResetSim = document.getElementById('btn-reset-sim');
+    const simBtnIcon = document.getElementById('sim-btn-icon');
+    const simBtnText = document.getElementById('sim-btn-text');
+    const simStatusBadge = document.getElementById('sim-status-badge');
+    const simLedGlow = document.getElementById('sim-led-glow');
+    const simLedBody = document.getElementById('sim-led-body');
+    const simLedCore = document.getElementById('sim-led-core');
+    const simPinState = document.getElementById('sim-pin-state');
+    const simDelaySlider = document.getElementById('sim-delay-slider');
+    const simDelayVal = document.getElementById('sim-delay-val');
+    const codeEl = document.getElementById('code-project-1');
+
+    function renderLed(on) {
+      if (!simLedGlow || !simLedBody || !simLedCore || !simPinState) return;
+      if (on) {
+        simLedGlow.className = 'absolute inset-0 rounded-full bg-sky-400/80 blur-2xl scale-125 transition-all duration-150';
+        simLedBody.className = 'relative w-24 h-24 rounded-full bg-sky-500 border-4 border-sky-300 flex items-center justify-center transition-all duration-150 shadow-[0_0_40px_#38bdf8]';
+        simLedCore.className = 'w-12 h-12 rounded-full bg-white shadow-[0_0_20px_#fff] transition-all duration-150';
+        simPinState.innerHTML = '<span class="text-sky-400 font-bold">HIGH (+5V — Світлодіод увімкнено)</span>';
+      } else {
+        simLedGlow.className = 'absolute inset-0 rounded-full bg-sky-400/0 blur-2xl transition-all duration-150';
+        simLedBody.className = 'relative w-24 h-24 rounded-full bg-slate-800 border-4 border-slate-700 flex items-center justify-center transition-all duration-150 shadow-inner';
+        simLedCore.className = 'w-12 h-12 rounded-full bg-slate-700/60 transition-all duration-150';
+        simPinState.innerHTML = '<span class="text-slate-500 font-medium">LOW (0V — Вимкнено)</span>';
+      }
+    }
+
+    function syncCodeWithDelay(delayVal) {
+      if (!codeEl) return;
+      codeEl.textContent = `// SimpleArduino — Проєкт #01: Smart Blink (Мерехтливий маяк)
+// Підключення: Світлодіод анодом через резистор 220 Ом до D13, катодом до GND
+
+const int LED_PIN = 13; // Призначаємо пін 13 зрозумілим іменем
+
+void setup() {
+  // Налаштовуємо цифровий контакт як ВИХІД (OUTPUT)
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_PIN, HIGH); // Подаємо живлення +5V — світлодіод світить
+  delay(${delayVal});                 // Чекаємо ${delayVal} мілісекунд (${(delayVal / 1000).toFixed(1)} сек)
+
+  digitalWrite(LED_PIN, LOW);  // Знімаємо напругу 0V — світлодіод згасає
+  delay(${delayVal});                 // Пауза ${delayVal} мілісекунд перед новим циклом
+}`;
+    }
+
+    function handleToggleSim() {
+      if (isRunning) {
+        clearInterval(simTimer);
+        simTimer = null;
+        isRunning = false;
+        isLedOn = false;
+        renderLed(false);
+
+        if (simBtnIcon) simBtnIcon.textContent = '▶';
+        if (simBtnText) simBtnText.textContent = 'Запустити симуляцію';
+        if (btnToggleSim) {
+          btnToggleSim.className = 'px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition flex items-center gap-2 shadow-lg shadow-emerald-500/20 cursor-pointer';
+        }
+        if (simStatusBadge) {
+          simStatusBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700';
+          simStatusBadge.textContent = 'СИМУЛЯЦІЮ ЗУПИНЕНО';
+        }
+      } else {
+        isRunning = true;
+        isLedOn = true;
+        renderLed(true);
+
+        if (simBtnIcon) simBtnIcon.textContent = '⏹';
+        if (simBtnText) simBtnText.textContent = 'Зупинити симуляцію';
+        if (btnToggleSim) {
+          btnToggleSim.className = 'px-6 py-3 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-sm transition flex items-center gap-2 shadow-lg shadow-rose-500/20 cursor-pointer';
+        }
+        if (simStatusBadge) {
+          simStatusBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse';
+          simStatusBadge.textContent = '● СИМУЛЯЦІЯ АКТИВНА';
+        }
+
+        simTimer = setInterval(() => {
+          isLedOn = !isLedOn;
+          renderLed(isLedOn);
+        }, simDelay);
+      }
+    }
+
+    if (btnToggleSim) btnToggleSim.addEventListener('click', handleToggleSim);
+
+    if (simDelaySlider && simDelayVal) {
+      simDelaySlider.addEventListener('input', (e) => {
+        simDelay = parseInt(e.target.value, 10);
+        simDelayVal.textContent = `${simDelay} мс (${(simDelay / 1000).toFixed(1)} сек)`;
+        syncCodeWithDelay(simDelay);
+
+        if (isRunning) {
+          clearInterval(simTimer);
+          simTimer = setInterval(() => {
+            isLedOn = !isLedOn;
+            renderLed(isLedOn);
+          }, simDelay);
+        }
+      });
+    }
+
+    if (btnResetSim && simDelaySlider && simDelayVal) {
+      btnResetSim.addEventListener('click', () => {
+        simDelay = 1000;
+        simDelaySlider.value = 1000;
+        simDelayVal.textContent = '1000 мс (1.0 сек)';
+        syncCodeWithDelay(1000);
+
+        if (isRunning) {
+          clearInterval(simTimer);
+          simTimer = setInterval(() => {
+            isLedOn = !isLedOn;
+            renderLed(isLedOn);
+          }, simDelay);
+        }
+      });
+    }
+
+    // 4. Копіювання коду
+    const copyBtns = document.querySelectorAll('.btn-copy-code');
+    const toast = document.getElementById('toast-notify');
+    const toastText = document.getElementById('toast-text');
+
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const codeElement = document.getElementById(targetId);
+        if (codeElement) {
+          navigator.clipboard.writeText(codeElement.textContent).then(() => {
+            if (toast && toastText) {
+              toastText.textContent = 'Код скетчу успішно скопійовано!';
+              toast.classList.remove('hidden');
+              setTimeout(() => toast.classList.add('hidden'), 2500);
+            }
+          });
+        }
+      });
+    });
+
+    // 5. Тест для самоконтролю
+    const quizBtns = document.querySelectorAll('.quiz-btn');
+    const quizFeedback = document.getElementById('quiz-feedback');
+
+    quizBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isCorrect = btn.getAttribute('data-correct') === 'true';
+
+        quizBtns.forEach(b => {
+          b.className = 'quiz-btn text-center p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm text-slate-700 font-medium transition cursor-pointer';
+        });
+
+        if (isCorrect) {
+          btn.className = 'quiz-btn text-center p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-xs sm:text-sm text-emerald-900 font-bold transition cursor-pointer';
+          if (quizFeedback) {
+            quizFeedback.className = 'p-4 rounded-2xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs sm:text-sm block space-y-1';
+            quizFeedback.innerHTML = `<strong>✓ Абсолютно правильно!</strong> Світлодіод у відкритому стані має дуже низький внутрішній опір. Якщо подати 5 Вольт без резистора, струм миттєво підскочить до 40–60 мА. Кристал напівпровідника перегріється і згорить із легким димком за долі секунди, а порт Arduino може деградувати. Саме тому резистор 220 Ом є обов\'язковим захисником!`;
+          }
+        } else {
+          btn.className = 'quiz-btn text-center p-4 rounded-2xl border-2 border-rose-400 bg-rose-50 text-xs sm:text-sm text-rose-900 font-medium transition cursor-pointer';
+          if (quizFeedback) {
+            quizFeedback.className = 'p-4 rounded-2xl bg-rose-100 text-rose-900 border border-rose-300 text-xs sm:text-sm block space-y-1';
+            quizFeedback.innerHTML = `<strong>✗ Неправильно.</strong> Arduino не контролює силу струму автоматично: порт просто видає напругу 5 Вольт. За законом Ома (I = U / R), якщо опір кола близький до нуля, струм зростає лавиноподібно і випалює кристал світлодіода. Обов\'язково використовуйте резистор 220 Ом!`;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

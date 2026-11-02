@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проєкт #06: Метеостанція з дисплеєм LCD 1602 I2C та DHT11 — SimpleArduino</title>
+  <meta name="description" content="Покрокова практична інструкція зі збірки цифрової метеостанції: Fritzing схема, Tinkercad Circuits, живий емулятор синього матричного дисплея 1602 та C++ скетч з Wire.h.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            arduino: { teal: '#008184', orange: '#E47128', navy: '#005C5F', cyan: '#00979D' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            heading: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/custom-styles.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-sky-500 selection:text-slate-950">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2 group">
+          <img src="assets/icons/logo.svg" alt="SimpleArduino" width="168" height="32" class="h-8 w-auto group-hover:brightness-110 transition">
+        </a>
+        <span class="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+          СЕРЕДНІЙ РІВЕНЬ • ПРОЄКТ #06
+        </span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="index.html" class="hover:text-sky-400 transition">Головна</a>
+        <a href="learning-ladder.html" class="hover:text-sky-400 transition">Шлях навчання</a>
+        <a href="beginner.html" class="hover:text-sky-400 transition">Початковий</a>
+        <a href="intermediate.html" class="hover:text-sky-400 transition text-sky-400">Середній рівень</a>
+        <a href="advanced.html" class="hover:text-sky-400 transition">Просунутий</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="intermediate.html" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+          <span>←</span>
+          <span>Каталог рівня</span>
+        </a>
+        <button id="mobile-menu-btn" type="button" class="md:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню">
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+    </div>
+    <!-- Мобільне меню -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 animate-fadeIn">
+      <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Головна</a>
+      <a href="learning-ladder.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Шлях навчання (10 проєктів)</a>
+      <a href="beginner.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Початковий рівень (1-4)</a>
+      <a href="intermediate.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Середній рівень (5-7)</a>
+      <a href="advanced.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Просунутий рівень (8-10)</a>
+      <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Про проєкт</a>
+    </div>
+  </header>
+
+  <!-- BREADCRUMBS -->
+  <nav class="bg-slate-950/60 border-b border-slate-800/80 py-2.5 px-4 sm:px-8 text-xs text-slate-400 font-mono">
+    <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto whitespace-nowrap">
+      <a href="index.html" class="hover:text-sky-400 transition">Головна</a>
+      <span>/</span>
+      <a href="intermediate.html" class="hover:text-sky-400 transition">Середній рівень</a>
+      <span>/</span>
+      <span class="text-sky-400 font-semibold">Проєкт #06: Метеостанція LCD I2C</span>
+    </div>
+  </nav>
+
+  <!-- MAIN WRAPPER -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 w-full">
+    
+    <!-- HERO HEADER -->
+    <div class="space-y-4">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="px-3 py-1 rounded-md text-xs font-extrabold font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20">
+          ПРОЄКТ #06
+        </span>
+        <span class="px-3 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+          Час збірки: 35 хв
+        </span>
+        <span class="px-3 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          Складність: 3/5 (Шина I2C)
+        </span>
+        <span class="px-3 py-1 rounded-md text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">
+          Протокол I2C & DHT11
+        </span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-white font-heading tracking-tight">
+        Цифрова метеостанція з дисплеєм LCD 1602 I2C та сенсором DHT11
+      </h1>
+      <p class="text-base sm:text-lg text-slate-400 max-w-3xl leading-relaxed">
+        Справжній мікрокліматичний монітор. Опануйте промисловий інтерфейс I2C (Inter-Integrated Circuit): замість підключення 16 заплутаних проводів використовуйте всього 2 сигнальні лінії (SDA та SCL) для виведення тексту на символьний екран.
+      </p>
+    </div>
+
+    <!-- STICKY JUMP NAV -->
+    <div class="sticky top-20 z-30 bg-slate-900/95 backdrop-blur-md p-2 rounded-2xl border border-slate-800 shadow-xl overflow-x-auto flex items-center gap-2 text-xs font-medium text-slate-300">
+      <a href="#schematics" class="px-3 py-1.5 rounded-xl hover:bg-slate-800 hover:text-sky-400 transition whitespace-nowrap">📐 Схеми I2C</a>
+      <a href="#simulator" class="px-3 py-1.5 rounded-xl bg-sky-500/10 text-sky-400 font-bold border border-sky-500/20 whitespace-nowrap">⚡ LCD-симулятор наживо</a>
+      <a href="#bom" class="px-3 py-1.5 rounded-xl hover:bg-slate-800 hover:text-sky-400 transition whitespace-nowrap">📦 Чекліст деталей</a>
+      <a href="#i2c" class="px-3 py-1.5 rounded-xl hover:bg-slate-800 hover:text-sky-400 transition whitespace-nowrap">🔌 Магія шини I2C</a>
+      <a href="#code" class="px-3 py-1.5 rounded-xl hover:bg-slate-800 hover:text-sky-400 transition whitespace-nowrap">💻 Скетч C++</a>
+      <a href="#troubleshooting" class="px-3 py-1.5 rounded-xl hover:bg-slate-800 hover:text-sky-400 transition whitespace-nowrap">🔧 Усунення помилок</a>
+      <a href="#quiz" class="px-3 py-1.5 rounded-xl hover:bg-slate-800 hover:text-sky-400 transition whitespace-nowrap">🎯 Тест знань</a>
+    </div>
+
+    <!-- ВСТУП ПРОСТИМИ СЛОВАМИ -->
+    <div class="bg-gradient-to-r from-sky-950/30 to-slate-900 border border-sky-500/20 rounded-3xl p-6 sm:p-8 space-y-3">
+      <h2 class="text-lg font-bold text-white flex items-center gap-2.5">
+        <span>🌡️</span> Навіщо потрібен модуль-перехідник PCF8574?
+      </h2>
+      <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+        Класичний екран 1602 має 16 металевих пінів. Якщо підключати їх напряму до Arduino в паралельному режимі 4-bit, ви витратите майже всі вільні піни плати! Модуль розширювача шини <strong>PCF8574</strong> на зворотному боці екрана приймає байти даних через шину I2C всього по двох проводах: <strong>SDA (Data, пін A4)</strong> та <strong>SCL (Clock, пін A5)</strong>. На цю ж шину паралельно можна підключити ще десятки інших датчиків!
+      </p>
+    </div>
+
+    <!-- ================= 1. СХЕМИ ТА МОДЕЛІ ================= -->
+    <section id="schematics" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-36">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-400 uppercase mb-1">
+            <span>● РОЗДІЛ 1</span>
+            <span>• СХЕМОТЕХНІКА ПІДКЛЮЧЕННЯ</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white font-heading">
+            Схеми підключення: LCD 1602 з модулем PCF8574 та датчик DHT11
+          </h2>
+        </div>
+
+        <!-- Таби -->
+        <div class="flex flex-wrap items-center gap-2 bg-slate-800/80 p-1.5 rounded-2xl border border-slate-700/80">
+          <button type="button" id="tab-btn-tinkercad" class="flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-bold bg-white text-slate-900 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>💻 Tinkercad Circuits</span>
+          </button>
+          <button type="button" id="tab-btn-dht" class="flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>🌡️ Сенсор DHT11</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Вміст вкладок -->
+      <div class="relative bg-slate-950 rounded-2xl border border-slate-800 p-4 sm:p-6 flex flex-col items-center min-h-[380px] justify-center">
+        
+        <!-- Tab Tinkercad -->
+        <div id="view-tinkercad" class="w-full flex flex-col items-center">
+          <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+            <span class="text-sky-400 font-bold">● АВТЕНТИЧНИЙ СКРІНШОТ TINKERCAD CIRCUITS З МОДУЛЕМ I2C</span>
+            <span class="text-slate-500 hidden sm:inline">Клікніть для збільшення (Lightbox)</span>
+          </div>
+          <img src="assets/images/tinkercad-i2c-lcd.png" alt="Схема підключення дисплея I2C в Tinkercad Circuits" class="w-full h-auto max-h-[500px] object-contain rounded-xl shadow-lg border border-slate-800 cursor-zoom-in hover:brightness-105 transition" onclick="openLightbox(this.src, 'Схема дисплея LCD 1602 I2C в Autodesk Tinkercad Circuits')">
+          <p class="text-xs text-slate-400 mt-3 text-center">
+            Лінія SDA підключається до A4, лінія SCL — до A5. Живлення екрана 5V та заземлення GND беруться зі спільних шин.
+          </p>
+        </div>
+
+        <!-- Tab DHT11 -->
+        <div id="view-dht" class="w-full hidden flex-col items-center">
+          <div class="w-full flex items-center justify-between mb-2 px-2 text-[11px] text-slate-400 font-mono">
+            <span class="text-emerald-400 font-bold">● СКЕЙЛ-ПІДКЛЮЧЕННЯ ЦИФРОВОГО ДАТЧИКА КЛІМАТУ DHT11</span>
+            <span class="text-slate-500 hidden sm:inline">Підтягувальний резистор 10 кОм</span>
+          </div>
+          <img src="assets/images/tinkercad-dht-temp.png" alt="Підключення датчика температури в Tinkercad" class="w-full h-auto max-h-[500px] object-contain rounded-xl shadow-lg border border-slate-800 cursor-zoom-in hover:brightness-105 transition" onclick="openLightbox(this.src, 'Підключення датчика DHT11 до Arduino')">
+          <p class="text-xs text-slate-400 mt-3 text-center">
+            Сигнальний контакт Data сенсора DHT11 веде до цифрового піна D2. Між лінією Data та шиною 5V встановлено підтягувальний резистор 10 кОм.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 2. ОНЛАЙН СИМУЛЯТОР ДИСПЛЕЯ 1602 ================= -->
+    <section id="simulator" class="bg-slate-950 border-2 border-sky-500/40 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative overflow-hidden scroll-mt-36">
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+            <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+            ІНТЕРАКТИВНИЙ LCD-СИМУЛЯТОР 16x2
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-heading mt-2">
+            Керуйте віртуальним кліматом та дивіться екран
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">
+            Змінюйте температуру та вологість: дивіться як оновлюється матриця символів і формується індекс комфорту
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 bg-slate-900 px-4 py-2 rounded-2xl border border-slate-800 font-mono text-xs">
+          <span class="text-slate-400">I2C Адреса:</span>
+          <span class="text-amber-400 font-bold">0x27 (PCF8574T)</span>
+        </div>
+      </div>
+
+      <!-- Стенд симулятора -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-slate-900/80 rounded-2xl p-6 border border-slate-800">
+        
+        <!-- Колонка 1: Віртуальний екран LCD 1602 Blue Backlight -->
+        <div class="lg:col-span-7 flex flex-col items-center space-y-4">
+          <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">Символьний РК-дисплей 1602 (Blue Matrix)</span>
+          
+          <!-- Корпус дисплея -->
+          <div class="w-full max-w-md bg-emerald-900 border-4 border-slate-800 rounded-2xl p-4 shadow-2xl">
+            <!-- Металева рамка екрана -->
+            <div class="bg-slate-900 border-2 border-slate-700 rounded-xl p-3 shadow-inner">
+              <!-- Синє поле з підсвічуванням -->
+              <div class="w-full bg-[#0040aa] rounded-lg p-3 font-mono font-bold text-white tracking-widest text-sm sm:text-base shadow-[0_0_20px_#0055ff] flex flex-col gap-1 border border-blue-400/40 select-none">
+                <!-- Рядок 1 (16 символів) -->
+                <div id="sim-lcd-line1" class="whitespace-pre overflow-hidden">Temp: 23.5 C    </div>
+                <!-- Рядок 2 (16 символів) -->
+                <div id="sim-lcd-line2" class="whitespace-pre overflow-hidden">Hum:  45 % [OK] </div>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center mt-2 px-1 text-[10px] font-mono text-emerald-300/80">
+              <span>HD44780 Controller</span>
+              <span>16x2 Characters • I2C Bus</span>
+            </div>
+          </div>
+
+          <div class="text-xs font-mono text-slate-400 flex items-center gap-2">
+            <span>Статус клімату:</span>
+            <span id="sim-climate-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              Ідеальний комфорт
+            </span>
+          </div>
+        </div>
+
+        <!-- Колонка 2: Повзунки віртуального сенсора DHT11 -->
+        <div class="lg:col-span-5 space-y-5 border-t lg:border-t-0 lg:border-l border-slate-800 pt-6 lg:pt-0 lg:pl-6">
+          <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block">Параметри середовища DHT11</span>
+          
+          <!-- Повзунок температури -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-mono">
+              <span class="text-slate-400">Температура (°C):</span>
+              <span id="sim-temp-display" class="text-amber-400 font-bold">23.5 °C</span>
+            </div>
+            <input type="range" id="sim-temp-slider" aria-label="Температура повітря датчика DHT22 (-10...+50 °C)" min="-10" max="50" step="0.5" value="23.5" class="w-full accent-amber-400 cursor-pointer h-2 bg-slate-800 rounded-lg">
+          </div>
+
+          <!-- Повзунок вологості -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-mono">
+              <span class="text-slate-400">Відносна вологість (%):</span>
+              <span id="sim-hum-display" class="text-sky-400 font-bold">45.0 %</span>
+            </div>
+            <input type="range" id="sim-hum-slider" aria-label="Відносна вологість повітря датчика DHT22 (10...95 %)" min="10" max="95" step="1" value="45" class="w-full accent-sky-400 cursor-pointer h-2 bg-slate-800 rounded-lg">
+          </div>
+
+          <!-- Телеметрія шини I2C -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 text-xs font-mono">
+            <div class="flex justify-between text-slate-400">
+              <span>Пакет I2C (SDA):</span>
+              <span class="text-sky-400 font-bold">0x27 W ACK 0x80</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Частота шини SCL:</span>
+              <span class="text-slate-300">100 кГц (Standard Mode)</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Час опитування DHT11:</span>
+              <span class="text-emerald-400 font-bold">кожні 2000 мс</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= 3. ЧЕКЛІСТ ДЕТАЛЕЙ (BOM) ================= -->
+    <section id="bom" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-36">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-400 uppercase mb-1">
+            <span>● РОЗДІЛ 2</span>
+            <span>• НЕОБХІДНЕ ОБЛАДНАННЯ</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white font-heading">
+            Чекліст компонентів метеостанції
+          </h2>
+        </div>
+        <span class="text-xs font-mono text-slate-400">5 позицій</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-lg">📟</div>
+            <div>
+              <h3 class="text-sm font-bold text-white">LCD 1602 + I2C Backpack</h3>
+              <span class="text-xs text-slate-400 font-mono">1 шт. • Чіп PCF8574</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400">Символьний дисплей 16 стовпчиків на 2 рядки з інтегрованим перехідником.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-lg">🌡️</div>
+            <div>
+              <h3 class="text-sm font-bold text-white">Датчик DHT11 (або DHT22)</h3>
+              <span class="text-xs text-slate-400 font-mono">1 шт. • Цифровий інтерфейс</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400">Вимірює температуру (0..50°C ±2°C) та вологість (20..90% ±5%).</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-lg">⚡</div>
+            <div>
+              <h3 class="text-sm font-bold text-white">Резистор 10 кОм</h3>
+              <span class="text-xs text-slate-400 font-mono">1 шт. • Підтяжка Data</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400">Підтягує лінію зв\'язку DHT11 до +5V для стабільної передачі пакетів.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold text-lg">⚡</div>
+            <div>
+              <h3 class="text-sm font-bold text-white">Arduino UNO R3</h3>
+              <span class="text-xs text-slate-400 font-mono">1 шт. • Апаратна шина TWI</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400">Вбудований апаратний I2C контролер на пінах A4 (SDA) та A5 (SCL).</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-lg">▦</div>
+            <div>
+              <h3 class="text-sm font-bold text-white">Дроти папа-мама</h3>
+              <span class="text-xs text-slate-400 font-mono">8 шт. • Комутація</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400">Для підключення виводів I2C backpack безпосередньо до гребінки UNO.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 4. МАГІЯ ШИНИ I2C ================= -->
+    <section id="i2c" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 scroll-mt-36">
+      <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-400 uppercase mb-1">
+        <span>● АРХІТЕКТУРА ДВОПРОВІДНОЇ ШИНИ</span>
+        <span>• I2C / TWI PROTOCOL</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-extrabold text-white font-heading">
+        Як шина I2C адресує до 127 пристроїв по двох проводах?
+      </h2>
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 text-xs sm:text-sm text-slate-300 space-y-3 leading-relaxed">
+        <p>
+          Шина <strong>I2C (Inter-Integrated Circuit)</strong> була винайдена компанією Philips. Вона працює за топологією Master-Slave:
+        </p>
+        <ul class="list-disc list-inside space-y-1.5 text-slate-400">
+          <li><strong>SCL (Serial Clock):</strong> Тактовий сигнал, який генерує мікроконтролер Arduino для синхронізації бітів.</li>
+          <li><strong>SDA (Serial Data):</strong> Двонаправлена лінія передачі даних.</li>
+        </ul>
+        <p>
+          Кожен пристрій на шині має унікальну <strong>7-бітну апаратну адресу</strong> (для перехідника PCF8574T це зазвичай <code class="text-amber-400 font-mono">0x27</code>, а для PCF8574AT — <code class="text-amber-400 font-mono">0x3F</code>). Arduino посилає адресний байт, і лише той чип, чия адреса збіглася, відправляє у відповідь сигнал підтвердження ACK (Acknowledge)!
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= 5. СКЕТЧ C++ ================= -->
+    <section id="code" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-36">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-400 uppercase mb-1">
+            <span>● РОЗДІЛ 3</span>
+            <span>• ПОВНИЙ ВИХІДНИЙ КОД C++</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white font-heading">
+            Скетч метеостанції з бібліотекою LiquidCrystal_I2C та DHT
+          </h2>
+        </div>
+
+        <button type="button" class="btn-copy-code px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer" data-target="code-project-06">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          <span>Копіювати код</span>
+        </button>
+      </div>
+
+      <pre class="bg-slate-950 text-slate-200 p-5 rounded-2xl text-xs sm:text-sm font-mono overflow-x-auto border border-slate-800 leading-relaxed shadow-inner"><code id="code-project-06">// SimpleArduino — Проєкт #06: Метеостанція з дисплеєм LCD 1602 I2C та датчиком DHT11
+// Вимагає бібліотек: "LiquidCrystal_I2C" та "DHT sensor library" від Adafruit
+
+#include &lt;Wire.h&gt;
+#include &lt;LiquidCrystal_I2C.h&gt;
+#include &lt;DHT.h&gt;
+
+#define DHTPIN 2     // Цифровий пін підключення датчика DHT11
+#define DHTTYPE DHT11
+
+// Ініціалізація екрана з адресою 0x27, 16 символів, 2 рядки
+// Якщо екран не світить текст — змініть адресу на 0x3F
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+DHT dht(DHTPIN, DHTTYPE);
+
+unsigned long lastReadTime = 0;
+const unsigned long READ_INTERVAL = 2000; // Опитування датчика раз на 2 секунди
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+
+  // Ініціалізація шини I2C та увімкнення підсвічування дисплея
+  lcd.init();
+  lcd.backlight();
+
+  // Вітальне повідомлення
+  lcd.setCursor(0, 0);
+  lcd.print("SimpleArduino");
+  lcd.setCursor(0, 1);
+  lcd.print("Meteo Station...");
+  delay(1500);
+  lcd.clear();
+}
+
+void loop() {
+  unsigned long now = millis();
+
+  // Датчик DHT11 має інерційність і не може опитуватися частіше 1 разу на секунду
+  if (now - lastReadTime >= READ_INTERVAL) {
+    lastReadTime = now;
+
+    float humidity = dht.readHumidity();
+    float temperature = dht.readTemperature();
+
+    // Перевірка на помилку зчитування
+    if (isnan(humidity) || isnan(temperature)) {
+      lcd.setCursor(0, 0);
+      lcd.print("Sensor Err!     ");
+      lcd.setCursor(0, 1);
+      lcd.print("Check Wiring    ");
+      return;
+    }
+
+    // Рядок 1: Температура
+    lcd.setCursor(0, 0);
+    lcd.print("Temp: ");
+    lcd.print(temperature, 1);
+    lcd.print((char)223); // Символ градуса °
+    lcd.print("C   ");
+
+    // Рядок 2: Вологість та індекс
+    lcd.setCursor(0, 1);
+    lcd.print("Hum:  ");
+    lcd.print(humidity, 0);
+    lcd.print("% ");
+
+    if (humidity >= 40 && humidity <= 60) {
+      lcd.print("[OK]    ");
+    } else if (humidity < 40) {
+      lcd.print("[DRY]   ");
+    } else {
+      lcd.print("[WET]   ");
+    }
+
+    Serial.print("T: "); Serial.print(temperature);
+    Serial.print("C | H: "); Serial.print(humidity); Serial.println("%");
+  }
+}</code></pre>
+    </section>
+
+    <!-- ================= 6. УСУНЕННЯ ПОМИЛОК ================= -->
+    <section id="troubleshooting" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-36">
+      <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-rose-400 uppercase mb-1">
+        <span>● РОЗДІЛ 4</span>
+        <span>• ДІАГНОСТИКА ТА TROUBLESHOOTING</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-extrabold text-white font-heading">
+        Матриця типових несправностей
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+        
+        <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-2 text-rose-400 font-bold">
+            <span>✗</span>
+            <h4>Дисплей світиться синім, але літер немає (порожні прямокутники)</h4>
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            <strong>Найчастіша помилка!</strong> Потрібно відрегулювати контрастність. На зворотній стороні плати PCF8574 є маленький синій підлаштувальний потенціометр. Покрутіть його хрестовою викруткою, поки літери не стануть чіткими!
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-2 text-rose-400 font-bold">
+            <span>✗</span>
+            <h4>Програма компілюється, але екран взагалі не реагує</h4>
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            Невірна I2C адреса! Більшість китайських плат мають адресу <code class="text-sky-400 font-mono">0x27</code>, але чипи з маркуванням PCF8574AT використовують адресу <code class="text-sky-400 font-mono">0x3F</code>. Запустіть скетч «I2C Scanner» для визначення точної адреси.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-2 text-rose-400 font-bold">
+            <span>✗</span>
+            <h4>На екрані постійно пише «Sensor Err!»</h4>
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            Датчик DHT11 не відповідає. Перевірте, чи встановлено підтягувальний резистор 10 кОм між виводом Data та лінією живлення 5V, або переконайтеся, що ви не плутаєте розпіновку сенсора.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-center gap-2 text-rose-400 font-bold">
+            <span>✗</span>
+            <h4>Показники оновлюються занадто повільно</h4>
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            Сенсор DHT11 є терморезистивним і фізично вимагає 1–2 секунди для стабілізації кристала вологості. Не робіть опитування частіше 2 секунд, інакше датчик почне повертати помилки <code class="text-slate-200">nan</code>.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 7. САМОПЕРЕВІРКА (QUIZ) ================= -->
+    <section id="quiz" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5 scroll-mt-36">
+      <div>
+        <div class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-400 uppercase mb-1">
+          <span>● САМОКОНТРОЛЬ</span>
+          <span>• ІНЖЕНЕРНИЙ ТЕСТ</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-extrabold text-white font-heading">
+          Перевірте себе: чому на шині I2C обов'язково потрібні підтягувальні резистори?
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">
+          Оберіть єдину схемотехнічно правильну причину будови ліній SDA та SCL:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="quiz-container">
+        <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-800 bg-slate-950 hover:bg-slate-800 text-xs sm:text-sm text-slate-300 font-medium transition cursor-pointer" data-correct="false">
+          А) Щоб понизити напругу з 12 Вольт до 5 Вольт для екрана
+        </button>
+        <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-800 bg-slate-950 hover:bg-slate-800 text-xs sm:text-sm text-slate-300 font-medium transition cursor-pointer" data-correct="true">
+          Б) Лінії I2C працюють за схемою «відкритий колектор» (Open Drain): пристрої вміють лише притягувати лінію до GND, а резистори підтягують її до +5V, запобігаючи короткому замиканню
+        </button>
+        <button type="button" class="quiz-btn text-center p-4 rounded-2xl border border-slate-800 bg-slate-950 hover:bg-slate-800 text-xs sm:text-sm text-slate-300 font-medium transition cursor-pointer" data-correct="false">
+          В) Для охолодження мікросхеми PCF8574 під час швидкої передачі байтів
+        </button>
+      </div>
+
+      <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-medium"></div>
+    </section>
+
+    <!-- НАВІГАЦІЯ МІЖ ПРОЄКТАМИ -->
+    <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="project-05-ultrasonic.html" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs sm:text-sm transition text-center flex items-center justify-center gap-2">
+        <span>←</span>
+        <span>Попередній: #05 Ультразвуковий сонар</span>
+      </a>
+      <a href="project-07-servo-tracker.html" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs sm:text-sm transition text-center shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2">
+        <span>Наступний: #07 Сонячний трекер на сервоприводі</span>
+        <span>→</span>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- LIGHTBOX MODAL -->
+  <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="relative max-w-5xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-4 shadow-2xl flex flex-col items-center">
+      <div class="w-full flex items-center justify-between mb-3 px-2">
+        <span id="modal-title" class="text-sm font-bold text-white font-mono uppercase tracking-wider">Схема проєкту</span>
+        <button type="button" id="modal-close" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div class="w-full bg-slate-950 rounded-2xl p-2 flex items-center justify-center overflow-auto max-h-[80vh]">
+        <img id="modal-img" src="" alt="Збільшена схема" class="max-w-full h-auto max-h-[75vh] object-contain rounded-xl">
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-notify" class="fixed bottom-6 right-6 z-50 hidden bg-emerald-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl shadow-2xl text-xs sm:text-sm items-center gap-2 border border-emerald-400 transition-all">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    <span id="toast-text">Скетч C++ скопійовано!</span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 border-t border-slate-800 py-8 text-xs text-slate-500 text-center">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p>SimpleArduino — Відкрита платформа практичного вивчення фізичних обчислень та мікроконтролерів.</p>
+      <p class="font-mono text-slate-600">Всі схеми та кодові бази ліцензовано на умовах MIT / Open Source.</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // 1. Таби
+    const tabBtnTinkercad = document.getElementById('tab-btn-tinkercad');
+    const tabBtnDht = document.getElementById('tab-btn-dht');
+    const viewTinkercad = document.getElementById('view-tinkercad');
+    const viewDht = document.getElementById('view-dht');
+
+    const activeTab = 'flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-bold bg-white text-slate-900 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer';
+    const inactiveTab = 'flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5 cursor-pointer';
+
+    function setTab(name) {
+      if (viewTinkercad) viewTinkercad.classList.add('hidden');
+      if (viewDht) viewDht.classList.add('hidden');
+      if (tabBtnTinkercad) tabBtnTinkercad.className = inactiveTab;
+      if (tabBtnDht) tabBtnDht.className = inactiveTab;
+
+      if (name === 'tinkercad') {
+        if (viewTinkercad) viewTinkercad.classList.remove('hidden');
+        if (tabBtnTinkercad) tabBtnTinkercad.className = activeTab;
+      } else if (name === 'dht') {
+        if (viewDht) viewDht.classList.remove('hidden');
+        if (tabBtnDht) tabBtnDht.className = activeTab;
+      }
+    }
+
+    if (tabBtnTinkercad) tabBtnTinkercad.addEventListener('click', () => setTab('tinkercad'));
+    if (tabBtnDht) tabBtnDht.addEventListener('click', () => setTab('dht'));
+
+    // 2. Lightbox
+    const modalBox = document.getElementById('modal-lightbox');
+    const modalImgEl = document.getElementById('modal-img');
+    const modalTitleEl = document.getElementById('modal-title');
+    const modalCloseBtn = document.getElementById('modal-close');
+
+    window.openLightbox = function(src, title) {
+      if (!modalBox || !modalImgEl) return;
+      modalImgEl.src = src;
+      if (modalTitleEl && title) modalTitleEl.textContent = title;
+      modalBox.classList.remove('hidden', 'pointer-events-none');
+      setTimeout(() => modalBox.classList.remove('opacity-0'), 10);
+    };
+
+    window.closeLightbox = function() {
+      if (!modalBox) return;
+      modalBox.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => modalBox.classList.add('hidden'), 300);
+    };
+
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeLightbox);
+    if (modalBox) modalBox.addEventListener('click', (e) => { if (e.target === modalBox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+    // 3. Інтерактивний симулятор LCD 1602
+    const tempSlider = document.getElementById('sim-temp-slider');
+    const humSlider = document.getElementById('sim-hum-slider');
+    const tempDisplay = document.getElementById('sim-temp-display');
+    const humDisplay = document.getElementById('sim-hum-display');
+    const lcdLine1 = document.getElementById('sim-lcd-line1');
+    const lcdLine2 = document.getElementById('sim-lcd-line2');
+    const climateBadge = document.getElementById('sim-climate-badge');
+
+    function updateLcd() {
+      const temp = parseFloat(tempSlider.value).toFixed(1);
+      const hum = parseInt(humSlider.value, 10);
+
+      if (tempDisplay) tempDisplay.textContent = `${temp} °C`;
+      if (humDisplay) humDisplay.textContent = `${hum}.0 %`;
+
+      let statusTag = '[OK] ';
+      if (hum < 40) statusTag = '[DRY]';
+      if (hum > 65) statusTag = '[WET]';
+
+      // 16 chars formatted
+      const l1 = `Temp: ${temp} C`.padEnd(16, ' ').slice(0, 16);
+      const l2 = `Hum:  ${hum}% ${statusTag}`.padEnd(16, ' ').slice(0, 16);
+
+      if (lcdLine1) lcdLine1.textContent = l1;
+      if (lcdLine2) lcdLine2.textContent = l2;
+
+      if (climateBadge) {
+        if (hum >= 40 && hum <= 60 && temp >= 18 && temp <= 26) {
+          climateBadge.textContent = 'Ідеальний комфорт';
+          climateBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+        } else if (temp > 28 || hum > 70) {
+          climateBadge.textContent = 'Душно / Висока вологість';
+          climateBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
+        } else {
+          climateBadge.textContent = 'Сухе повітря / Прохолодно';
+          climateBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+        }
+      }
+    }
+
+    if (tempSlider && humSlider) {
+      if (tempSlider) tempSlider.addEventListener('input', updateLcd);
+      if (humSlider) humSlider.addEventListener('input', updateLcd);
+      updateLcd();
+    }
+
+    // 4. Копіювання коду
+    const copyBtns = document.querySelectorAll('.btn-copy-code');
+    const toast = document.getElementById('toast-notify');
+
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const codeEl = document.getElementById(targetId);
+        if (codeEl) {
+          navigator.clipboard.writeText(codeEl.textContent).then(() => {
+            if (toast) {
+              toast.classList.remove('hidden');
+              setTimeout(() => toast.classList.add('hidden'), 2500);
+            }
+          });
+        }
+      });
+    });
+
+    // 5. Тест знань
+    const quizBtns = document.querySelectorAll('.quiz-btn');
+    const quizFeedback = document.getElementById('quiz-feedback');
+
+    quizBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isCorrect = btn.getAttribute('data-correct') === 'true';
+        quizBtns.forEach(b => {
+          b.className = 'quiz-btn text-center p-4 rounded-2xl border border-slate-800 bg-slate-950 hover:bg-slate-800 text-xs sm:text-sm text-slate-300 font-medium transition cursor-pointer';
+        });
+
+        if (isCorrect) {
+          btn.className = 'quiz-btn text-center p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-950/40 text-xs sm:text-sm text-emerald-300 font-bold transition cursor-pointer';
+          if (quizFeedback) {
+            quizFeedback.className = 'p-4 rounded-2xl bg-emerald-900/40 text-emerald-200 border border-emerald-500/50 text-xs sm:text-sm block space-y-1';
+            quizFeedback.innerHTML = `<strong>✓ Блискуче!</strong> Це ключова концепція схемотехніки шини I2C. Якщо два чипи одночасно спробують видати напругу (один 5В, інший 0В), без підтяжки сталося б коротке замикання. Завдяки Open-Drain лінія в стані спокою підтягнута резисторами до +5V, а будь-який пристрій може безпечно притиснути її до землі!`;
+          }
+        } else {
+          btn.className = 'quiz-btn text-center p-4 rounded-2xl border-2 border-rose-500 bg-rose-950/40 text-xs sm:text-sm text-rose-300 font-medium transition cursor-pointer';
+          if (quizFeedback) {
+            quizFeedback.className = 'p-4 rounded-2xl bg-rose-900/40 text-rose-200 border border-rose-500/50 text-xs sm:text-sm block space-y-1';
+            quizFeedback.innerHTML = `<strong>✗ Невірно.</strong> Резистори тут не для охолодження чи дільника напруги. Вони формують обов\'язковий високий логічний рівень (HIGH 5V) на відкритих колекторах польових транзисторів шини I2C!`;
+          }
+        }
+      });
+    });
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

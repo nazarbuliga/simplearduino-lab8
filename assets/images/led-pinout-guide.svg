@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 240" width="500" height="240" fill="none">
+  <rect width="500" height="240" rx="12" fill="#1E293B" stroke="#334155" stroke-width="2"/>
+  <text x="20" y="32" fill="#38BDF8" font-family="Inter, sans-serif" font-size="13" font-weight="bold" letter-spacing="1">ПОЛЯРНІСТЬ СВІТЛОДІОДА (LED PINOUT)</text>
+  
+  <!-- LED ілюстрація -->
+  <g transform="translate(100, 50)">
+    <!-- Лінза світлодіода -->
+    <path d="M40 70 A30 30 0 0 1 100 70 L95 85 L45 85 Z" fill="#38BDF8" stroke="#0284C7" stroke-width="2"/>
+    <ellipse cx="70" cy="70" rx="28" ry="10" fill="#0284C7" opacity="0.6"/>
+    <!-- Плоский зріз на катоді -->
+    <line x1="42" y1="70" x2="42" y2="85" stroke="#EF4444" stroke-width="3"/>
+    
+    <!-- Ніжки -->
+    <!-- Анод (довша +) -->
+    <path d="M80 85 L80 145" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+    <!-- Катод (коротша -) -->
+    <path d="M60 85 L60 130" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Стрілки та підписи -->
+  <g font-family="Inter, sans-serif" font-size="12">
+    <!-- Анод -->
+    <path d="M230 185 L185 185" stroke="#38BDF8" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="240" y="180" fill="#38BDF8" font-weight="bold">АНОД (+)</text>
+    <text x="240" y="196" fill="#94A3B8" font-size="11">Довга ніжка • До піна D13 через резистор</text>
+
+    <!-- Катод -->
+    <path d="M230 140 L165 140" stroke="#EF4444" stroke-width="1.5"/>
+    <text x="240" y="135" fill="#EF4444" font-weight="bold">КАТОД (-)</text>
+    <text x="240" y="151" fill="#94A3B8" font-size="11">Коротка ніжка • Плоский зріз корпусу • До GND</text>
+  </g>
+</svg>

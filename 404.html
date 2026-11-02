@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Сторінку не знайдено | SimpleArduino</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/hardware.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/custom-styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-950 text-slate-100 font-['Inter',sans-serif] min-h-screen flex flex-col justify-between">
+  <!-- Minimal Header -->
+  <header class="border-b border-slate-800/80 bg-slate-900/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-sky-500/20">
+        A
+      </div>
+      <div>
+        <span class="text-lg font-black text-white tracking-tight">Simple<span class="text-sky-400">Arduino</span></span>
+        <span class="block text-[10px] uppercase font-bold tracking-widest text-slate-400">Освітній веб-хаб</span>
+      </div>
+    </a>
+    <a href="index.html" class="text-xs text-sky-400 hover:text-sky-300 font-semibold transition">← На головну</a>
+  </header>
+
+  <!-- Error Content -->
+  <main class="flex-1 flex items-center justify-center px-4 py-16 text-center">
+    <div class="max-w-lg mx-auto bg-slate-900/60 border border-slate-800 rounded-3xl p-8 sm:p-12 shadow-2xl">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 text-3xl font-mono font-bold mb-6">
+        404
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-white mb-3">Схему або сторінку не знайдено</h1>
+      <p class="text-slate-400 text-sm leading-relaxed mb-8">
+        Схоже, цей провідник веде в обрив кола! Запитуваний ресурс було переміщено, перейменовано або він ніколи не існував у системі SimpleArduino.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="index.html" class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-sky-500/25">
+          Повернутися на Головну
+        </a>
+        <a href="learning-ladder.html" class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm transition-all border border-slate-700">
+          Сходинки знань (Ladder)
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 px-6 py-4 text-center text-xs text-slate-500">
+    &copy; 2026 SimpleArduino. Лабораторна робота №8. Булига Назарій (ПП-25).
+  </footer>
+</body>
+</html>

@@ -1,0 +1,42 @@
+# Operating System Files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor & IDE configurations
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-workspace
+.idea/
+*.swp
+*.swo
+
+# Node & Package caches
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Build artifacts & temporary archives
+dist/
+build/
+*.tmp
+*.bak
+*.swp
+*~
+
+# Environment & Secret files
+.env
+.env.local
+.env.*.local
+*.log

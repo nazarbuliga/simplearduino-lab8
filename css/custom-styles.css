@@ -1,0 +1,679 @@
+/* ==========================================================================
+   SimpleArduino — Custom CSS Styles
+   Призначення: специфічні користувацькі стилі, що доповнюють Tailwind CSS
+   ========================================================================== */
+
+/* 1. Плавне прокручування та налаштування кастомного скролбару */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+section[id],
+article[id],
+div[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+  border: 2px solid #0f172a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #38bdf8;
+}
+
+/* 2. Специфічні тіні Claymorphism з внутрішнім підсвічуванням inset */
+.clay-card {
+  box-shadow: 
+    0 12px 24px -6px rgba(15, 23, 42, 0.08),
+    0 4px 6px -2px rgba(15, 23, 42, 0.03),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(15, 23, 42, 0.04);
+}
+
+.clay-card:hover {
+  box-shadow: 
+    0 22px 35px -8px rgba(15, 23, 42, 0.12),
+    0 8px 12px -4px rgba(15, 23, 42, 0.06),
+    inset 0 1px 2px rgba(255, 255, 255, 1),
+    inset 0 -2px 4px rgba(15, 23, 42, 0.03);
+}
+
+/* 3. Анімація для мобільного меню */
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeInSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 4. Доступність: Focus-visible контур за стандартом WCAG 2.2 AA */
+:focus-visible {
+  outline: 2px solid #38bdf8 !important;
+  outline-offset: 3px !important;
+}
+
+/* 5. Стилізація кастомного трикутника для акордеона details */
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+/* === ПРИМУСОВИЙ ФІКС ДЛЯ ІНПУТУ ПОШУКУ (100% ВІДСТУП ВІД ЛУПИ) === */
+#site-search-input {
+  padding-left: 48px !important;
+  background-color: rgba(30, 41, 59, 0.9) !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+
+#site-search-input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+/* ==========================================================================
+   Smooth Hero Entrance Animations & Floating Ambient Effects
+   ========================================================================== */
+@keyframes heroFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFadeScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.42;
+    transform: scale(1.06);
+  }
+}
+
+.hero-animate-title {
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+
+.hero-animate-desc {
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+}
+
+.hero-animate-buttons {
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
+}
+
+.hero-animate-metrics {
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
+}
+
+.hero-animate-visual {
+  animation: heroFadeScale 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.hero-floating {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+.hero-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+
+/* ==========================================================================
+   4. ЛАБОРАТОРНА РОБОТА №7 — Медіаінтеграції та Дизайн-токени :root
+   (YouTube Video, Google Maps iframe, Інтерактивний інформер телеметрії)
+   ========================================================================== */
+:root {
+  --media-aspect-ratio: 16 / 9;
+  --media-border-radius: 1rem;
+  --media-box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.25), 0 8px 10px -6px rgba(15, 23, 42, 0.15);
+  --map-min-height-mobile: 280px;
+  --map-min-height-desktop: 380px;
+  --informer-glow: 0 0 20px rgba(56, 189, 248, 0.2);
+}
+
+.responsive-video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--media-aspect-ratio);
+  border-radius: var(--media-border-radius);
+  box-shadow: var(--media-box-shadow);
+  overflow: hidden;
+  background-color: #0f172a;
+}
+
+.responsive-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.responsive-map-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: var(--map-min-height-mobile);
+  border-radius: var(--media-border-radius);
+  box-shadow: var(--media-box-shadow);
+  overflow: hidden;
+  background-color: #0f172a;
+}
+
+@media (min-width: 768px) {
+  .responsive-map-wrapper {
+    min-height: var(--map-min-height-desktop);
+  }
+}
+
+.responsive-map-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.telemetry-informer-card {
+  box-shadow: var(--media-box-shadow), var(--informer-glow);
+  border-radius: var(--media-border-radius);
+}
+
+
+/* ==========================================================================
+   5. ІНТЕРАКТИВНЕ ПІДСВІЧУВАННЯ ТА GLOW-ЕФЕКТИ ДЛЯ ВСІХ ІКОНОК ТА КАРТОК
+   (Вимога #5: при наведенні на всі іконки та елементи все підсвічується)
+   ========================================================================== */
+.icon-glow,
+.icon-container,
+[data-icon-glow] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, filter, box-shadow;
+}
+
+.icon-glow:hover,
+.icon-container:hover,
+[data-icon-glow]:hover,
+.group:hover .icon-glow,
+.group:hover .icon-container {
+  transform: translateY(-2px) scale(1.12);
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.7)) drop-shadow(0 0 20px rgba(14, 165, 233, 0.35));
+}
+
+/* Підсвічування SVG-іконок у кнопках, картках, навігації */
+svg {
+  transition: transform 0.25s ease, filter 0.25s ease, color 0.25s ease, stroke 0.25s ease;
+}
+
+a:hover > svg,
+button:hover > svg,
+.group:hover svg.group-hover-glow {
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+}
+
+/* Інтерактивні картки з елегантним підсвічуванням бордеру та глибиною */
+.interactive-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.3s ease, 
+              background-color 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.interactive-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -10px rgba(14, 165, 233, 0.15), 
+              0 10px 15px -3px rgba(15, 23, 42, 0.08),
+              0 0 0 1px rgba(56, 189, 248, 0.35);
+}
+
+/* ==========================================================================
+   6. СТИЛІЗАЦІЯ КРАСИВОГО FAQ АКОРДЕОНА (Вимога #2)
+   ========================================================================== */
+.faq-item {
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 1rem;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item[open] {
+  border-color: #38bdf8 !important;
+  background-color: #ffffff;
+  box-shadow: 0 12px 28px -6px rgba(14, 165, 233, 0.16), 0 0 0 1px rgba(56, 189, 248, 0.4);
+}
+
+.faq-item summary {
+  user-select: none;
+  padding: 0 !important;
+}
+
+/* Скидання дубльованого псевдоелемента стрілки з базового style.css,
+   оскільки у верстці вже використовується плавний векторний SVG-шеврон */
+.faq-item summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+.faq-item summary:hover .faq-icon-wrapper {
+  transform: scale(1.15) rotate(6deg);
+  background-color: rgba(56, 189, 248, 0.25);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+}
+
+.faq-badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+}
+
+/* ==========================================================================
+   7. МІТКА МАГАЗИНУ ЕЛЕКТРОТЕХНІКИ НА КАРТІ ЯК НА GOOGLE MAPS (Вимога #4)
+   ========================================================================== */
+@keyframes mapPinBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes mapPulseRing {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.google-map-pin {
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
+  animation: mapPinBounce 2.4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.google-map-pin-pulse {
+  animation: mapPulseRing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.map-infowindow {
+  animation: fadeInSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Автоматичне підсвічування та glow для всіх іконок сайту */
+article:hover img[src*="icon"],
+article:hover svg,
+.group:hover img[src*="icon"],
+.group:hover svg,
+button:hover svg,
+a:hover svg {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.65));
+  transition: all 0.3s ease;
+}
+
+/* Інтерактивність для навігаційних посилань та футера */
+nav a:hover,
+header a:hover,
+footer a:hover {
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+}
+
+/* Плавний фокус та підсвічування інтерактивних елементів */
+input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35), 0 0 15px rgba(56, 189, 248, 0.25) !important;
+}
+
+
+/* ==========================================================================
+   8. ЦЕНТРУВАННЯ ТЕКСТУ НА ВСІХ СТОРІНКАХ САЙТУ (Вимога користувача)
+   ========================================================================== */
+body {
+  text-align: center;
+}
+
+main,
+section,
+article,
+header,
+footer,
+.hero-content,
+.section-header,
+.card-content {
+  text-align: center;
+}
+
+/* Центрування заголовків, параграфів, цитат, підписів та лейблів */
+h1, h2, h3, h4, h5, h6,
+p,
+blockquote,
+figcaption,
+summary,
+label,
+.lead-text {
+  text-align: center;
+}
+
+/* Селектор для елементів з класом text-left (крім коду та кодових комірок) */
+.text-left:not(pre):not(code):not(pre *):not(code *):not(table td.code-cell):not(.quiz-code) {
+  text-align: center !important;
+}
+
+/* Центрування флекс-контейнерів: бейджі, кнопки, хлібні крихти */
+.hero-animate-buttons,
+.hero-animate-metrics,
+.badge-container,
+.tags-container,
+.meta-badges,
+.breadcrumbs-container,
+nav[aria-label="Хлібні крихти"],
+nav[aria-label="Breadcrumbs"],
+nav[aria-label="Навігація по етапах проєкту"] > div,
+.quiz-options {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Центрування списків у секціях та картках */
+ul:not(.tech-code-list):not(.nav-dropdown):not(pre ul),
+ol:not(.tech-code-list):not(pre ol) {
+  text-align: center;
+  list-style-position: inside;
+}
+
+/* Центрування таблиць та комірок */
+table th,
+table td:not(.code-cell) {
+  text-align: center !important;
+}
+
+/* Кнопки тестів квізів */
+.quiz-btn {
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+/* Інженерний виняток: програмний код та технічні дампи обов'язково
+   зберігають чітке ліве вирівнювання для читабельності синтаксису C++ */
+pre, code, kbd, samp,
+pre code,
+.code-editor,
+.syntax-code,
+table td.code-cell,
+table th.code-cell,
+.terminal-output {
+  text-align: left !important;
+  direction: ltr !important;
+  unicode-bidi: isolate;
+}
+
+
+/* ==========================================================================
+   9. ТОТАЛЬНА ГІПЕР-ІНТЕРАКТИВНІСТЬ ТА GLOW-ПІДСВІЧУВАННЯ
+   (Вимога: на кожній сторінці майже все інтерактивне, при наведенні
+    на всі іконки та елементи все підсвічується)
+   ========================================================================== */
+
+/* 9.1. Усі іконки, SVG, логотипи, піктограми */
+svg,
+img[src*="icon"],
+img[src*="logo"],
+img[src*="badge"],
+img[src*="hardware"],
+img[src*="breadboard"],
+.icon-glow,
+.icon-wrapper,
+.faq-icon-wrapper,
+[data-icon-glow] {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.25s ease !important;
+  will-change: transform, filter;
+}
+
+svg:hover,
+img[src*="icon"]:hover,
+img[src*="logo"]:hover,
+img[src*="badge"]:hover,
+img[src*="hardware"]:hover,
+img[src*="breadboard"]:hover,
+.icon-glow:hover,
+.icon-wrapper:hover,
+.faq-icon-wrapper:hover,
+[data-icon-glow]:hover,
+a:hover > svg,
+button:hover > svg,
+.group:hover svg,
+.group:hover img[src*="icon"] {
+  transform: translateY(-2px) scale(1.18) !important;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.95))
+          drop-shadow(0 0 22px rgba(14, 165, 233, 0.6)) !important;
+}
+
+/* Кружечки та контейнери іконок */
+div[class*="rounded-2xl"]:has(svg),
+div[class*="rounded-xl"]:has(svg),
+div[class*="rounded-full"]:has(svg),
+span[class*="rounded-full"]:has(svg) {
+  transition: all 0.3s ease !important;
+}
+
+div[class*="rounded-2xl"]:has(svg):hover,
+div[class*="rounded-xl"]:has(svg):hover,
+div[class*="rounded-full"]:has(svg):hover,
+span[class*="rounded-full"]:has(svg):hover,
+.group:hover div[class*="rounded-2xl"]:has(svg),
+.group:hover div[class*="rounded-xl"]:has(svg) {
+  background-color: rgba(56, 189, 248, 0.18) !important;
+  border-color: rgba(56, 189, 248, 0.7) !important;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.4) !important;
+}
+
+/* 9.2. Картки проєктів, кроків, помилок, квізів */
+article,
+.course-card,
+.step-item,
+.interactive-card,
+figure,
+.clay-card,
+.telemetry-informer-card,
+.quiz-container,
+.troubleshooting-card,
+.quiz-btn {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              background-color 0.3s ease !important;
+  will-change: transform, box-shadow;
+}
+
+article:hover,
+.course-card:hover,
+.step-item:hover,
+.interactive-card:hover,
+figure:hover,
+.clay-card:hover,
+.telemetry-informer-card:hover,
+.troubleshooting-card:hover {
+  transform: translateY(-5px) scale(1.008) !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 20px 35px -8px rgba(14, 165, 233, 0.28),
+              0 0 24px rgba(56, 189, 248, 0.35) !important;
+}
+
+/* Кнопки квізів при наведенні */
+.quiz-btn:hover {
+  transform: translateY(-2px) scale(1.01) !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.3) !important;
+}
+
+/* 9.3. Бейджі, теги, плашки складності */
+span[class*="rounded-full"],
+span[class*="rounded-xl"],
+span[class*="rounded-lg"],
+span[class*="rounded-md"],
+.faq-badge,
+.badge {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+span[class*="rounded-full"]:hover,
+span[class*="rounded-xl"]:hover,
+span[class*="rounded-lg"]:hover,
+span[class*="rounded-md"]:hover,
+.faq-badge:hover {
+  transform: scale(1.08) !important;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.65)) !important;
+  cursor: pointer;
+}
+
+/* 9.4. Кнопки CTA, фільтри, посилання-кнопки */
+button,
+a[class*="rounded-xl"],
+a[class*="rounded-2xl"],
+a[class*="rounded-lg"],
+a[class*="px-"] {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+button:hover:not(:disabled),
+a[class*="rounded-xl"]:hover,
+a[class*="rounded-2xl"]:hover,
+a[class*="rounded-lg"]:hover {
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.45));
+}
+
+button:active,
+a:active {
+  transform: scale(0.97) !important;
+}
+
+/* 9.5. Зображення схем, фото заліза, відео-обгортки */
+img:not([src*="logo"]),
+object,
+.responsive-video-wrapper,
+.responsive-map-wrapper {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease !important;
+}
+
+img:not([src*="logo"]):hover,
+.responsive-video-wrapper:hover,
+.responsive-map-wrapper:hover {
+  transform: scale(1.015) !important;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.4) !important;
+  border-color: #38bdf8 !important;
+}
+
+/* 9.6. Блоки коду та поля вводу */
+pre:hover,
+.code-block:hover {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.25) !important;
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3) !important;
+}
+
+/* 9.7. Стрілка плаваючої кнопки "Вгору" */
+#scroll-to-top-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.4), 0 0 16px rgba(56, 189, 248, 0.3);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#scroll-to-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#scroll-to-top-btn:hover {
+  background: #38bdf8;
+  color: #0f172a;
+  transform: translateY(-4px) scale(1.12);
+  box-shadow: 0 0 28px rgba(56, 189, 248, 0.9), 0 12px 28px rgba(14, 165, 233, 0.55);
+}
+
+/* Медіа-хаб: горизонтальний скрол табів без обрізання перших елементів */
+#media-hub-video-tabs {
+  justify-content: flex-start !important;
+}
