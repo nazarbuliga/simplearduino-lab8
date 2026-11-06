@@ -40,3 +40,6 @@ build/
 .env.local
 .env.*.local
 *.log
+
+# Nested cloned repos
+simplearduino-lab8/

@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   Лабораторна робота №9: Адаптивні форми зворотного зв'язку та клієнтська валідація
+   Стилі для станів полів форми, анімацій та фокусування
+   ========================================================================== */
+
+/* Плавні переходи для полів форми */
+.form-input-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Стан помилки для інпутів */
+.input-error {
+  border-color: #ef4444 !important; /* border-red-500 */
+  box-shadow: 0 0 0 1px #ef4444 !important;
+  background-color: #fef2f2 !important; /* bg-red-50 */
+}
+
+.input-error:focus {
+  ring-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+}
+
+/* Стан успішної валідації для інпутів */
+.input-success {
+  border-color: #10b981 !important; /* border-emerald-500 */
+  box-shadow: 0 0 0 1px #10b981 !important;
+  background-color: #f0fdf4 !important; /* bg-emerald-50 */
+}
+
+/* Повідомлення про помилку */
+.error-message {
+  color: #dc2626; /* text-red-600 */
+  font-size: 0.75rem; /* text-xs */
+  line-height: 1rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.error-message.hidden {
+  display: none !important;
+}
+
+/* Кастомне модальне вікно */
+.modal-overlay {
+  background-color: rgba(15, 23, 42, 0.75); /* slate-900 / 75 */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Анімація появи модального вікна */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-animate-in {
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Специфічний стиль для фокусу доступності (WCAG Focus Visible) */
+:focus-visible {
+  outline: 2px solid #0284c7 !important;
+  outline-offset: 2px !important;
+}
