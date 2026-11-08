@@ -849,26 +849,28 @@
             Апаратна схемотехніка та прототипи проєктів
           </h2>
           <p class="text-slate-600 mt-3 text-sm sm:text-base leading-relaxed">
-            Натисніть на будь-яке фото схеми для запуску повнорозмірного модального перегляду Fancybox v5 із підтримкою масштабування (Zoom), режиму слайдшоу та навігації жестами.
+            Натисніть на будь-яку схему або апаратне фото для запуску повнорозмірного модального перегляду Fancybox v5 із підтримкою масштабування (Zoom), режиму слайдшоу та навігації жестами.
           </p>
         </div>
 
-        <!-- 6 інтерактивних карток медіагалереї Fancybox v5 -->
+        <!-- 6 автентичних карток медіагалереї Fancybox v5 (100% відповідність зображень описам) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          <!-- Картка 1: Реальне залізо Arduino -->
+          <!-- Картка 1: Проєкт 01 - Реальний апаратний стенд Arduino Uno -->
           <article class="bg-white rounded-2xl border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group gallery-card-zoom">
             <a 
               href="assets/images/arduino-real-hardware.jpg" 
               data-fancybox="hardware-gallery" 
-              data-caption="<strong>Проєкт 01: Базова збірка Arduino Uno</strong><br>Реальна інженерна збірка мікроконтролера на макетній платі Breadboard з підключенням світлодіода через баластний резистор 220 Ом."
-              class="relative block overflow-hidden aspect-[16/10] bg-slate-900 cursor-zoom-in"
+              data-caption="<strong>Проєкт 01: Базова збірка Arduino Uno з LED</strong><br>Реальна інженерна збірка мікроконтролера на макетній платі Breadboard з підключенням світлодіода через баластний резистор 220 Ом."
+              class="relative block overflow-hidden aspect-[16/10] bg-slate-900/95 cursor-zoom-in p-2 flex items-center justify-center border-b border-slate-100"
             >
               <img 
                 src="assets/images/arduino-real-hardware.jpg" 
-                alt="Реальна апаратна збірка плати Arduino Uno" 
+                alt="Реальна апаратна збірка плати Arduino Uno з підключеним світлодіодом" 
                 loading="lazy"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                width="600"
+                height="375"
+                class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               >
               <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
@@ -883,7 +885,7 @@
             <div class="p-5 flex-grow flex flex-col justify-between">
               <div>
                 <h3 class="font-bold text-slate-900 text-base group-hover:text-sky-600 transition-colors">Arduino Uno: Апаратний стенд</h3>
-                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Фізичне збирання ланцюга зі струмообмежувальним резистором та індикацією живлення.</p>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Фізичне збирання ланцюга зі струмообмежувальним резистором 220 Ом та індикацією живлення.</p>
               </div>
               <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                 <span class="font-mono text-sky-600 font-semibold">100% сумісність</span>
@@ -892,23 +894,25 @@
             </div>
           </article>
 
-          <!-- Картка 2: Тактова кнопка та Pull-up -->
+          <!-- Картка 2: Проєкт 02 - Тактова кнопка в Tinkercad Circuits -->
           <article class="bg-white rounded-2xl border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group gallery-card-zoom">
             <a 
-              href="assets/images/arduino-button-real-hardware.jpg" 
+              href="assets/images/tinkercad-button-circuit.png" 
               data-fancybox="hardware-gallery" 
-              data-caption="<strong>Проєкт 02: Підключення тактової кнопки</strong><br>Схема з підтягуючим резистором 10 кОм (Pull-up) та програмним усуненням брязкоту контактів (Debounce)."
-              class="relative block overflow-hidden aspect-[16/10] bg-slate-900 cursor-zoom-in"
+              data-caption="<strong>Проєкт 02: Підключення тактової кнопки в Tinkercad</strong><br>Електрична схема з тактовою кнопкою, підтягуючим резистором 10 кОм (Pull-up) та світлодіодним індикатором натискання."
+              class="relative block overflow-hidden aspect-[16/10] bg-slate-900/95 cursor-zoom-in p-2 flex items-center justify-center border-b border-slate-100"
             >
               <img 
-                src="assets/images/arduino-button-real-hardware.jpg" 
-                alt="Підключення тактової кнопки до Arduino" 
+                src="assets/images/tinkercad-button-circuit.png" 
+                alt="Схема підключення кнопки з підтягувальним резистором у Tinkercad" 
                 loading="lazy"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                width="600"
+                height="375"
+                class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               >
               <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                  <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
+                  <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
                   <span>Збільшити фото</span>
                 </span>
               </div>
@@ -918,8 +922,8 @@
             </a>
             <div class="p-5 flex-grow flex flex-col justify-between">
               <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-sky-600 transition-colors">Тактова кнопка & Деренчання</h3>
-                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Надійна фільтрація шумів перемикання через асинхронні таймери millis().</p>
+                <h3 class="font-bold text-slate-900 text-base group-hover:text-emerald-600 transition-colors">Тактова кнопка & Деренчання</h3>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Схема кнопки з резистором 10 кОм та програмною фільтрацією брязкоту контактів через millis().</p>
               </div>
               <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                 <span class="font-mono text-emerald-600 font-semibold">Pull-up 10k</span>
@@ -928,131 +932,101 @@
             </div>
           </article>
 
-          <!-- Картка 3: Симуляція Tinkercad Circuit -->
+          <!-- Картка 3: Проєкт 03 - Триколірний світлофор у Tinkercad -->
           <article class="bg-white rounded-2xl border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group gallery-card-zoom">
             <a 
-              href="assets/images/tinkercad-real-circuit.png" 
+              href="assets/images/tinkercad-traffic-light.png" 
               data-fancybox="hardware-gallery" 
-              data-caption="<strong>Проєкт 03: Інтерактивний світлофор у Tinkercad</strong><br>Повна цифрова модель трисекційного світлофора для пішоходів і транспорту на мікросхемі ATmega328P."
-              class="relative block overflow-hidden aspect-[16/10] bg-slate-900 cursor-zoom-in"
+              data-caption="<strong>Проєкт 03: Модель триколірного світлофора в Tinkercad</strong><br>Повноцінний світлофор із червоним, жовтим та зеленим LED, пішохідною кнопкою виклику та автоматом скінченних станів (FSM)."
+              class="relative block overflow-hidden aspect-[16/10] bg-slate-900/95 cursor-zoom-in p-2 flex items-center justify-center border-b border-slate-100"
             >
               <img 
-                src="assets/images/tinkercad-real-circuit.png" 
-                alt="Симуляція світлофора в Autodesk Tinkercad" 
+                src="assets/images/tinkercad-traffic-light.png" 
+                alt="Схема триколірного світлофора з трьома світлодіодами та кнопкою в Tinkercad Circuits" 
                 loading="lazy"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                width="600"
+                height="375"
+                class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               >
               <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                  <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
+                  <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
                   <span>Збільшити фото</span>
                 </span>
               </div>
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur text-white text-[11px] font-mono border border-slate-700">
-                #03 Tinkercad
+                #03 Світлофор
               </span>
             </a>
             <div class="p-5 flex-grow flex flex-col justify-between">
               <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-sky-600 transition-colors">Світлофор: Модель Tinkercad</h3>
-                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Хмарне тестування скетчу без ризику короткого замикання або спалення деталей.</p>
+                <h3 class="font-bold text-slate-900 text-base group-hover:text-amber-500 transition-colors">Світлофор: Модель Tinkercad</h3>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Три світлодіоди (Red, Yellow, Green), пішохідний перехід та захист від спалення компонентів.</p>
               </div>
               <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span class="font-mono text-purple-600 font-semibold">Tinkercad Live</span>
+                <span class="font-mono text-amber-500 font-semibold">FSM 3-LED</span>
                 <span>Zoom / Fullscreen</span>
               </div>
             </div>
           </article>
 
-          <!-- Картка 4: Сенсор DHT11 Температура і Вологість -->
+          <!-- Картка 4: Проєкт 04 - Аналоговий потенціометр у Tinkercad -->
           <article class="bg-white rounded-2xl border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group gallery-card-zoom">
             <a 
-              href="assets/images/tinkercad-dht-temp.png" 
+              href="assets/images/tinkercad-potentiometer.png" 
               data-fancybox="hardware-gallery" 
-              data-caption="<strong>Проєкт 06: IoT Метеостанція (DHT11 + ATmega)</strong><br>Цифровий датчик температури і вологості з однопровідним протоколом 1-Wire та формуванням телеметрії."
-              class="relative block overflow-hidden aspect-[16/10] bg-slate-900 cursor-zoom-in"
+              data-caption="<strong>Проєкт 04: Аналоговий потенціометр у Tinkercad</strong><br>Підключення змінного резистора до аналогового входу A0 Arduino: зчитування 10-бітного АЦП (0–1023) та плавне ШІМ-регулювання яскравості."
+              class="relative block overflow-hidden aspect-[16/10] bg-slate-900/95 cursor-zoom-in p-2 flex items-center justify-center border-b border-slate-100"
             >
               <img 
-                src="assets/images/tinkercad-dht-temp.png" 
-                alt="Датчик температури та вологості DHT11" 
+                src="assets/images/tinkercad-potentiometer.png" 
+                alt="Схема підключення потенціометра в Tinkercad Circuits" 
                 loading="lazy"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                width="600"
+                height="375"
+                class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               >
               <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                  <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
+                  <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
                   <span>Збільшити фото</span>
                 </span>
               </div>
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur text-white text-[11px] font-mono border border-slate-700">
-                #06 Сенсор DHT
+                #04 Потенціометр
               </span>
             </a>
             <div class="p-5 flex-grow flex flex-col justify-between">
               <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-sky-600 transition-colors">Метеодатчик DHT11 & 1-Wire</h3>
-                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Збір кліматичних показників у реальному часі для розумного будинку.</p>
+                <h3 class="font-bold text-slate-900 text-base group-hover:text-purple-600 transition-colors">Потенціометр & Дільник напруги</h3>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Зчитування сигналу АЦП (ADC 0–1023) на піні A0 та пропорційне масштабування значень.</p>
               </div>
               <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span class="font-mono text-cyan-600 font-semibold">1-Wire Protocol</span>
+                <span class="font-mono text-purple-600 font-semibold">ADC 10-bit</span>
                 <span>Zoom / Fullscreen</span>
               </div>
             </div>
           </article>
 
-          <!-- Картка 5: Дисплей I2C LCD1602 -->
-          <article class="bg-white rounded-2xl border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group gallery-card-zoom">
-            <a 
-              href="assets/images/tinkercad-i2c-lcd.png" 
-              data-fancybox="hardware-gallery" 
-              data-caption="<strong>Проєкт 07: Рідкокристалічний екран LCD1602 I2C</strong><br>Підключення символьного дисплея 16x2 через адаптер розширення PCF8574 (всього 2 сигнальні лінії SDA/SCL замість 16 проводів)."
-              class="relative block overflow-hidden aspect-[16/10] bg-slate-900 cursor-zoom-in"
-            >
-              <img 
-                src="assets/images/tinkercad-i2c-lcd.png" 
-                alt="Дисплей LCD 1602 I2C" 
-                loading="lazy"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              >
-              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                  <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
-                  <span>Збільшити фото</span>
-                </span>
-              </div>
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur text-white text-[11px] font-mono border border-slate-700">
-                #07 I2C Екран
-              </span>
-            </a>
-            <div class="p-5 flex-grow flex flex-col justify-between">
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-sky-600 transition-colors">Символьний екран LCD 1602 I2C</h3>
-                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Двопровідна шина I2C (Address 0x27): економія пінів вводу/виводу для сенсорів.</p>
-              </div>
-              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span class="font-mono text-indigo-600 font-semibold">I2C (0x27)</span>
-                <span>Zoom / Fullscreen</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Картка 6: Ультразвуковий сонар HC-SR04 -->
+          <!-- Картка 5: Проєкт 05 - Ультразвуковий сонар HC-SR04 -->
           <article class="bg-white rounded-2xl border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group gallery-card-zoom">
             <a 
               href="assets/images/tinkercad-ultrasonic.png" 
               data-fancybox="hardware-gallery" 
-              data-caption="<strong>Проєкт 05: Ультразвуковий сонар HC-SR04</strong><br>Ехолокація на частоті 40 кГц для автономного робота: вимірювання затримки відлуння та обчислення дистанції до перешкоди."
-              class="relative block overflow-hidden aspect-[16/10] bg-slate-900 cursor-zoom-in"
+              data-caption="<strong>Проєкт 05: Ультразвуковий сонар HC-SR04 в Tinkercad</strong><br>Ехолокація на частоті 40 кГц: формування ультразвукового імпульсу Trigger та підрахунок мікросекунд на піні Echo для обчислення дистанції."
+              class="relative block overflow-hidden aspect-[16/10] bg-slate-900/95 cursor-zoom-in p-2 flex items-center justify-center border-b border-slate-100"
             >
               <img 
                 src="assets/images/tinkercad-ultrasonic.png" 
-                alt="Ультразвуковий датчик HC-SR04" 
+                alt="Ультразвуковий датчик відстані HC-SR04 в Tinkercad Circuits" 
                 loading="lazy"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                width="600"
+                height="375"
+                class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               >
               <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                  <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
+                  <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
                   <span>Збільшити фото</span>
                 </span>
               </div>
@@ -1062,8 +1036,8 @@
             </a>
             <div class="p-5 flex-grow flex flex-col justify-between">
               <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-sky-600 transition-colors">Сонар HC-SR04: Відлуння</h3>
-                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Формування імпульсу Trigger 10 мкс та підрахунок мікросекунд на піні Echo.</p>
+                <h3 class="font-bold text-slate-900 text-base group-hover:text-rose-600 transition-colors">Сонар HC-SR04: Відлуння</h3>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Формування імпульсу Trigger 10 мкс та підрахунок мікросекунд на піні Echo для обчислення дистанції.</p>
               </div>
               <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                 <span class="font-mono text-rose-600 font-semibold">40 kHz Sonar</span>
@@ -1072,10 +1046,47 @@
             </div>
           </article>
 
+          <!-- Картка 6: Проєкт 06 - Символьний екран LCD 1602 I2C -->
+          <article class="bg-white rounded-2xl border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group gallery-card-zoom">
+            <a 
+              href="assets/images/tinkercad-i2c-lcd.png" 
+              data-fancybox="hardware-gallery" 
+              data-caption="<strong>Проєкт 06: Символьний рідкокристалічний екран LCD 1602 I2C</strong><br>Двопровідна шина I2C (Address 0x27): виведення текстової інформації та показників сенсорів при економії ліній вводу-виводу Arduino."
+              class="relative block overflow-hidden aspect-[16/10] bg-slate-900/95 cursor-zoom-in p-2 flex items-center justify-center border-b border-slate-100"
+            >
+              <img 
+                src="assets/images/tinkercad-i2c-lcd.png" 
+                alt="Символьний дисплей LCD 1602 з модулем I2C у Tinkercad Circuits" 
+                loading="lazy"
+                width="600"
+                height="375"
+                class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+              >
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                  <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
+                  <span>Збільшити фото</span>
+                </span>
+              </div>
+              <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur text-white text-[11px] font-mono border border-slate-700">
+                #06 I2C Екран
+              </span>
+            </a>
+            <div class="p-5 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="font-bold text-slate-900 text-base group-hover:text-indigo-600 transition-colors">Символьний екран LCD 1602 I2C</h3>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Двопровідна шина I2C (Address 0x27): економія пінів вводу/виводу для виведення телеметрії.</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span class="font-mono text-indigo-600 font-semibold">I2C (0x27)</span>
+                <span>Zoom / Fullscreen</span>
+              </div>
+            </div>
+          </article>
+
         </div>
 
-      </div>
-    </section>
+      </div></section>
 
 <section id="faq" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="faq-reviews-title">
       <div class="space-y-12">

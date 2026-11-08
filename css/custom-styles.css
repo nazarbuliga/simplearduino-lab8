@@ -97,7 +97,7 @@ details summary::-webkit-details-marker {
 @keyframes heroFadeUp {
   0% {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(6px);
   }
   100% {
     opacity: 1;
@@ -108,11 +108,11 @@ details summary::-webkit-details-marker {
 @keyframes heroFadeScale {
   0% {
     opacity: 0;
-    transform: scale(0.92) translateY(14px);
+    transform: scale(0.98);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
 }
 
@@ -706,12 +706,35 @@ select:hover {
   50% { opacity: 0; }
 }
 
-/* Swiper.js кастомізація під дизайн SimpleArduino */
+/* Swiper.js кастомізація під дизайн SimpleArduino (Zero CLS / FOUC) */
 .reviews-swiper {
   width: 100%;
   padding-top: 10px !important;
   padding-bottom: 50px !important;
   position: relative;
+  min-height: 260px;
+}
+
+.reviews-swiper:not(.swiper-initialized) .swiper-wrapper {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.reviews-swiper:not(.swiper-initialized) .swiper-slide {
+  flex: 0 0 100%;
+}
+
+@media (min-width: 640px) {
+  .reviews-swiper:not(.swiper-initialized) .swiper-slide {
+    flex: 0 0 calc(50% - 10px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .reviews-swiper:not(.swiper-initialized) .swiper-slide {
+    flex: 0 0 calc(33.333% - 16px);
+  }
 }
 
 .reviews-swiper .swiper-slide {
