@@ -7,8 +7,8 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=github&logoColor=white)](https://nazarbuliga.github.io/simplearduino-lab8/)
 [![WCAG 2.2 AA](https://img.shields.io/badge/Accessibility-WCAG_2.2_AA-success?style=for-the-badge)](https://www.w3.org/WAI/standards-guidelines/wcag/)
 
-> **Лабораторна робота №8** з дисципліни *«Веб-розробка та дизайн»*  
-> **Тема:** *«Деплой проєкту. Контроль версій Git та GitHub»*  
+> **Лабораторні роботи №8, №9, №10** з дисципліни *«Технології веб-розробки та дизайну»*  
+> **Тема Лаб 10:** *«Інтеграція динамічних медіакомпонентів та JS-бібліотек (Swiper v11, Fancybox v5, Typed.js v2.1)»*  
 > **Автор:** студент групи ПП-25 Булига Назарій  
 > **Кафедра:** «Систем автоматизованого проектування», НУ «Львівська політехніка»
 

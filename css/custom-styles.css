@@ -688,3 +688,135 @@ select:hover {
 .focus-ring-glow:focus {
   box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.4) !important;
 }
+
+/* ==========================================================================
+   Лабораторна робота №10: Стилі для інтегрованих JS-плагінів
+   Swiper.js, Fancybox v5, Typed.js
+   ========================================================================== */
+
+/* Typed.js cursor */
+.typed-cursor {
+  color: #38bdf8 !important; /* sky-400 */
+  font-weight: 700;
+  animation: typedBlink 0.8s infinite;
+}
+
+@keyframes typedBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Swiper.js кастомізація під дизайн SimpleArduino */
+.reviews-swiper {
+  width: 100%;
+  padding-top: 10px !important;
+  padding-bottom: 50px !important;
+  position: relative;
+}
+
+.reviews-swiper .swiper-slide {
+  height: auto !important;
+  display: flex;
+}
+
+.reviews-swiper .swiper-slide > figure {
+  width: 100%;
+}
+
+/* Навігаційні стрілки Swiper */
+.reviews-swiper-controls {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.swiper-button-prev-custom,
+.swiper-button-next-custom {
+  position: static !important;
+  margin-top: 0 !important;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.swiper-button-prev-custom::after,
+.swiper-button-next-custom::after {
+  content: "" !important;
+  display: none !important;
+}
+
+.swiper-button-prev-custom:hover,
+.swiper-button-next-custom:hover {
+  background-color: #0ea5e9;
+  border-color: #0ea5e9;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(14, 165, 233, 0.35);
+  transform: translateY(-1px);
+}
+
+.swiper-button-prev-custom:active,
+.swiper-button-next-custom:active {
+  transform: scale(0.96);
+}
+
+.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+/* Буллети пагінації Swiper */
+.reviews-swiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: #94a3b8;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+.reviews-swiper .swiper-pagination-bullet-active {
+  width: 24px;
+  background: #0ea5e9 !important;
+  opacity: 1 !important;
+  border-radius: 4px;
+}
+
+/* Fancybox v5 кастомізація */
+.fancybox__backdrop {
+  background-color: rgba(15, 23, 42, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.fancybox__caption {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.875rem !important;
+  color: #f8fafc !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  max-width: 800px !important;
+  margin: 0 auto 16px auto !important;
+  border: 1px solid rgba(56, 189, 248, 0.2) !important;
+}
+
+.gallery-card-zoom {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.gallery-card-zoom:hover img {
+  transform: scale(1.06);
+}
