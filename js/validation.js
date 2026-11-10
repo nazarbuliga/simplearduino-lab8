@@ -423,8 +423,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Обробка відправлення форми (Submit)
-  form.addEventListener('submit', (e) => {
+  // Обробка відправлення форми (Submit з реальною відправкою на nazarii.bulyha.pp.2025@lpnu.ua)
+  form.addEventListener('submit', async (e) => {
     e.preventDefault(); // Запобігаємо стандартному перезавантаженню сторінки
 
     // Позначаємо всі поля як опрацьовані користувачем
@@ -457,39 +457,110 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const nameVal = usernameInput ? usernameInput.value.trim() : '';
+    const emailVal = emailInput ? emailInput.value.trim() : '';
+    const phoneVal = phoneInput ? phoneInput.value.trim() : '';
+    const msgVal = messageInput ? messageInput.value.trim() : '';
+    const subjectSelect = document.getElementById('subject');
+    const topicVal = subjectSelect ? subjectSelect.options[subjectSelect.selectedIndex].text : 'Загальне запитання';
+
+    const submitBtn = document.getElementById('submitBtn');
+    const originalBtnContent = submitBtn ? submitBtn.innerHTML : '';
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-slate-950 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Відправка на nazarii.bulyha.pp.2025@lpnu.ua...</span>
+      `;
+    }
+
     // Заповнення даних підсумку у модальне вікно
     const summaryName = document.getElementById('summaryName');
     const summaryEmail = document.getElementById('summaryEmail');
     const summaryPhone = document.getElementById('summaryPhone');
-    if (summaryName && usernameInput) summaryName.textContent = usernameInput.value.trim();
-    if (summaryEmail && emailInput) summaryEmail.textContent = emailInput.value.trim();
-    if (summaryPhone && phoneInput) summaryPhone.textContent = phoneInput.value.trim();
+    if (summaryName) summaryName.textContent = nameVal;
+    if (summaryEmail) summaryEmail.textContent = emailVal;
+    if (summaryPhone) summaryPhone.textContent = phoneVal;
 
-    // Відкриваємо модальне вікно успішної валідації
-    if (typeof openModal === 'function') {
-      openModal();
-    }
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
 
-    // Очищуємо форму
-    form.reset();
+    // Відправка повідомлення на реальну пошту nazarii.bulyha.pp.2025@lpnu.ua через FormSubmit AJAX API
+    const payload = {
+      "Ім'я": nameVal,
+      "Email": emailVal,
+      "Телефон": phoneVal,
+      "Тема звернення": topicVal,
+      "Повідомлення": msgVal,
+      "_subject": `⚡ [SimpleArduino] Повідомлення від ${nameVal} (${topicVal})`,
+      "_replyto": emailVal,
+      "_template": "table",
+      "_captcha": "false"
+    };
 
-    // Скидаємо прапорці взаємодії та класи рамок
-    Object.keys(touchedFields).forEach((key) => {
-      touchedFields[key] = false;
-    });
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/nazarii.bulyha.pp.2025@lpnu.ua', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
 
-    [usernameInput, emailInput, phoneInput, messageInput].forEach((inp) => {
-      if (inp) {
-        inp.classList.remove('border-emerald-500', 'border-red-500', 'bg-red-50/40', 'bg-emerald-50');
-        inp.classList.add('border-slate-300');
-        inp.setAttribute('aria-invalid', 'false');
+      if (response.ok) {
+        if (modalTitle) modalTitle.textContent = "Повідомлення успішно відправлено!";
+        if (modalDesc) {
+          modalDesc.innerHTML = `Дякуємо! Ваше звернення надіслано на пошту: <strong class="text-sky-600 font-mono">nazarii.bulyha.pp.2025@lpnu.ua</strong>.<br>Копію запиту зафіксовано. Ментор зв'яжеться з вами найближчим часом!`;
+        }
+      } else {
+        throw new Error('API response status: ' + response.status);
       }
-    });
+    } catch (err) {
+      console.warn('[Validation / FormSubmit] Повідомлення підготовлено (fallback):', err);
+      if (modalTitle) modalTitle.textContent = "Звернення сформовано!";
+      if (modalDesc) {
+        const mailtoLink = `mailto:nazarii.bulyha.pp.2025@lpnu.ua?subject=${encodeURIComponent('SimpleArduino: ' + topicVal)}&body=${encodeURIComponent(
+          `Ім'я: ${nameVal}\nEmail: ${emailVal}\nТелефон: ${phoneVal}\nТема: ${topicVal}\n\nПовідомлення:\n${msgVal}`
+        )}`;
+        modalDesc.innerHTML = `Дані перевірено за стандартами валідації. Якщо мережевий запит заблоковано розширенням браузера, надішліть напряму на <strong class="text-sky-600 font-mono">nazarii.bulyha.pp.2025@lpnu.ua</strong>:<br><a href="${mailtoLink}" class="inline-block mt-3 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs transition">Надіслати через поштовий клієнт (mailto) →</a>`;
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnContent;
+      }
 
-    // Приховуємо іконки успіху
-    ['usernameStatusIcon', 'emailStatusIcon', 'phoneStatusIcon'].forEach((iconId) => {
-      const ic = document.getElementById(iconId);
-      if (ic) ic.classList.add('hidden');
-    });
+      // Відкриваємо модальне вікно успішного надсилання
+      if (typeof openModal === 'function') {
+        openModal();
+      }
+
+      // Очищуємо форму
+      form.reset();
+
+      // Скидаємо прапорці взаємодії та класи рамок
+      Object.keys(touchedFields).forEach((key) => {
+        touchedFields[key] = false;
+      });
+
+      [usernameInput, emailInput, phoneInput, messageInput].forEach((inp) => {
+        if (inp) {
+          inp.classList.remove('border-emerald-500', 'border-red-500', 'bg-red-50/40', 'bg-emerald-50');
+          inp.classList.add('border-slate-300');
+          inp.setAttribute('aria-invalid', 'false');
+        }
+      });
+
+      // Приховуємо іконки успіху
+      ['usernameStatusIcon', 'emailStatusIcon', 'phoneStatusIcon'].forEach((iconId) => {
+        const ic = document.getElementById(iconId);
+        if (ic) ic.classList.add('hidden');
+      });
+    }
   });
 });

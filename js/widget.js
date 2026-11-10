@@ -425,6 +425,60 @@
         'Разом до сплати': `${finalTotal} грн`,
         'Сумарна вага': `${totalWeightKg} кг`
       });
+
+      // Динамічний підбір пропозицій на маркетплейсах (AliExpress, Temu, Prom.ua)
+      updateMarketplaceOffers(levelKey);
+    }
+
+    /**
+     * Динамічне оновлення блоку маркетплейсів під обрану конфігурацію
+     */
+    function updateMarketplaceOffers(levelKey) {
+      const offersContainer = document.getElementById('marketplace-offers-container');
+      if (!offersContainer) return;
+
+      const catalog = {
+        basic: {
+          query: 'arduino uno r3 starter kit',
+          aliPrice: '450 – 620 грн',
+          temuPrice: '390 – 580 грн',
+          promPrice: '550 – 780 грн',
+          name: 'Базовий набір Arduino Uno R3 (з макеткою 400 точок, LED та резисторами)'
+        },
+        intermediate: {
+          query: 'arduino uno starter kit lcd 1602 sensor hc-sr04',
+          aliPrice: '780 – 1 150 грн',
+          temuPrice: '720 – 1 080 грн',
+          promPrice: '890 – 1 350 грн',
+          name: 'Середній набір із рідкокристалічним LCD 1602, датчиком DHT11 та сонаром HC-SR04'
+        },
+        advanced: {
+          query: 'arduino robot car starter kit l298n iot',
+          aliPrice: '1 380 – 1 950 грн',
+          temuPrice: '1 290 – 1 850 грн',
+          promPrice: '1 650 – 2 400 грн',
+          name: 'Просунутий комплект робототехніки: шасі 4WD, драйвер L298N, сервопривід SG90 та Bluetooth'
+        }
+      };
+
+      const matched = catalog[levelKey] || catalog.basic;
+
+      const aliLink = document.getElementById('marketplace-ali-link');
+      const temuLink = document.getElementById('marketplace-temu-link');
+      const promLink = document.getElementById('marketplace-prom-link');
+      const aliPrice = document.getElementById('marketplace-ali-price');
+      const temuPrice = document.getElementById('marketplace-temu-price');
+      const promPrice = document.getElementById('marketplace-prom-price');
+      const kitTitle = document.getElementById('marketplace-kit-title');
+
+      if (aliLink) aliLink.href = `https://www.aliexpress.com/wholesale?SearchText=${encodeURIComponent(matched.query)}`;
+      if (temuLink) temuLink.href = `https://www.temu.com/search_result.html?search_key=${encodeURIComponent(matched.query)}`;
+      if (promLink) promLink.href = `https://prom.ua/ua/search?search_term=${encodeURIComponent(matched.query.replace('starter kit', 'стартовий набір'))}`;
+
+      if (aliPrice) aliPrice.textContent = matched.aliPrice;
+      if (temuPrice) temuPrice.textContent = matched.temuPrice;
+      if (promPrice) promPrice.textContent = matched.promPrice;
+      if (kitTitle) kitTitle.textContent = matched.name;
     }
 
     /**
