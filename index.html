@@ -131,6 +131,7 @@
           <span>Медіа-хаб (10 відео)</span>
         </a>
         <a href="#gallery" class="px-3 py-2 text-sm font-medium text-amber-300 hover:text-amber-200 rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">Галерея схем</a>
+        <a href="#kit-configurator" class="px-3 py-2 text-sm font-medium text-emerald-400 hover:text-emerald-300 rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>Конфігуратор набору</span></a>
         <a href="#about" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">Про проєкт &amp; Методологія</a>
         <a href="#faq" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">FAQ</a>
         <a href="#contact" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">Контакти</a>
@@ -174,6 +175,10 @@
         <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono">10 проєктів</span>
       </a>
       <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Про проєкт &amp; Методологія</a>
+      <a href="#kit-configurator" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-emerald-400 hover:bg-slate-800 hover:text-white flex items-center justify-between">
+        <span>Калькулятор SimpleArduino Kit</span>
+        <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">ЛР №11</span>
+      </a>
       <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-400 hover:bg-slate-800 hover:text-white">Повна сторінка «Про проєкт» →</a>
       <a href="#faq" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Часті проблеми (FAQ) та відгуки</a>
       <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Контакти та Магазин «Юстас»</a>
@@ -1086,7 +1091,342 @@
 
         </div>
 
-      </div></section>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         СЕКЦІЯ: ІНТЕРАКТИВНИЙ ВІДЖЕТ-КОНФІГУРАТОР НАБОРУ (ЛР №11)
+         Тема: Розробка інтерактивних віджетів та обробка Edge Cases
+         Архітектура: Vanilla JS, Defensive Programming (Тріада захисту), QA-перевірено
+         ========================================================================== -->
+    <section id="kit-configurator" class="py-16 md:py-24 bg-gradient-to-b from-slate-50 via-sky-50/30 to-slate-50 border-t border-slate-200/80 relative overflow-hidden" aria-labelledby="configurator-title">
+      <!-- Декоративні фонові акценти -->
+      <div class="absolute top-1/4 -left-32 w-80 h-80 bg-sky-200/30 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-1/4 -right-32 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <!-- Заголовок секції віджета -->
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 border border-sky-300 text-sky-800 text-xs font-semibold tracking-wider uppercase mb-3 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-sky-600 animate-ping"></span>
+            <span>Інтерактивний віджет • Defensive Programming &amp; QA Verified</span>
+          </div>
+          <h2 id="configurator-title" class="text-2xl sm:text-4xl font-extrabold font-heading text-slate-900 tracking-tight">
+            Калькулятор-конфігуратор інженерного набору SimpleArduino Kit
+          </h2>
+          <p class="text-slate-600 mt-3 text-sm sm:text-base leading-relaxed">
+            Сконфігуруйте персональний комплект мікроконтролерної бази для індивідуального навчання, STEM-лабораторії або університетської аудиторії з миттєвим розрахунком кошторису, перевіркою граничних значень (Edge Cases) та захистом від збоїв.
+          </p>
+        </div>
+
+        <!-- Головна сітка віджета: 2 колонки на lg+ (Конфігуратор ліворуч, Підсумок праворуч) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- ЛІВА КОЛОНКА: Форма керування параметрами (7 колонок lg) -->
+          <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200/90 shadow-xl p-6 sm:p-8 space-y-8">
+            
+            <!-- Параметр 1: Кількість наборів з захистом від некоректного введення -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="calc-kit-qty" class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-bold font-mono">1</span>
+                  <span>Кількість інженерних наборів (шт.):</span>
+                </label>
+                <span class="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">Діапазон: 1–50</span>
+              </div>
+              
+              <div class="flex items-center gap-2">
+                <button type="button" id="calc-qty-minus" aria-label="Зменшити кількість наборів на один" class="w-12 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xl flex items-center justify-center transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                  −
+                </button>
+                <div class="relative flex-grow">
+                  <input 
+                    type="number" 
+                    id="calc-kit-qty" 
+                    name="kitQuantity" 
+                    min="1" 
+                    max="50" 
+                    step="1" 
+                    value="1" 
+                    class="w-full text-center text-lg font-bold font-mono py-2.5 px-4 rounded-xl border border-slate-300 focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 transition text-slate-900"
+                    aria-describedby="calc-qty-help calc-qty-error"
+                    required
+                  >
+                </div>
+                <button type="button" id="calc-qty-plus" aria-label="Збільшити кількість наборів на один" class="w-12 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xl flex items-center justify-center transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                  +
+                </button>
+              </div>
+
+              <!-- Підказка та динамічне повідомлення про помилку валідації -->
+              <p id="calc-qty-help" class="text-[11px] text-slate-500">
+                💡 Гуртова знижка нараховується автоматично: від 5 наборів — <strong>5%</strong>, від 10 наборів — <strong>10%</strong>.
+              </p>
+              <p id="calc-qty-error" class="text-xs text-rose-600 font-semibold hidden mt-1 flex items-center gap-1.5 p-2 bg-rose-50 rounded-lg border border-rose-200" role="alert" aria-live="assertive"></p>
+            </div>
+
+            <!-- Параметр 2: Базовий апаратний рівень мікроконтролера -->
+            <div class="space-y-2 pt-4 border-t border-slate-100">
+              <label for="calc-kit-level" class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-bold font-mono">2</span>
+                <span>Апаратна комплектація мікроконтролера:</span>
+              </label>
+              <select id="calc-kit-level" class="w-full py-3 px-4 rounded-xl border border-slate-300 bg-white font-medium text-slate-800 text-sm focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 transition">
+                <option value="basic" selected>Початковий рівень (Uno R3 + Breadboard + Світлодіоди) — 850 грн</option>
+                <option value="intermediate">Середній рівень (Uno R3 + I2C LCD 1602 + Сонар HC-SR04 + DHT11) — 1 450 грн</option>
+                <option value="advanced">Просунутий рівень (Uno + Драйвер L298N + Сервопривід + Реле 220V + IoT) — 2 250 грн</option>
+              </select>
+              <p id="calc-level-desc" class="text-xs text-slate-500 font-medium bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+                Плата Uno R3, макетка 400 точок, 20 LED, резистори, дроти, USB кабель
+              </p>
+            </div>
+
+            <!-- Параметр 3: Методичні матеріали та підручники -->
+            <div class="space-y-2 pt-4 border-t border-slate-100">
+              <label for="calc-kit-guide" class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-bold font-mono">3</span>
+                <span>Методичні матеріали та інженерна документація:</span>
+              </label>
+              <select id="calc-kit-guide" class="w-full py-3 px-4 rounded-xl border border-slate-300 bg-white font-medium text-slate-800 text-sm focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 transition">
+                <option value="pdf" selected>Цифровий PDF-гайд (Open-Access, безкоштовно) — 0 грн</option>
+                <option value="book">Друкований посібник ДСТУ (180 стор., кольорові схеми) — +380 грн</option>
+                <option value="poster">Комплект настінних ламінованих схем формату А3 — +190 грн</option>
+              </select>
+            </div>
+
+            <!-- Параметр 4: Додаткові інженерні модулі (Чекбокси) -->
+            <div class="space-y-3 pt-4 border-t border-slate-100">
+              <span class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-bold font-mono">4</span>
+                <span>Додаткові модулі та інженерні опції:</span>
+              </span>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/30 transition cursor-pointer group">
+                  <input type="checkbox" id="calc-opt-battery" class="w-4 h-4 mt-0.5 rounded text-sky-600 focus:ring-sky-500 border-slate-300">
+                  <div class="text-xs">
+                    <span class="font-bold text-slate-900 group-hover:text-sky-600 transition">Li-ion шилд живлення 9V/USB</span>
+                    <span class="block text-slate-500 mt-0.5">+290 грн (~0.12 кг)</span>
+                  </div>
+                </label>
+
+                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/30 transition cursor-pointer group">
+                  <input type="checkbox" id="calc-opt-case" class="w-4 h-4 mt-0.5 rounded text-sky-600 focus:ring-sky-500 border-slate-300">
+                  <div class="text-xs">
+                    <span class="font-bold text-slate-900 group-hover:text-sky-600 transition">Антистатичний кейс-органайзер</span>
+                    <span class="block text-slate-500 mt-0.5">+220 грн (~0.25 кг)</span>
+                  </div>
+                </label>
+
+                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/30 transition cursor-pointer group sm:col-span-2">
+                  <input type="checkbox" id="calc-opt-mentor" class="w-4 h-4 mt-0.5 rounded text-sky-600 focus:ring-sky-500 border-slate-300">
+                  <div class="text-xs">
+                    <span class="font-bold text-slate-900 group-hover:text-sky-600 transition">Персональна STEM-консультація викладача (1 год)</span>
+                    <span class="block text-slate-500 mt-0.5">+450 грн (індивідуальний Code Review та налаштування макета)</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Параметр 5: Терміновість комплектації та логістика (Радіокнопки) -->
+            <div class="space-y-2 pt-4 border-t border-slate-100">
+              <span class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-bold font-mono">5</span>
+                <span>Термін комплектації та логістика:</span>
+              </span>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer bg-slate-50/60">
+                  <input type="radio" name="calc-urgency" value="standard" checked class="w-4 h-4 text-sky-600 focus:ring-sky-500">
+                  <div class="text-xs">
+                    <span class="font-bold text-slate-800">Стандартна збірка</span>
+                    <span class="block text-slate-500">3–5 днів (0 грн)</span>
+                  </div>
+                </label>
+
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer bg-slate-50/60">
+                  <input type="radio" name="calc-urgency" value="express" class="w-4 h-4 text-sky-600 focus:ring-sky-500">
+                  <div class="text-xs">
+                    <span class="font-bold text-slate-800">Експрес день-у-день</span>
+                    <span class="block text-slate-500">+150 грн (з тестуванням)</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Параметр 6: Промокод на знижку (з XSS-захистом) -->
+            <div class="pt-4 border-t border-slate-100 space-y-2">
+              <label for="calc-promo-input" class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-bold font-mono">6</span>
+                <span>Промокод на знижку:</span>
+              </label>
+              <div class="flex gap-2">
+                <input 
+                  type="text" 
+                  id="calc-promo-input" 
+                  placeholder="Введіть START2026 або LP2026" 
+                  maxlength="30"
+                  class="flex-grow py-2.5 px-4 rounded-xl border border-slate-300 font-mono text-sm uppercase placeholder:normal-case placeholder:text-slate-400 focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 transition text-slate-900"
+                >
+                <button type="button" id="calc-promo-apply-btn" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-400">
+                  Застосувати
+                </button>
+                <button type="button" id="calc-promo-clear-btn" class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs transition active:scale-95 hidden focus:outline-none">
+                  Скинути
+                </button>
+              </div>
+              <p id="calc-promo-msg" class="text-xs min-h-[18px] transition-all font-medium"></p>
+            </div>
+
+          </div>
+
+          <!-- ПРАВА КОЛОНКА: Зведений кошторис (Sticky Live Summary Card) (5 колонок lg) -->
+          <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-4">
+            <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-800 relative overflow-hidden">
+              
+              <!-- Фоновий неоновий акцент -->
+              <div class="absolute top-0 right-0 w-48 h-48 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+              <!-- Шапка картки розрахунку -->
+              <div class="flex items-center justify-between pb-4 border-b border-slate-800 relative z-10">
+                <div>
+                  <div class="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>Live Кошторис</span>
+                  </div>
+                  <h3 class="text-lg font-bold font-heading text-white mt-0.5">Деталізація замовлення</h3>
+                </div>
+                <span class="text-[11px] font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">SimpleArduino Kit</span>
+              </div>
+
+              <!-- Порядкова деталізація статей витрат -->
+              <div class="py-4 space-y-3 text-xs sm:text-sm text-slate-300 border-b border-slate-800 relative z-10">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Апаратна база (за 1 шт.):</span>
+                  <span id="summary-hw-cost" class="font-mono text-white font-semibold">850 грн</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Методичні матеріали:</span>
+                  <span id="summary-guide-cost" class="font-mono text-white font-semibold">0 грн</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Додаткові інженерні модулі:</span>
+                  <span id="summary-addons-cost" class="font-mono text-white font-semibold">0 грн</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Логістика та тестування:</span>
+                  <span id="summary-urgency-cost" class="font-mono text-white font-semibold">0 грн</span>
+                </div>
+                <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                  <span class="text-slate-400">Вартість 1 комплекту:</span>
+                  <span id="summary-per-kit-cost" class="font-mono text-sky-400 font-bold">850 грн</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Замовлена кількість:</span>
+                  <span id="summary-qty-count" class="font-mono text-white font-bold">1 шт.</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Гуртова знижка (від 5 / 10 шт.):</span>
+                  <span id="summary-bulk-discount" class="font-mono text-slate-400">0 грн (0%)</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Знижка за промокодом:</span>
+                  <span id="summary-promo-discount" class="font-mono text-slate-400">0 грн (0%)</span>
+                </div>
+              </div>
+
+              <!-- Підсумковий блок вартості -->
+              <div class="pt-5 pb-2 relative z-10">
+                <div class="flex items-baseline justify-between mb-2">
+                  <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Разом до сплати:</span>
+                  <span id="summary-total-cost" class="text-3xl sm:text-4xl font-extrabold font-mono text-sky-400 tracking-tight">850 грн</span>
+                </div>
+                
+                <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 bg-slate-800/80 p-2.5 rounded-xl border border-slate-800">
+                  <span id="summary-weight">Вага: ~0.35 кг</span>
+                  <span id="summary-delivery">Термін: 3–5 робочих днів</span>
+                </div>
+              </div>
+
+              <!-- CTA Кнопка замовлення -->
+              <div class="pt-4 relative z-10">
+                <button 
+                  type="button" 
+                  id="calc-order-btn" 
+                  class="w-full py-3.5 px-6 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-sky-400/20 hover:shadow-sky-400/40 active:scale-95 transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-4 focus:ring-sky-400/50"
+                >
+                  <span>Сформувати замовлення</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+                <p class="text-[11px] text-center text-slate-400 mt-2">
+                  Дані буде автоматично перенесено у форму заявки
+                </p>
+              </div>
+
+            </div>
+
+            <!-- Інформаційний бейдж захисного програмування -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm text-xs text-slate-600 space-y-1.5">
+              <div class="flex items-center gap-1.5 font-bold text-slate-900">
+                <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                <span>Стандарти надійності віджета (QA Verified):</span>
+              </div>
+              <ul class="text-[11px] text-slate-500 space-y-1 list-disc list-inside">
+                <li>Повна відсутність значень <code class="bg-slate-100 text-rose-600 px-1 rounded">NaN</code> та <code class="bg-slate-100 text-rose-600 px-1 rounded">Infinity</code></li>
+                <li>Захист від від'ємного кошторису (Defensive Business Logic)</li>
+                <li>Ізоляція пам'яті через IIFE та захист від XSS через <code class="bg-slate-100 text-slate-800 px-1 rounded">textContent</code></li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ІНТЕРАКТИВНИЙ QA-САНДБОКС: Панель швидкої перевірки Edge Cases для рев'юера -->
+        <div class="mt-12 bg-white rounded-3xl border border-slate-200/90 shadow-md p-6 sm:p-8">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+            <div>
+              <span class="text-[11px] font-mono text-sky-600 font-bold uppercase tracking-wider">Панель інженера з тестування (QA Testing Toolbar)</span>
+              <h3 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">Швидке стрес-тестування граничних випадків (Edge Cases)</h3>
+            </div>
+            <span class="text-xs text-slate-500 font-mono">Chrome DevTools Console • F12</span>
+          </div>
+
+          <p class="text-xs text-slate-600 my-4 leading-relaxed">
+            Натисніть будь-яку з тестових кнопок нижче, щоб автоматично підставити граничні чи некоректні дані та переконатися у стійкості гвардів захисного програмування:
+          </p>
+
+          <div class="flex flex-wrap gap-2 sm:gap-3">
+            <button type="button" id="qa-test-happy" class="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 text-xs font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+              <span>✓ Happy Path (5 шт.)</span>
+            </button>
+            <button type="button" id="qa-test-empty" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 text-xs font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-rose-400">
+              <span>⚠ Edge: Пусте поле</span>
+            </button>
+            <button type="button" id="qa-test-zero" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 text-xs font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-rose-400">
+              <span>⚠ Edge: Нуль (0)</span>
+            </button>
+            <button type="button" id="qa-test-negative" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 text-xs font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-rose-400">
+              <span>⚠ Edge: Від'ємне (-5)</span>
+            </button>
+            <button type="button" id="qa-test-overflow" class="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-amber-400">
+              <span>⚠ Edge: 9999999999</span>
+            </button>
+            <button type="button" id="qa-test-decimal" class="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-amber-400">
+              <span>⚠ Edge: Дробове (3.5)</span>
+            </button>
+            <button type="button" id="qa-test-xss" class="px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-300 text-xs font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400">
+              <span>🛡 Edge: XSS Скрипт</span>
+            </button>
+            <button type="button" id="qa-test-reset" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold transition flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-slate-400 ml-auto">
+              <span>↺ Скинути</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
 <section id="faq" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="faq-reviews-title">
       <div class="space-y-12">
@@ -1938,5 +2278,7 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
   <script src="js/plugins-init.js"></script>
   <script src="js/validation.js"></script>
+  <!-- Інтерактивний віджет-конфігуратор інженерного набору SimpleArduino (Лабораторна робота №11) -->
+  <script src="js/widget.js"></script>
 </body>
 </html>
