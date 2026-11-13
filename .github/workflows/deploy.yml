@@ -1,7 +1,9 @@
-name: Deploy Static Content to GitHub Pages
+name: CI/CD Pipeline & GitHub Pages Deploy
 
 on:
   push:
+    branches: ["main"]
+  pull_request:
     branches: ["main"]
   workflow_dispatch:
 
@@ -15,7 +17,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  audit-and-test:
+    name: Code Quality, Lighthouse Audit & Accessibility Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Automated Project Audit (HTML/A11y/SEO/Structure)
+        run: |
+          node test_lab12_audit.js
+
   deploy:
+    name: Automated Deploy to GitHub Pages
+    needs: audit-and-test
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -24,10 +45,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'

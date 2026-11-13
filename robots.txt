@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nazarbuliga.github.io/simplearduino-lab8/sitemap.xml
