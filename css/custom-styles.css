@@ -1127,3 +1127,446 @@ select:hover {
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   8. LIGHT THEME SYSTEM (Світла тема оформлення SimpleArduino)
+   ========================================================================== */
+html.light, html.light body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Навігаційна панель у світлій темі */
+html.light header {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-bottom-color: #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+  color: #0f172a !important;
+}
+
+html.light header nav a,
+html.light header button#dropdown-btn {
+  color: #334155 !important;
+}
+
+html.light header nav a:hover,
+html.light header button#dropdown-btn:hover {
+  color: #0284c7 !important;
+  background-color: #f1f5f9 !important;
+}
+
+html.light #dropdown-menu {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light #dropdown-menu a {
+  color: #334155 !important;
+}
+
+html.light #dropdown-menu a:hover {
+  background-color: #f0f9ff !important;
+  color: #0284c7 !important;
+}
+
+html.light #site-search-input {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light #site-search-input::placeholder {
+  color: #64748b !important;
+}
+
+html.light .theme-toggle-btn {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+html.light .theme-toggle-btn:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light #mobile-menu {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light #mobile-menu a,
+html.light #mobile-menu span {
+  color: #334155 !important;
+}
+
+html.light #mobile-menu a:hover {
+  background-color: #f1f5f9 !important;
+  color: #0284c7 !important;
+}
+
+/* Hero-секція у світлій темі */
+html.light #hero {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 55%, #e2e8f0 100%) !important;
+  color: #0f172a !important;
+}
+
+html.light #hero h1 {
+  color: #0f172a !important;
+}
+
+html.light #hero p {
+  color: #475569 !important;
+}
+
+html.light #hero-live-badge {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0284c7 !important;
+}
+
+html.light .hero-animate-metrics {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light .hero-pulse-glow {
+  opacity: 0.25 !important;
+}
+
+/* Каталог рівнів #levels у світлій темі */
+html.light #levels-title {
+  color: #0f172a !important;
+}
+
+html.light #levels p {
+  color: #475569 !important;
+}
+
+html.light #kit-filter-container > div {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light #kit-filter-container span {
+  color: #334155 !important;
+}
+
+html.light #kit-custom-btn {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light #kit-selected-label {
+  color: #0f172a !important;
+}
+
+html.light #kit-custom-menu {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light #kit-custom-menu .border-b {
+  border-color: #f1f5f9 !important;
+}
+
+html.light #kit-custom-menu button {
+  color: #334155 !important;
+}
+
+html.light #kit-custom-menu button .font-bold {
+  color: #0f172a !important;
+}
+
+html.light #kit-custom-menu button .text-slate-400 {
+  color: #64748b !important;
+}
+
+html.light #kit-custom-menu button:hover {
+  background-color: #f0f9ff !important;
+  color: #0284c7 !important;
+}
+
+/* Картки курсів у світлій темі */
+html.light #cards-grid article {
+  background-color: #ffffff !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light #cards-grid article h3 {
+  color: #0f172a !important;
+}
+
+html.light #cards-grid article p {
+  color: #475569 !important;
+}
+
+html.light #cards-grid article .my-5 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light #cards-grid article ul {
+  color: #475569 !important;
+}
+
+html.light #cards-grid article a[href*="beginner.html"],
+html.light #cards-grid article a[href*="intermediate.html"],
+html.light #cards-grid article a[href*="advanced.html"] {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html.light #cards-grid article a[href*="beginner.html"]:hover,
+html.light #cards-grid article a[href*="intermediate.html"]:hover,
+html.light #cards-grid article a[href*="advanced.html"]:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light #levels .mt-12 {
+  background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%) !important;
+  border-color: #bae6fd !important;
+}
+
+html.light #levels .mt-12 h3 {
+  color: #0f172a !important;
+}
+
+html.light #levels .mt-12 p {
+  color: #334155 !important;
+}
+
+/* Медіа-хаб у світлій темі */
+html.light #media-hub {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light #media-hub-title {
+  color: #0f172a !important;
+}
+
+html.light #media-hub p {
+  color: #475569 !important;
+}
+
+html.light .hub-tab-btn:not(.hub-tab-btn-active) {
+  background-color: #e2e8f0 !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light #schemes-grid article {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light #schemes-grid article h3 {
+  color: #0f172a !important;
+}
+
+html.light #schemes-grid article p {
+  color: #475569 !important;
+}
+
+html.light #schemes-grid article a {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #0284c7 !important;
+}
+
+html.light #telemetry-panel {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light #telemetry-panel .bg-slate-800 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light #telemetry-panel .text-slate-300,
+html.light #telemetry-panel .text-slate-400 {
+  color: #475569 !important;
+}
+
+/* Секція Про проєкт / Learning Ladder у світлій темі */
+html.light #learning-ladder {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light #about-unified-title {
+  color: #0f172a !important;
+}
+
+html.light #about h3,
+html.light #about h4 {
+  color: #0f172a !important;
+}
+
+html.light #about p,
+html.light #about li {
+  color: #475569 !important;
+}
+
+html.light #about .grid article,
+html.light #about .grid > div {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light #about a.bg-slate-800 {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+/* Відгуки та FAQ у світлій темі */
+html.light #faq-reviews-title {
+  color: #0f172a !important;
+}
+
+html.light .reviews-swiper figure {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light .reviews-swiper figure blockquote {
+  color: #334155 !important;
+}
+
+html.light .reviews-swiper figure .text-white {
+  color: #0f172a !important;
+}
+
+html.light .reviews-swiper figure .text-slate-400 {
+  color: #64748b !important;
+}
+
+html.light .swiper-button-prev-custom,
+html.light .swiper-button-next-custom {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+html.light #faq > div > div:last-child {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light #faq h3 {
+  color: #0f172a !important;
+}
+
+html.light .faq-filter-btn:not([data-faq-category="all"]) {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+html.light .faq-item {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .faq-item[open] {
+  background-color: #ffffff !important;
+  border-color: #0284c7 !important;
+}
+
+html.light .faq-item summary {
+  color: #0f172a !important;
+}
+
+html.light .faq-item p,
+html.light .faq-item ol,
+html.light .faq-item ul {
+  color: #475569 !important;
+}
+
+html.light .faq-item .bg-sky-950\/50,
+html.light .faq-item .bg-sky-950\/40 {
+  background-color: #f0f9ff !important;
+  border-color: #bae6fd !important;
+  color: #0369a1 !important;
+}
+
+html.light .faq-item code {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #0369a1 !important;
+}
+
+/* Секція контактів у світлій темі */
+html.light #contact {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light #contact-heading {
+  color: #0f172a !important;
+}
+
+html.light #contact p {
+  color: #475569 !important;
+}
+
+html.light #contact article {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light #contact h3 {
+  color: #0f172a !important;
+}
+
+html.light #contact label {
+  color: #334155 !important;
+}
+
+html.light #contact input,
+html.light #contact select,
+html.light #contact textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light #contact input::placeholder,
+html.light #contact textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.light #contact .text-slate-300 {
+  color: #334155 !important;
+}
+
+/* Тост у світлій темі */
+html.light #toast-notify {
+  background-color: #ffffff !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15) !important;
+  color: #0f172a !important;
+}
+
+html.light #toast-text {
+  color: #0f172a !important;
+}

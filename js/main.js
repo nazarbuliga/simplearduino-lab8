@@ -1004,4 +1004,79 @@ document.addEventListener('DOMContentLoaded', () => {
   initStatCounters();
 
   console.log('SimpleArduino scripts & Universal Living Animations initialized successfully! ✨');
+
+  // ==========================================================================
+  // THEME TOGGLE SYSTEM (Dark Cyber / Light Daylight Mode)
+  // ==========================================================================
+  function initThemeToggle() {
+    const themeToggleBtns = document.querySelectorAll('.theme-toggle-btn');
+    const sunIcons = document.querySelectorAll('.theme-icon-sun');
+    const moonIcons = document.querySelectorAll('.theme-icon-moon');
+    const statusTexts = document.querySelectorAll('.theme-status-text');
+
+    function updateThemeUI(isDark) {
+      sunIcons.forEach(icon => {
+        if (isDark) {
+          icon.classList.remove('hidden');
+        } else {
+          icon.classList.add('hidden');
+        }
+      });
+
+      moonIcons.forEach(icon => {
+        if (isDark) {
+          icon.classList.add('hidden');
+        } else {
+          icon.classList.remove('hidden');
+        }
+      });
+
+      statusTexts.forEach(txt => {
+        txt.textContent = isDark ? 'Темна тема' : 'Світла тема';
+      });
+
+      themeToggleBtns.forEach(btn => {
+        const tip = isDark ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему';
+        btn.setAttribute('aria-label', tip);
+        btn.setAttribute('title', tip);
+      });
+    }
+
+    function switchTheme(isDark, notify = true) {
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('simplearduino-theme', 'dark');
+        updateThemeUI(true);
+        if (notify && typeof showToast === 'function') {
+          showToast('🌙 Увімкнено темну кібер-тему');
+        }
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('simplearduino-theme', 'light');
+        updateThemeUI(false);
+        if (notify && typeof showToast === 'function') {
+          showToast('☀️ Увімкнено світлу тему');
+        }
+      }
+    }
+
+    // Початкова синхронізація UI
+    const isCurrentlyDark = document.documentElement.classList.contains('dark') || 
+                            (!document.documentElement.classList.contains('light') && 
+                             localStorage.getItem('simplearduino-theme') !== 'light');
+    updateThemeUI(isCurrentlyDark);
+
+    themeToggleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const willBeDark = !document.documentElement.classList.contains('dark');
+        switchTheme(willBeDark, true);
+      });
+    });
+  }
+
+  initThemeToggle();
+
 });

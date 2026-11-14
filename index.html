@@ -9,23 +9,43 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <!-- Критичні стилі Anti-FOUC: запобігання миготінню та прихованим кнопкам при завантаженні -->
+  <!-- Миттєве визначення теми оформлення до рендеру (Anti-FOUC) -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem('simplearduino-theme');
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'light') {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      }
+    })();
+  </script>
+
+  <!-- Критичні стилі теми Anti-FOUC -->
   <style>
-    html, body {
+    html.dark, html.dark body {
       background-color: #020617 !important;
       color: #f8fafc !important;
     }
-    header {
+    html.light, html.light body {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    html.dark header {
       background-color: rgba(15, 23, 42, 0.95) !important;
+    }
+    html.light header {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(226, 232, 240, 0.9) !important;
     }
     header, header *, header nav, header a, header button {
       outline: none !important;
     }
     header a, header button {
       text-decoration: none !important;
-    }
-    header a:visited {
-      color: inherit;
     }
     /* Кнопки Hero видимі миттєво при завантаженні */
     .hero-animate-title,
@@ -82,7 +102,7 @@
     <!-- CDN: Swiper.js v11 & Fancybox v5 Styles (Лабораторна робота №10) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
-  <link rel="stylesheet" href="css/custom-styles.css?v=3.3">
+  <link rel="stylesheet" href="css/custom-styles.css?v=3.4">
   <link rel="icon" href="assets/icons/logo-mark.svg" type="image/svg+xml">
   <!-- Open Graph & Social Cards (Feature SEO) -->
   <meta property="og:title" content="SimpleArduino — Освітня платформа з робототехніки та мікроконтролерів">
@@ -162,13 +182,25 @@
         <a href="#contact" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 whitespace-nowrap">Контакти</a>
       </nav>
 
-      <!-- 3. Дії користувача (Виправлений пошук та Primary CTA) -->
-      <div class="hidden lg:flex items-center gap-4">
+      <!-- 3. Дії користувача (Пошук, Перемикач теми та Primary CTA) -->
+      <div class="hidden lg:flex items-center gap-3">
         <!-- Інтерактивний пошук з гарантованим відступом без перекриття -->
         <div class="relative flex items-center">
           <svg class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          <input id="site-search-input" type="search" placeholder="Знайти схему..." aria-label="Пошук по навчальних схемах та модулях" style="padding-left: 48px !important;" class="w-48 xl:w-56 bg-slate-800/90 text-sm text-slate-100 placeholder-slate-400 pr-4 py-2 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:w-64 transition-all duration-300 shadow-inner">
+          <input id="site-search-input" type="search" placeholder="Знайти схему..." aria-label="Пошук по навчальних схемах та модулях" style="padding-left: 48px !important;" class="w-44 xl:w-52 bg-slate-800/90 text-sm text-slate-100 placeholder-slate-400 pr-4 py-2 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:w-60 transition-all duration-300 shadow-inner">
         </div>
+
+        <!-- Кнопка перемикання теми (Dark / Light Theme Toggle) -->
+        <button id="theme-toggle-btn" type="button" class="theme-toggle-btn p-2.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-amber-400 hover:text-amber-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-400 flex items-center justify-center cursor-pointer shadow-sm min-h-[44px] min-w-[44px]" aria-label="Змінити тему оформлення (Світла / Темна)" title="Змінити тему (Світла / Темна)">
+          <!-- Сонце (активне в темній темі) -->
+          <svg class="w-5 h-5 theme-icon-sun transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <!-- Місяць (активний у світлій темі) -->
+          <svg class="w-5 h-5 theme-icon-moon hidden transition-transform duration-300 hover:-rotate-12 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+        </button>
 
         <!-- Кнопка Почати навчання (Primary CTA) -->
         <a href="#levels" class="px-5 py-2.5 text-sm font-bold bg-sky-400 hover:bg-sky-300 text-slate-950 rounded-xl shadow-lg shadow-sky-400/20 hover:shadow-sky-400/40 active:scale-95 transition-all duration-200 min-h-[44px] inline-flex items-center focus:outline-none focus:ring-4 focus:ring-sky-400/50">
@@ -176,11 +208,22 @@
         </a>
       </div>
 
-      <!-- 4. Кнопка мобільного гамбургер-меню (видима тільки на mobile < md) -->
-      <button id="mobile-menu-btn" type="button" class="md:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню навігації">
-        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-      </button>
+      <!-- 4. Мобільні дії (Кнопка теми + Гамбургер) -->
+      <div class="flex items-center gap-2 md:hidden">
+        <button id="mobile-theme-toggle-btn" type="button" class="theme-toggle-btn p-2 rounded-xl border border-slate-700 bg-slate-800/80 text-amber-400 focus:outline-none focus:ring-2 focus:ring-sky-400 flex items-center justify-center cursor-pointer min-h-[44px] min-w-[44px]" aria-label="Змінити тему оформлення">
+          <svg class="w-5 h-5 theme-icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <svg class="w-5 h-5 theme-icon-moon hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+        </button>
+
+        <button id="mobile-menu-btn" type="button" class="p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню навігації">
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
 
     </div>
 
@@ -206,6 +249,16 @@
       <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Про проєкт &amp; Методологія</a>
       <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-400 hover:bg-slate-800 hover:text-white">Повна сторінка «Про проєкт» →</a>
       <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-white">Контакти та Магазин «Юстас»</a>
+      <!-- Перемикач теми у мобільному меню -->
+      <div class="pt-3 pb-2 border-t border-slate-800 flex items-center justify-between">
+        <span class="text-sm font-medium text-slate-300">Тема оформлення:</span>
+        <button id="mobile-menu-theme-btn" type="button" class="theme-toggle-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-slate-700 text-amber-400 hover:text-amber-300 transition">
+          <span class="theme-status-text">Темна тема</span>
+          <svg class="w-4 h-4 theme-icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          <svg class="w-4 h-4 theme-icon-moon hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+      </div>
+
       <div class="pt-3 flex flex-col gap-2">
         <a href="#levels" class="mobile-nav-link w-full text-center py-3 rounded-xl bg-sky-400 text-slate-950 font-bold shadow-lg shadow-sky-400/20">Почати безкоштовно</a>
       </div>
@@ -2112,7 +2165,7 @@
   </footer>
 
   <!-- Скрипт повної інтерактивності (Mobile menu, Dropdown, Search, Filter, Toasts) -->
-  <script src="js/main.js?v=3.3"></script>
+  <script src="js/main.js?v=3.4"></script>
 
 <script>
   const params = new URLSearchParams(window.location.search);
