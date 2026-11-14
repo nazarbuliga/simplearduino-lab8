@@ -1507,7 +1507,7 @@
                 <p>
                   Для китайських клонів Arduino UNO на базі мікросхеми <strong>CH340G / CH341</strong> операційна система Windows потребує спеціального драйвера:
                 </p>
-                <ol class="list-decimal list-inside space-y-1 pl-1 text-slate-700">
+                <ol class="list-decimal list-inside space-y-1 pl-1 text-slate-300">
                   <li>Завантажте офіційний інсталятор драйвера <code>CH341SER.EXE</code> та натисніть «Install».</li>
                   <li>Перепідключіть USB-кабель у комп'ютер (переконайтеся, що кабель передає дані, а не лише заряджає).</li>
                   <li>В Arduino IDE відкрийте меню <code>Інструменти → Порт</code> і виберіть з'явлений номер (наприклад, <code>COM3</code> або <code>COM4</code>).</li>
@@ -1538,7 +1538,7 @@
                 <p>
                   Світлодіод є напівпровідниковим приладом і пропускає струм лише в одному напрямку:
                 </p>
-                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-300">
                   <li><strong>Полярність:</strong> Довга ніжка світлодіода (Анод, +) повинна підключатися до цифрового піна Arduino через струмообмежувальний резистор 220 Ом. Коротка ніжка зі зрізом на корпусі (Катод, -) — до шини <code>GND</code>.</li>
                   <li><strong>Номінал резистора:</strong> Якщо поставити резистор номіналом 10 кОм замість 220 Ом, струм буде менше 0.3 мА, і світлодіод ледь жеврітиме. Перевірте кольорові смуги: <em>Червоний-Червоний-Коричневий (220 Ом)</em>.</li>
                 </ul>
@@ -1565,7 +1565,7 @@
                 <p>
                   Ця помилка виникає, коли комп'ютер не може встановити зв'язок із завантажувачем (bootloader) мікроконтролера ATmega328P:
                 </p>
-                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-300">
                   <li><strong>Зайняті піни RX/TX (0 і 1):</strong> Якщо до пінів 0 або 1 підключено Bluetooth, сенсори або дроти, вони блокують апаратний UART. <em>Від'єднайте проводи від 0 та 1 під час прошивки!</em></li>
                   <li><strong>Неправильна плата:</strong> У меню <code>Інструменти → Плата</code> має бути обрано <code>Arduino Uno</code>.</li>
                   <li><strong>Зависання порту:</strong> Закрийте монітор послідовного порту (Serial Monitor), вийміть і знову вставте USB-штекер.</li>
@@ -1593,7 +1593,7 @@
                 <p>
                   Тут виникає два типових фізичних явища:
                 </p>
-                <ol class="list-decimal list-inside space-y-1 pl-1 text-slate-700">
+                <ol class="list-decimal list-inside space-y-1 pl-1 text-slate-300">
                   <li><strong>Висячий вхід (Floating Pin):</strong> Якщо вхід не підтягнуто до +5V або GND, провід працює як антена й ловить наведення електромережі. Завжди пишіть <code>pinMode(pin, INPUT_PULLUP);</code> у функції <code>setup()</code> і замикайте кнопку на GND.</li>
                   <li><strong>Брязкіт контактів (Bouncing):</strong> Металеві пластини кнопки при замиканні вібрують протягом 5–20 мілісекунд. Використовуйте фільтрацію на <code>millis()</code> (як описано у Проєкті #02 нашого курсу).</li>
                 </ol>
@@ -1620,7 +1620,7 @@
                 <p>
                   Так, але виключно через правильні порти з лінійним стабілізатором:
                 </p>
-                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-300">
                   <li><strong>Гніздо DC Barrel Jack або пін VIN:</strong> Підтримують напругу 7V–12V DC (вбудований стабілізатор AMS1117-5.0 знизить її до 5V).</li>
                   <li><strong>УВАГА:</strong> Ніколи не подавайте 9V чи 12V на пін <code>5V</code>! Це призведе до миттєвого виходу з ладу процесора ATmega328P. Пін 5V служить лише для виходу стабілізованої напруги.</li>
                 </ul>
@@ -1647,7 +1647,7 @@
                 <p>
                   Функція <code>delay(1000)</code> повністю зупиняє роботу ядра мікроконтролера на 1 секунду. У цей час плата не здатна:
                 </p>
-                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                <ul class="list-disc list-inside space-y-1 pl-1 text-slate-300">
                   <li>Зчитати натискання кнопки користувачем;</li>
                   <li>Обробити покази датчиків чи команди з комп'ютера;</li>
                   <li>Керувати двигунами чи сервоприводами.</li>
@@ -1674,7 +1674,7 @@
         
         <!-- Заголовок секції контактів -->
         <div class="text-center max-w-3xl mx-auto mb-14">
-          <span class="text-sky-600 font-semibold text-xs sm:text-sm uppercase tracking-wider">Підтримка та Спільнота мейкерів</span>
+          <span class="text-sky-400 font-semibold text-xs sm:text-sm uppercase tracking-wider">Підтримка та Спільнота мейкерів</span>
           <h2 id="contact-heading" class="text-2xl sm:text-4xl font-extrabold font-heading text-white mt-2">
             Зв'яжіться з менторами та завітайте до магазину-партнера
           </h2>
@@ -1853,8 +1853,8 @@
                         >
                       </div>
                       <div class="ml-2.5 text-xs">
-                        <label for="consent" class="font-medium text-slate-700 cursor-pointer">
-                          Я даю згоду на обробку моїх персональних даних відповідно до <a href="#" class="text-sky-600 hover:text-sky-700 underline font-semibold focus:outline-none focus:ring-1 focus:ring-sky-500 rounded">Політики конфіденційності</a> <span class="text-red-500 font-bold" aria-hidden="true">*</span>
+                        <label for="consent" class="font-medium text-slate-300 cursor-pointer">
+                          Я даю згоду на обробку моїх персональних даних відповідно до <a href="#" class="text-sky-400 hover:text-sky-300 underline font-semibold focus:outline-none focus:ring-1 focus:ring-sky-400 rounded">Політики конфіденційності</a> <span class="text-red-500 font-bold" aria-hidden="true">*</span>
                         </label>
                       </div>
                     </div>
@@ -1888,7 +1888,7 @@
                 <!-- Інформація про магазин «Юстас» -->
                 <div class="flex items-center justify-center gap-3 mb-4 pb-3 border-b border-slate-100 text-center">
                   <div>
-                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Офлайн партнер SimpleArduino</span>
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Офлайн партнер SimpleArduino</span>
                     <h3 class="text-xl sm:text-2xl font-bold font-heading text-white mt-0.5">Магазин електроніки «Юстас»</h3>
                   </div>
                   <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full border border-emerald-200 font-semibold flex items-center gap-1">
@@ -1897,7 +1897,7 @@
                   </span>
                 </div>
 
-                <div class="space-y-2.5 text-xs sm:text-sm text-slate-600 mb-4">
+                <div class="space-y-2.5 text-xs sm:text-sm text-slate-300 mb-4">
                   <div class="flex items-center justify-center gap-2.5 text-center">
                     <svg class="w-4 h-4 text-rose-600 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     <span><strong>Адреса:</strong> м. Львів, вул. Героїв УПА, 42 (Магазин радіодеталей, плат та датчиків «Юстас»)</span>
@@ -1972,7 +1972,7 @@
                   <span>📍</span>
                   <span>Показати / сховати мітку</span>
                 </button>
-                <a href="https://maps.google.com/?q=вулиця+Героїв+УПА+42+Львів+Юстас" target="_blank" rel="noopener" class="text-sky-600 hover:text-sky-700 font-semibold flex items-center gap-1 hover:underline">
+                <a href="https://maps.google.com/?q=вулиця+Героїв+УПА+42+Львів+Юстас" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300 font-semibold flex items-center gap-1 hover:underline">
                   <span>Відкрити в Google Maps додатку</span>
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                 </a>
