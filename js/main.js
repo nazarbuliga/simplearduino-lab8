@@ -182,20 +182,20 @@ document.addEventListener('DOMContentLoaded', () => {
           const dot = opt.querySelector('.kit-dot');
 
           if (isSelected) {
-            opt.classList.add('bg-sky-50', 'text-sky-900', 'border-sky-200/80', 'font-semibold');
-            opt.classList.remove('text-slate-700');
+            opt.classList.add('bg-sky-950/60', 'text-sky-200', 'border-sky-500/40', 'font-semibold');
+            opt.classList.remove('text-slate-300');
             if (checkIcon) checkIcon.classList.remove('hidden');
             if (dot) {
-              dot.classList.remove('bg-slate-300');
-              dot.classList.add('bg-sky-500');
+              dot.classList.remove('bg-slate-600');
+              dot.classList.add('bg-sky-400');
             }
           } else {
-            opt.classList.remove('bg-sky-50', 'text-sky-900', 'border-sky-200/80', 'font-semibold');
-            opt.classList.add('text-slate-700');
+            opt.classList.remove('bg-sky-950/60', 'text-sky-200', 'border-sky-500/40', 'font-semibold');
+            opt.classList.add('text-slate-300');
             if (checkIcon) checkIcon.classList.add('hidden');
             if (dot) {
-              dot.classList.add('bg-slate-300');
-              dot.classList.remove('bg-sky-500');
+              dot.classList.add('bg-slate-600');
+              dot.classList.remove('bg-sky-400');
             }
           }
         });

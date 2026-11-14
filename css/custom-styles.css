@@ -321,8 +321,8 @@ button:hover > svg,
 
 .faq-item[open] {
   border-color: #38bdf8 !important;
-  background-color: #ffffff;
-  box-shadow: 0 12px 28px -6px rgba(14, 165, 233, 0.16), 0 0 0 1px rgba(56, 189, 248, 0.4);
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  box-shadow: 0 12px 28px -6px rgba(14, 165, 233, 0.25), 0 0 0 1px rgba(56, 189, 248, 0.4);
 }
 
 .faq-item summary {
