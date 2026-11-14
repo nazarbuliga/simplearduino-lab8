@@ -843,3 +843,252 @@ select:hover {
 .gallery-card-zoom:hover img {
   transform: scale(1.06);
 }
+
+/* ==========================================================================
+   7. УНІВЕРСАЛЬНА СИСТЕМА ЖИВИХ АНІМАЦІЙ ДЛЯ ВСІХ СТОРІНОК САЙТУ
+   (Scroll Reveal, Живі мікроінтеракції, 3D Tilt, Шиммер, Пульсація та Прогрес)
+   ========================================================================== */
+
+/* 7.1. Смуга прогресу читання у верхній частині вікна (Reading Progress Bar) */
+#reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #34d399 100%);
+  z-index: 9999;
+  width: 0%;
+  transition: width 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.8), 0 0 4px rgba(129, 140, 248, 0.6);
+  pointer-events: none;
+}
+
+/* 7.2. Ключові кадри (Keyframe Animations) для ефекту «Живого сайту» */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+}
+
+@keyframes floatGentleAlt {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.015);
+  }
+}
+
+@keyframes pulseBreath {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes shimmerSweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glowPulseBorder {
+  0%, 100% {
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+  }
+  50% {
+    border-color: rgba(56, 189, 248, 0.7);
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+  }
+}
+
+@keyframes circuitSpark {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes rippleEffect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* 7.3. Універсальні класи появи при скролі (Scroll Reveal) */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale-in {
+  opacity: 0;
+  transform: scale(0.93) translateY(16px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-scale-in.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.reveal-slide-left {
+  opacity: 0;
+  transform: translateX(-35px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-slide-left.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-slide-right {
+  opacity: 0;
+  transform: translateX(35px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-slide-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Затримки для каскадної появи елементів у сітках (Staggered Delays) */
+.delay-100 { transition-delay: 100ms; }
+.delay-150 { transition-delay: 150ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
+
+/* 7.4. Класи живих анімацій для інтерактивних елементів */
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: floatSlow 5.5s ease-in-out 1.2s infinite;
+}
+
+.animate-gentle-scale {
+  animation: floatGentleAlt 4s ease-in-out infinite;
+}
+
+.animate-pulse-breath {
+  animation: pulseBreath 3s ease-in-out infinite;
+}
+
+.animate-glow-border {
+  animation: glowPulseBorder 3s ease-in-out infinite;
+}
+
+/* Живі кнопки зі спалахом світла (Shimmer Button) */
+.btn-alive {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-alive::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-20deg);
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+.btn-alive:hover::before {
+  left: 150%;
+  transition: 0.75s ease-in-out;
+}
+
+.btn-alive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.4);
+}
+
+.btn-alive:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Водяний ефект кліку (Click Ripple) */
+.btn-ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0);
+  animation: rippleEffect 0.6s linear;
+  pointer-events: none;
+}
+
+/* 7.5. Інтерактивні картки з 3D мікро-нахилом (Tilt & Depth) */
+.card-tilt {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  will-change: transform, box-shadow;
+  transform-style: preserve-3d;
+}
+
+.card-tilt:hover {
+  box-shadow: 0 20px 35px -10px rgba(14, 165, 233, 0.25), 0 0 20px rgba(56, 189, 248, 0.2);
+}
+
+/* Фонове жива ембієнтне підсвічування (Ambient Glow Orbs) */
+.ambient-glow-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+/* 7.6. Доступність (Accessibility / WCAG 2.1 AA): повага до вибору reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal-on-scroll,
+  .reveal-scale-in,
+  .reveal-slide-left,
+  .reveal-slide-right {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  #reading-progress-bar {
+    display: none !important;
+  }
+}

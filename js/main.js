@@ -807,5 +807,194 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  console.log('SimpleArduino scripts initialized successfully!');
+  // ==========================================================================
+  // 14. СМУГА ПРОГРЕСУ ЧИТАННЯ (READING PROGRESS BAR)
+  // Працює на всіх сторінках, наочно показує прогрес вивчення матеріалу
+  // ==========================================================================
+  function initReadingProgressBar() {
+    let bar = document.getElementById('reading-progress-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'reading-progress-bar';
+      document.body.prepend(bar);
+    }
+
+    function updateProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (docHeight > 0) {
+        const progress = Math.min(100, Math.max(0, (scrollTop / docHeight) * 100));
+        bar.style.width = `${progress}%`;
+      }
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+  initReadingProgressBar();
+
+  // ==========================================================================
+  // 15. УНІВЕРСАЛЬНА СИСТЕМА SCROLL REVEAL (INTERSECTION OBSERVER)
+  // Автоматично оживляє кожну сторінку: секції, картки проєктів, схеми та кроки
+  // ==========================================================================
+  function initScrollReveal() {
+    // Елементи з явними класами анімації
+    const explicitElements = document.querySelectorAll(
+      '.reveal-on-scroll, .reveal-scale-in, .reveal-slide-left, .reveal-slide-right'
+    );
+
+    // Автоматичне виявлення карток та блоків контенту на будь-якій сторінці
+    const autoElements = document.querySelectorAll(
+      'main section, .space-y-16 > section, .space-y-12 > section, ' +
+      'main section article, .gallery-card-zoom, .ladder-step, .step-card, .step-item, ' +
+      'main .grid > div.bg-slate-800, main .grid > div.bg-slate-800\\/90, ' +
+      'main .grid > div.bg-slate-900\\/80, .interactive-card, .clay-card, ' +
+      'main section > div > .grid > div, main .step-item > div'
+    );
+
+    const allElements = new Set([...explicitElements, ...autoElements]);
+
+    if (!allElements.size) return;
+
+    if (!('IntersectionObserver' in window)) {
+      allElements.forEach(el => el.classList.add('is-revealed'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.08
+    });
+
+    allElements.forEach((el, index) => {
+      if (!el.classList.contains('reveal-on-scroll') && 
+          !el.classList.contains('reveal-scale-in') && 
+          !el.classList.contains('reveal-slide-left') && 
+          !el.classList.contains('reveal-slide-right')) {
+        el.classList.add('reveal-on-scroll');
+        // Додаємо невелику каскадну затримку для сусідніх елементів у сітці
+        const delayClass = `delay-${((index % 4) + 1) * 100}`;
+        el.classList.add(delayClass);
+      }
+      observer.observe(el);
+    });
+  }
+  initScrollReveal();
+
+  // ==========================================================================
+  // 16. ІНТЕРАКТИВНИЙ 3D MICRO-TILT НА КАРТКАХ (DEPTH & LIGHT)
+  // Плавний нахил карток за рухом курсору для кінетичного відчуття
+  // ==========================================================================
+  function initCardTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
+    const cards = document.querySelectorAll(
+      '.card-tilt, .gallery-card-zoom, .interactive-card, ' +
+      '#media-circuits-panel article, .ladder-step'
+    );
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-5px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+  initCardTilt();
+
+  // ==========================================================================
+  // 17. ВОДЯНИЙ ЕФЕКТ КЛІКУ ДЛЯ КНОПОК ТА ПОСИЛАНЬ (CLICK RIPPLE)
+  // ==========================================================================
+  function initButtonRipples() {
+    const clickableBtns = document.querySelectorAll(
+      'button:not([disabled]):not(#mobile-menu-btn), .btn-alive, ' +
+      'a.px-5.py-2\\.5, a.px-4.py-2, #telemetry-refresh-btn'
+    );
+
+    clickableBtns.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const rect = btn.getBoundingClientRect();
+        const circle = document.createElement('span');
+        const diameter = Math.max(rect.width, rect.height);
+        const radius = diameter / 2;
+
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - rect.left - radius}px`;
+        circle.style.top = `${e.clientY - rect.top - radius}px`;
+        circle.classList.add('btn-ripple-effect');
+
+        const existing = btn.querySelector('.btn-ripple-effect');
+        if (existing) existing.remove();
+
+        if (window.getComputedStyle(btn).position === 'static') {
+          btn.style.position = 'relative';
+        }
+        btn.style.overflow = 'hidden';
+        btn.appendChild(circle);
+
+        setTimeout(() => circle.remove(), 600);
+      });
+    });
+  }
+  initButtonRipples();
+
+  // ==========================================================================
+  // 18. АНІМОВАНІ ЛІЧИЛЬНИКИ ЧИСЕЛ ТА МЕТРИК
+  // Плавне зростання значень при потраплянні у зону видимості
+  // ==========================================================================
+  function initStatCounters() {
+    const counterElements = document.querySelectorAll('[data-counter]');
+    if (!counterElements.length) return;
+
+    const counterObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const targetValue = parseFloat(el.getAttribute('data-counter'));
+          const suffix = el.getAttribute('data-counter-suffix') || '';
+          const prefix = el.getAttribute('data-counter-prefix') || '';
+          const duration = 1200;
+          const startTime = performance.now();
+
+          function step(currentTime) {
+            const elapsed = Math.min((currentTime - startTime) / duration, 1);
+            const easeOut = 1 - Math.pow(1 - elapsed, 3);
+            const currentVal = (easeOut * targetValue).toFixed(targetValue % 1 === 0 ? 0 : 1);
+            el.textContent = `${prefix}${currentVal}${suffix}`;
+            if (elapsed < 1) {
+              requestAnimationFrame(step);
+            } else {
+              el.textContent = `${prefix}${targetValue}${suffix}`;
+            }
+          }
+
+          requestAnimationFrame(step);
+          obs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    counterElements.forEach(el => counterObs.observe(el));
+  }
+  initStatCounters();
+
+  console.log('SimpleArduino scripts & Universal Living Animations initialized successfully! ✨');
 });
