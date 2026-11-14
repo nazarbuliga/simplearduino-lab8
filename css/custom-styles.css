@@ -1570,3 +1570,46 @@ html.light #toast-notify {
 html.light #toast-text {
   color: #0f172a !important;
 }
+
+/* Адаптивний логотип для світлої теми (Знахідка аудитора #1) */
+html.light header a img[src*="logo.svg"],
+html.light header a img[src*="logo-mark.svg"] {
+  content: url("../assets/icons/logo-light.svg") !important;
+}
+
+/* Вкладки медіа-хабу у світлій темі (Знахідка аудитора #2) */
+html.light .media-tab-btn:not(.bg-sky-500) {
+  background-color: #e2e8f0 !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light .media-tab-btn.bg-sky-500 {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+/* Глобальні правила для світлої теми на окремих сторінках та картках проєктів (Знахідка #4) */
+html.light main section[class*="bg-slate-900"],
+html.light main div[class*="bg-slate-900"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light main article[class*="bg-slate-900"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light main article[class*="bg-slate-900"] h2,
+html.light main article[class*="bg-slate-900"] h3,
+html.light main article[class*="bg-slate-900"] h4 {
+  color: #0f172a !important;
+}
+
+html.light main article[class*="bg-slate-900"] p,
+html.light main article[class*="bg-slate-900"] li {
+  color: #475569 !important;
+}

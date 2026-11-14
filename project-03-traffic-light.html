@@ -6,7 +6,8 @@
     (function() {
       var saved = localStorage.getItem('simplearduino-theme');
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'light') {
+      var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      if (saved === 'light' || (!saved && prefersLight && !prefersDark)) {
         document.documentElement.classList.add('light');
         document.documentElement.classList.remove('dark');
       } else {

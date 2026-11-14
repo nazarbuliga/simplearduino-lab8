@@ -1031,6 +1031,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
+      
+      // Оновлення логотипу відповідно до теми (Знахідка аудитора #1)
+      const logoImgs = document.querySelectorAll('header a img[src*="logo"]');
+      logoImgs.forEach(img => {
+        if (isDark) {
+          if (img.src.includes('logo-light.svg')) img.src = img.src.replace('logo-light.svg', 'logo.svg');
+        } else {
+          if (img.src.includes('logo.svg')) img.src = img.src.replace('logo.svg', 'logo-light.svg');
+        }
+      });
+
       statusTexts.forEach(txt => {
         txt.textContent = isDark ? 'Темна тема' : 'Світла тема';
       });
@@ -1076,6 +1087,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  
+    // Слухач зміни теми в операційній системі
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('simplearduino-theme')) {
+          switchTheme(e.matches, false);
+        }
+      });
+    }
 
   initThemeToggle();
 
