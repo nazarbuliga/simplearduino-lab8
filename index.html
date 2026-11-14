@@ -5,6 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SimpleArduino — Всеукраїнський відкритий освітній веб-хаб Arduino, схемотехніки та IoT | Повноцінний інтерактивний лендинг</title>
   <meta name="description" content="Платформа покрокового навчання Arduino: від першого світлодіода до власного проєкту. Інтерактивні схеми, симуляції в Tinkercad та робочий C++ код.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <!-- Критичні стилі Anti-FOUC: запобігання миготінню та прихованим кнопкам при завантаженні -->
+  <style>
+    html, body {
+      background-color: #020617 !important;
+      color: #f8fafc !important;
+    }
+    header {
+      background-color: rgba(15, 23, 42, 0.95) !important;
+    }
+    header, header *, header nav, header a, header button {
+      outline: none !important;
+    }
+    header a, header button {
+      text-decoration: none !important;
+    }
+    header a:visited {
+      color: inherit;
+    }
+    /* Кнопки Hero видимі миттєво при завантаженні */
+    .hero-animate-title,
+    .hero-animate-desc,
+    .hero-animate-buttons,
+    .hero-animate-metrics,
+    .hero-animate-visual {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+  </style>
 
 
 
@@ -50,7 +82,7 @@
     <!-- CDN: Swiper.js v11 & Fancybox v5 Styles (Лабораторна робота №10) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
-  <link rel="stylesheet" href="css/custom-styles.css">
+  <link rel="stylesheet" href="css/custom-styles.css?v=3.2">
   <link rel="icon" href="assets/icons/logo-mark.svg" type="image/svg+xml">
   <!-- Open Graph & Social Cards (Feature SEO) -->
   <meta property="og:title" content="SimpleArduino — Освітня платформа з робототехніки та мікроконтролерів">
@@ -2067,7 +2099,7 @@
   </footer>
 
   <!-- Скрипт повної інтерактивності (Mobile menu, Dropdown, Search, Filter, Toasts) -->
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=3.2"></script>
 
 <script>
   const params = new URLSearchParams(window.location.search);

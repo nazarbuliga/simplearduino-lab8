@@ -136,24 +136,59 @@ details summary::-webkit-details-marker {
   }
 }
 
+/* Чистота шапки сайту: усунення будь-яких рамок та контурів при завантаженні */
+header,
+header *,
+header nav,
+header a,
+header button {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+header a {
+  text-decoration: none !important;
+}
+
+header a:focus,
+header button:focus {
+  outline: none !important;
+}
+
+header a:focus-visible,
+header button:focus-visible {
+  outline: 2px solid #38bdf8 !important;
+  outline-offset: 2px !important;
+}
+
+/* Елементи Hero-секції: миттєва видимість без затримок та порожнеч при завантаженні */
+.hero-animate-title,
+.hero-animate-desc,
+.hero-animate-buttons,
+.hero-animate-metrics,
+.hero-animate-visual {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 .hero-animate-title {
-  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+  animation: heroFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .hero-animate-desc {
-  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+  animation: heroFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .hero-animate-buttons {
-  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
+  animation: heroFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .hero-animate-metrics {
-  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
+  animation: heroFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .hero-animate-visual {
-  animation: heroFadeScale 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  animation: heroFadeScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .hero-floating {

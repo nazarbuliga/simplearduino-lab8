@@ -843,14 +843,21 @@ document.addEventListener('DOMContentLoaded', () => {
       '.reveal-on-scroll, .reveal-scale-in, .reveal-slide-left, .reveal-slide-right'
     );
 
-    // Автоматичне виявлення карток та блоків контенту на будь-якій сторінці
+    // Автоматичне виявлення карток та блоків контенту на будь-якій сторінці (крім Hero)
     const autoElements = document.querySelectorAll(
-      'main section, .space-y-16 > section, .space-y-12 > section, ' +
+      'main section:not(#hero), .space-y-16 > section, .space-y-12 > section, ' +
       'main section article, .gallery-card-zoom, .ladder-step, .step-card, .step-item, ' +
       'main .grid > div.bg-slate-800, main .grid > div.bg-slate-800\\/90, ' +
       'main .grid > div.bg-slate-900\\/80, .interactive-card, .clay-card, ' +
       'main section > div > .grid > div, main .step-item > div'
     );
+
+    // Hero секція повинна бути 100% видимою одразу без затримок
+    const heroSec = document.getElementById('hero');
+    if (heroSec) {
+      heroSec.classList.remove('reveal-on-scroll');
+      heroSec.classList.add('is-revealed');
+    }
 
     const allElements = new Set([...explicitElements, ...autoElements]);
 
